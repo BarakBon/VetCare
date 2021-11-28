@@ -1,12 +1,18 @@
 from tkinter import ttk
+import ctypes
+import tkinter.font as font
 
 def set_window(window):
-    # set window dpi
+    # set window dpi (set windows to high resolution)
     try:
-        from ctypes import windll
-        windll.shcore.Set.setPrecessDpiAwarness(1)
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+        print("ok")
     except:
+        print("no")
         pass
+
+    font.nametofont("TkDefaultFont").configure(size=12)
+    font.nametofont("TkTextFont").configure(size=12)
 
     #  position the screen at the middle of the screen
     windowWidth = window.winfo_reqwidth()

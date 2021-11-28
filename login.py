@@ -3,6 +3,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from window import *
 
+
 class LoginScreenData(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -49,7 +50,7 @@ class LoginScreenData(tk.Tk):
                 error.destroy()
                 login_button["state"] = "normal"
 
-            # creates the error window
+            # creates the error window and identifies exit from it.
             error = tk.Tk()
             error.title("Error")
             error.resizable(False, False)
