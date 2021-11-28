@@ -54,9 +54,9 @@ class LoginScreenData(tk.Tk):
             error.title("Error")
             error.resizable(False, False)
             set_window(error)
-            ttk.Label(error, text="Wrong password / username, please try again. ").grid(row=0, column=0, padx=30, pady=20)
+            ttk.Label(error, text="Wrong password / username, please try again. ", foreground="red").grid(row=0, column=0, padx=30, pady=20)
             ttk.Button(error, text="Try again", command=try_again).grid(ipadx=10, ipady=5, pady=10)
-
+            error.protocol("WM_DELETE_WINDOW", try_again)
 
         # login button to get the login details and check them
         login_button = ttk.Button(self, text="Login", command=check_login)
