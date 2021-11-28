@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
-# from windows import
+from window import *
 
 class LoginScreenData(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -10,20 +10,11 @@ class LoginScreenData(tk.Tk):
         # window settings
         self.title("Login")
         self.resizable(False, False)
+        set_dpi()
+        set_style(self)
+        window_spawn(self)
         self.columnconfigure(0, weight=1)
-        style = ttk.Style(self)
-        style.theme_use("clam")
 
-        #  position the screen at the middle of the screen
-        windowWidth = self.winfo_reqwidth()
-        windowHeight = self.winfo_reqheight()
-
-        # Gets both half the screen width/height and window width/height
-        positionRight = int(self.winfo_screenwidth() / 2 - windowWidth / 2)
-        positionDown = int(self.winfo_screenheight() / 2.5 - windowHeight / 2)
-
-        # Positions the window in the center of the page.
-        self.geometry("+{}+{}".format(positionRight, positionDown))
 
         # the logo creation and label
         logo = Image.open("logo1.png").resize((340, 115))
@@ -31,10 +22,8 @@ class LoginScreenData(tk.Tk):
         logo_label = ttk.Label(self, image=logo_picture)
         logo_label.image = logo_picture
         logo_label.grid(row=0, column=0)
-        # greeting_text = ttk.Label(self, text="Welcome to VetCare")
-        # greeting_text.config(font=('', 20))
-        # greeting_text.grid(row=0, column=0, pady=20, padx=20)
 
+        # username and password frame creation
         login_info = ttk.Frame(self)
         login_info.grid(pady=40)
         login_info.columnconfigure(0, weight=1)
