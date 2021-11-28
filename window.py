@@ -1,14 +1,13 @@
 from tkinter import ttk
 
-def set_dpi():
+def set_window(window):
+    # set window dpi
     try:
         from ctypes import windll
         windll.shcore.Set.setPrecessDpiAwarness(1)
     except:
         pass
 
-
-def window_spawn(window):
     #  position the screen at the middle of the screen
     windowWidth = window.winfo_reqwidth()
     windowHeight = window.winfo_reqheight()
@@ -20,6 +19,9 @@ def window_spawn(window):
     # Positions the window in the center of the page.
     window.geometry("+{}+{}".format(positionRight, positionDown))
 
-def set_style(window):
+    #  set window style
     style = ttk.Style(window)
-    style.theme_use("clam")
+    # style.theme_use("clam")
+    # print(style.layout("TLabel"))
+    # print(style.element_options("Label.border"))
+    # style.configure("Label", backround="white")
