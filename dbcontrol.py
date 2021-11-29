@@ -1,6 +1,3 @@
-
-
-
 import sqlite3
 conn = sqlite3.connect("DataBase.db")
 c = conn.cursor()
@@ -74,8 +71,23 @@ def UserID_to_UserType (id):
     else:
         # The index of the UserType
         return item[8]
+      
+
+#The function gets a username and checks if it exists and if it exists it returns its details
+def Search (Name):
+    search = c.execute("SELECT * FROM Users WHERE UserName=? ",(Name,))
+      item =c.fetchone()
+    if item is None:
+        return False
+    else:
+        t=(item[0],item[3], item[4],item[5],item[6],item[7],item[8])
+        return t
+
+    
+    
 conn.commit()
 conn.close()
+
 
 
 
