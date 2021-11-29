@@ -6,9 +6,7 @@ def set_window(window):
     # set window dpi (set windows to high resolution)
     try:
         ctypes.windll.shcore.SetProcessDpiAwareness(1)
-        print("ok")
     except:
-        print("no")
         pass
 
     font.nametofont("TkDefaultFont").configure(size=12)

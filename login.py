@@ -1,7 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
 from PIL import Image, ImageTk
 from window import *
+from dbcontrol import *
+from Secretary import *
 
 
 class LoginScreenData(tk.Tk):
@@ -38,11 +39,19 @@ class LoginScreenData(tk.Tk):
 
 
         def check_login():  # checks if the user exist (in the future)
-            print(username_inserted.get())
-            print(password_inserted.get())
-            login_button["state"] = "disabled"
-            error_warning()
-
+            user_id = Login_check(username_inserted.get(), password_inserted.get())
+            if not user_id:
+                login_button["state"] = "disabled"
+                error_warning()
+            elif UserID_to_UserType(user_id) == "Secretary":
+                self.destroy()
+                secretary_main(user_id)
+            elif UserID_to_UserType(user_id) == "Customer":
+                self.destroy()
+                # secretary_main(user_id) # change to customer window
+            else:
+                self.destroy()
+                # secretary_main(user_id) # change to customer window
 
 
         def error_warning():  # display error massage for incorect user and disable the login unless the butten pressed

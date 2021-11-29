@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from window import *
+from dbcontrol import *
 
 
 class SignupTab(ttk.Frame):
@@ -9,14 +10,17 @@ class SignupTab(ttk.Frame):
         super().__init__(container)
 
         def get_register_data():  # gets from the function that its
-            print(firstname_inserted.get())
-            print(lastname_inserted.get())
-            print(email_inserted.get())
-            print(city_inserted.get())
-            print(phone_inserted.get())
-            print(username_inserted.get())
-            print(password_inserted.get())
-            print(type_selected.get())
+            newcustomer(username_inserted.get(),password_inserted.get(),firstname_inserted.get(),lastname_inserted.get(),
+                        city_inserted.get(),phone_inserted.get(),email_inserted.get(),type_selected.get())
+            printUser(username_inserted.get())
+            # print(firstname_inserted.get())
+            # print(lastname_inserted.get())
+            # print(email_inserted.get())
+            # print(city_inserted.get())
+            # print(phone_inserted.get())
+            # print(username_inserted.get())
+            # print(password_inserted.get())
+            # print(type_selected.get())
 
 
         firstname_inserted = tk.StringVar()
@@ -84,7 +88,7 @@ def secretary_main(id):
 
     # logged in top bar title and logout button in frame
     logged_bar_frame = ttk.Frame(secretary_window).grid(sticky="EW")
-    ttk.Label(logged_bar_frame, text="Hello, ? ").grid(row=0, column=0, padx=30, pady=10, sticky="W") # should add the name var
+    ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
     logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",
                                command=secretary_window.destroy)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
@@ -100,7 +104,3 @@ def secretary_main(id):
 
 
 
-
-
-
-mwindow = secretary_main(5)
