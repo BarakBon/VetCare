@@ -8,7 +8,7 @@ from Secretary import *
 class LoginScreenData(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
+        
         # window settings
         self.title("Login")
         self.resizable(False, False)
