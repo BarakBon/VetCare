@@ -76,7 +76,7 @@ def UserID_to_UserType (id):
 #The function gets a username and checks if it exists and if it exists it returns its details
 def Search (Name):
     search = c.execute("SELECT * FROM Users WHERE UserName=? ",(Name,))
-      item =c.fetchone()
+    item =c.fetchone()
     if item is None:
         return False
     else:
