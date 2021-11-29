@@ -36,7 +36,7 @@ you can fint the following options at this moment:
 
 ## Deployment
 
-To deploy this project run, run the following file
+To deploy this project, run the following file
 
 ```bash
   login.py
