@@ -8,7 +8,7 @@ from Secretary import *
 class LoginScreenData(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        
+
         # window settings
         self.title("Login")
         self.resizable(False, False)
@@ -65,7 +65,7 @@ class LoginScreenData(tk.Tk):
             error.resizable(False, False)
             set_window(error)
             ttk.Label(error, text="Wrong password / username, please try again. ", foreground="red").grid(row=0, column=0, padx=30, pady=20)
-            ttk.Button(error, text="Try again", command=try_again).grid(ipadx=10, ipady=5, pady=10)
+            ttk.Button(error, text="OK", command=try_again).grid(ipadx=10, ipady=5, pady=10)
             error.protocol("WM_DELETE_WINDOW", try_again)
 
         # login button to get the login details and check them

@@ -3,7 +3,11 @@ conn = sqlite3.connect("DataBase.db")
 c = conn.cursor()
 
 def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType):
-    # A function that builds a new user
+    # A function that checks if the username already existed, if not builds a new user
+    search = c.execute("SELECT * FROM Users WHERE UserName=?", (userName,))
+    item = c.fetchone()
+    if item:
+        return -1
     c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
     conn.commit()
 

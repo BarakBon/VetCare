@@ -10,17 +10,29 @@ class SignupTab(ttk.Frame):
         super().__init__(container)
 
         def get_register_data():  # gets from the function that its
-            newcustomer(username_inserted.get(),password_inserted.get(),firstname_inserted.get(),lastname_inserted.get(),
-                        city_inserted.get(),phone_inserted.get(),email_inserted.get(),type_selected.get())
-            printUser(username_inserted.get())
-            # print(firstname_inserted.get())
-            # print(lastname_inserted.get())
-            # print(email_inserted.get())
-            # print(city_inserted.get())
-            # print(phone_inserted.get())
-            # print(username_inserted.get())
-            # print(password_inserted.get())
-            # print(type_selected.get())
+            def user_created_window():
+                created_alert = tk.Tk()
+                created_alert.title("Success")
+                created_alert.resizable(False, False)
+                set_window(created_alert)
+                ttk.Label(created_alert, text="User created successfully. ", foreground="green").grid(row=0,column=0,padx=30,pady=20)
+
+                ttk.Button(created_alert, text="OK", command=created_alert.destroy).grid(ipadx=10, ipady=5, pady=10)
+                created_alert.protocol("WM_DELETE_WINDOW", created_alert.destroy)
+
+
+            if username_inserted.get() is "" or password_inserted.get() is "" or firstname_inserted.get() is "" or lastname_inserted.get() is ""\
+                    or city_inserted.get() is "" or phone_inserted.get() is "" or email_inserted.get() is "" or type_selected.get() is "":
+                register_mistake.set("Fill all slots please")
+            else:
+                flag = newcustomer(username_inserted.get(),password_inserted.get(),firstname_inserted.get(),lastname_inserted.get(),
+                            city_inserted.get(),phone_inserted.get(),email_inserted.get(),type_selected.get())
+                if flag is -1:
+                    register_mistake.set("Username already exist")
+                else:
+                    register_mistake.set("")
+                    user_created_window()
+
 
 
         firstname_inserted = tk.StringVar()
@@ -31,6 +43,7 @@ class SignupTab(ttk.Frame):
         username_inserted = tk.StringVar()
         password_inserted = tk.StringVar()
         type_selected = tk.StringVar()
+        register_mistake = tk.StringVar()
 
         ttk.Label(self, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
         firstname_entry = ttk.Entry(self, width=20, textvariable=firstname_inserted)
@@ -67,8 +80,10 @@ class SignupTab(ttk.Frame):
         type_list.grid(row=7, column=1, padx=10, pady=20)
         # to get the combo select: type_selected.get()
 
+        ttk.Label(self, textvariable=register_mistake, foreground="red").grid(row=8, column=1, padx=10, sticky="W")
+
         register_button = ttk.Button(self, text="Register", command=get_register_data)
-        register_button.grid(row=8, column=1, ipady=3, ipadx=10, pady=20, sticky="W")
+        register_button.grid(row=9, column=1, ipady=3, ipadx=10, pady=20, sticky="W")
 
 
 
