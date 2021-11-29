@@ -5,12 +5,12 @@ from window import *
 from dbcontrol import *
 
 
-class SignupTab(ttk.Frame):
+class SignupTab(ttk.Frame):  # first tab - signup
     def __init__(self, container):
         super().__init__(container)
 
-        def get_register_data():  # gets from the function that its
-            def user_created_window():
+        def get_register_data():  # gets from the entries the data the user inserted
+            def user_created_window():  # the window that says the user signed up
                 created_alert = tk.Tk()
                 created_alert.title("Success")
                 created_alert.resizable(False, False)
@@ -22,9 +22,9 @@ class SignupTab(ttk.Frame):
 
 
             if username_inserted.get() is "" or password_inserted.get() is "" or firstname_inserted.get() is "" or lastname_inserted.get() is ""\
-                    or city_inserted.get() is "" or phone_inserted.get() is "" or email_inserted.get() is "" or type_selected.get() is "":
+                    or city_inserted.get() is "" or phone_inserted.get() is "" or email_inserted.get() is "" or type_selected.get() is "":  # check if one of the entries is empty
                 register_mistake.set("Fill all slots please")
-            else:
+            else:  # sends the data to the database
                 flag = newcustomer(username_inserted.get(),password_inserted.get(),firstname_inserted.get(),lastname_inserted.get(),
                             city_inserted.get(),phone_inserted.get(),email_inserted.get(),type_selected.get())
                 if flag is -1:
@@ -34,7 +34,7 @@ class SignupTab(ttk.Frame):
                     user_created_window()
 
 
-
+        # enteries and vars for the registerations process
         firstname_inserted = tk.StringVar()
         lastname_inserted = tk.StringVar()
         email_inserted = tk.StringVar()
@@ -78,8 +78,8 @@ class SignupTab(ttk.Frame):
         type_list["values"] = ("Veterinarian", "Secretary", "Customer")
         type_list["state"] = "readonly"
         type_list.grid(row=7, column=1, padx=10, pady=20)
-        # to get the combo select: type_selected.get()
 
+        # the label that says if there is a mistake at the user input
         ttk.Label(self, textvariable=register_mistake, foreground="red").grid(row=8, column=1, padx=10, sticky="W")
 
         register_button = ttk.Button(self, text="Register", command=get_register_data)
@@ -87,7 +87,7 @@ class SignupTab(ttk.Frame):
 
 
 
-def secretary_main(id):
+def secretary_main(id):  # main secretary window setup
     # window setup
     secretary_window = tk.Tk()
     secretary_window.title("VetCare  -  Secretary")
@@ -95,6 +95,26 @@ def secretary_main(id):
     set_window(secretary_window)
     secretary_window.columnconfigure(0, weight=1)
     # secretary_window.rowconfigure(1, weight=1)
+
+    def s_logout():  # take care on the logout process
+        if_logout_s_window = tk.Tk()
+        if_logout_s_window.title("Success")
+        if_logout_s_window.resizable(False, False)
+        set_window(if_logout_s_window)
+        ttk.Label(if_logout_s_window, text="Are you sure you want to logout? ").grid(row=0, column=0, padx=30,pady=10)
+        ttk.Label(if_logout_s_window, text="All unsaved actions will be deleted. ", foreground="red").grid(row=1, column=0, padx=30, pady=5)
+        logout_approve_frame = ttk.Frame(if_logout_s_window)
+        logout_approve_frame.grid(row=2, column=0, pady=10)
+
+        def yes_to_logout():  # if the user agreed to logout
+            if_logout_s_window.destroy()
+            secretary_window.destroy()
+
+        #  the buttons to agree or not to logout
+        ttk.Button(logout_approve_frame, text="Yes", command=yes_to_logout).grid(row=0, column=0, ipadx=5, ipady=2, padx=5)
+        ttk.Button(logout_approve_frame, text="Cancel", command=if_logout_s_window.destroy).grid(row=0, column=1, ipadx=5,ipady=2, padx=5)
+
+
 
 
     # custom style for the logout button
@@ -104,7 +124,7 @@ def secretary_main(id):
     # logged in top bar title and logout button in frame
     logged_bar_frame = ttk.Frame(secretary_window).grid(sticky="EW")
     ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
-    logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=secretary_window.destroy)
+    logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=s_logout)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
 
     # tabs creations

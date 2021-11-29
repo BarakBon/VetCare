@@ -48,13 +48,15 @@ class LoginScreenData(tk.Tk):
             elif UserID_to_UserType(user_id) == "Secretary":
                 self.destroy()
                 secretary_main(user_id)
+                login_after_logout()
             elif UserID_to_UserType(user_id) == "Customer":
                 self.destroy()
                 customer_main(user_id)
+                login_after_logout()
             else:
                 self.destroy()
                 veterinarian_main(user_id)
-                # secretary_main(user_id) # change to customer window
+                login_after_logout()
 
 
         def error_warning():  # display error massage for incorect user and disable the login unless the butten pressed
@@ -80,5 +82,4 @@ def login_after_logout():
     relogin = LoginScreenData()
     relogin.mainloop()
 
-login = LoginScreenData()
-login.mainloop()
+login_after_logout()
