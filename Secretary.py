@@ -91,7 +91,7 @@ def secretary_main(id):
     # window setup
     secretary_window = tk.Tk()
     secretary_window.title("VetCare  -  Secretary")
-    secretary_window.resizable(True, True)
+    secretary_window.resizable(False, False)
     set_window(secretary_window)
     secretary_window.columnconfigure(0, weight=1)
     # secretary_window.rowconfigure(1, weight=1)
@@ -104,8 +104,7 @@ def secretary_main(id):
     # logged in top bar title and logout button in frame
     logged_bar_frame = ttk.Frame(secretary_window).grid(sticky="EW")
     ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
-    logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",
-                               command=secretary_window.destroy)
+    logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=secretary_window.destroy)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
 
     # tabs creations
@@ -114,6 +113,7 @@ def secretary_main(id):
     tabs.grid(sticky="EW")
     register_new_user_tab = SignupTab(tabs)
     tabs.add(register_new_user_tab, text="Signup")
+
 
     secretary_window.mainloop()
 

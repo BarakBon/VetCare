@@ -3,6 +3,8 @@ from PIL import Image, ImageTk
 from window import *
 from dbcontrol import *
 from Secretary import *
+from Customer import *
+from Veterinarian import *
 
 
 class LoginScreenData(tk.Tk):
@@ -48,9 +50,10 @@ class LoginScreenData(tk.Tk):
                 secretary_main(user_id)
             elif UserID_to_UserType(user_id) == "Customer":
                 self.destroy()
-                # secretary_main(user_id) # change to customer window
+                customer_main(user_id)
             else:
                 self.destroy()
+                veterinarian_main(user_id)
                 # secretary_main(user_id) # change to customer window
 
 
@@ -73,7 +76,9 @@ class LoginScreenData(tk.Tk):
         login_button.grid(ipadx=10, ipady=5, pady=20)
 
 
-
+def login_after_logout():
+    relogin = LoginScreenData()
+    relogin.mainloop()
 
 login = LoginScreenData()
 login.mainloop()
