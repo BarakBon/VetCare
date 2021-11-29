@@ -5,6 +5,7 @@ c = conn.cursor()
 def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType):
     # A function that builds a new user
     c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
+    conn.commit()
 
 def printUser(userName):
     # A function that prints the user information you requested
