@@ -1,18 +1,52 @@
+
+![Logo](https://i.imgur.com/JUAKKdD.png)
+
+
 # VetCare
-A desktop application to manage veterinary clinic
-customers, veterinarians and secretaryes are the users of our system
 
-the system is still at "work in progress" state
-at this moment in order to start the application, you need to run the "login.py" file
-
-the system have login functionality.
-depends on the username the logged the system start a window for the user.
-
-at this moment for the Hackathon the secretary have working window to register new user to the system.
+A desktop application to manage veterinary clinic.
 
 
-made by: (github users)
-@BarakBon
-@OrBonker
-@MoriyaPanker
-@Zapa120
+
+
+## Users
+The system have 3 types of users of the veterinary clinic:
+* Veterinarians
+
+* Secretarys
+
+* Customers
+## Project State
+
+Currently the system is "work in progress".
+published at a state to meet the Hackathon demands.
+you can fint the following options at this moment:
+- Login system
+
+- Database
+
+- Basic pages for each of the users
+
+- Register new user functionality for the secretary
+
+- Additional checks and warnings when needed input from user
+
+- Log out option
+
+
+## Deployment
+
+To deploy this project run, run the following file
+
+```bash
+  login.py
+```
+
+
+## Authors
+
+- [@BarakBon](https://github.com/BarakBon)
+- [@OrBonker](https://github.com/OrBonker)
+- [@MoriyaPanker](https://github.com/MoriyaPanker)
+- [@Zapa120](https://github.com/Zapa120)
+
