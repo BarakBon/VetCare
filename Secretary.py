@@ -86,6 +86,23 @@ class SignupTab(ttk.Frame):  # first tab - signup
         register_button.grid(row=9, column=1, ipady=3, ipadx=10, pady=20, sticky="W")
 
 
+class UserInfo(ttk.Frame):  # second tab - user info
+    def __init__(self, container):
+        super().__init__(container)
+
+        def check_to_fill():
+            pass
+
+        user_select_frame = ttk.Frame(self)
+        user_select_frame.grid(pady=20)
+        enter_text_filler = tk.StringVar()
+        # test1 = ttk.Label(user_select_frame, text="").grid(row=0, column=0, padx=50)
+        enter_username = tk.Text(user_select_frame, height=1, width=20)
+        enter_username.grid(row=0, column=0, padx=30)
+        enter_username.insert("1.0", "Enter username here")
+        username_choose = ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        # test2 = ttk.Label(user_select_frame, text="").grid(row=0, column=2, padx=150)
+
 
 def secretary_main(id):  # main secretary window setup
     # window setup
@@ -116,7 +133,6 @@ def secretary_main(id):  # main secretary window setup
 
 
 
-
     # custom style for the logout button
     style = ttk.Style(secretary_window)
     style.map("CustomButton.TButton", foreground=[("!pressed", "red")], backround=[("!pressed", "red")])
@@ -126,6 +142,7 @@ def secretary_main(id):  # main secretary window setup
     ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
     logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=s_logout)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
+    secretary_window.protocol("WM_DELETE_WINDOW", s_logout)
 
     # tabs creations
     tabs = ttk.Notebook(secretary_window)
@@ -133,7 +150,8 @@ def secretary_main(id):  # main secretary window setup
     tabs.grid(sticky="EW")
     register_new_user_tab = SignupTab(tabs)
     tabs.add(register_new_user_tab, text="Signup")
-
+    info_of_user = UserInfo(tabs)
+    tabs.add(info_of_user, text="Info")
 
     secretary_window.mainloop()
 
