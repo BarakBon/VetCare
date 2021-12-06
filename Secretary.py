@@ -91,17 +91,17 @@ class UserInfo(ttk.Frame):  # second tab - user info
         super().__init__(container)
 
         def check_to_fill():
-            pass
+            
+            search_answer.set("No username found")
 
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
-        enter_text_filler = tk.StringVar()
-        # test1 = ttk.Label(user_select_frame, text="").grid(row=0, column=0, padx=50)
+        search_answer = tk.StringVar()
         enter_username = tk.Text(user_select_frame, height=1, width=20)
         enter_username.grid(row=0, column=0, padx=30)
         enter_username.insert("1.0", "Enter username here")
         username_choose = ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
-        # test2 = ttk.Label(user_select_frame, text="").grid(row=0, column=2, padx=150)
+        ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10, sticky="E")
 
 
 def secretary_main(id):  # main secretary window setup
