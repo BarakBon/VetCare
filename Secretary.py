@@ -91,7 +91,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
         super().__init__(container)
 
         def check_to_fill():
-            
+
             search_answer.set("No username found")
 
         user_select_frame = ttk.Frame(self)
