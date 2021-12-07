@@ -105,7 +105,37 @@ class UserInfo(ttk.Frame):  # second tab - user info
 
         separator = ttk.Separator(self, orient='horizontal').grid(columnspan=2, sticky="EW")
 
+        user_output_frame = ttk.Frame(self)
+        user_output_frame.grid(pady=20)
+        ttk.Label(user_output_frame, text="First Name: ").grid(row=0, column=0, padx=20)
+        firstname_info = tk.Text(user_output_frame, height=1, width=20)
+        firstname_info.grid(row=0, column=1, padx=30)
+        firstname_info["state"] = "disable"
 
+        ttk.Label(user_output_frame, text="Last Name: ").grid(row=1, column=0, padx=20, pady=20)
+        lastname_info = tk.Text(user_output_frame, height=1, width=20)
+        lastname_info.grid(row=1, column=1, padx=30)
+        lastname_info["state"] = "disable"
+
+        ttk.Label(user_output_frame, text="Phone No.: ").grid(row=2, column=0, padx=20)
+        phone_info = tk.Text(user_output_frame, height=1, width=20)
+        phone_info.grid(row=2, column=1, padx=30)
+        phone_info["state"] = "disable"
+
+        ttk.Label(user_output_frame, text="Email: ").grid(row=3, column=0, padx=20, pady=20)
+        email_info = tk.Text(user_output_frame, height=1, width=20)
+        email_info.grid(row=3, column=1, padx=30)
+        email_info["state"] = "disable"
+
+        ttk.Label(user_output_frame, text="City: ").grid(row=4, column=0, padx=20)
+        city_info = tk.Text(user_output_frame, height=1, width=20)
+        city_info.grid(row=4, column=1, padx=30)
+        city_info["state"] = "disable"
+
+        ttk.Label(user_output_frame, text="User Type: ").grid(row=5, column=0, padx=20, pady=20)
+        usertype_info = tk.Text(user_output_frame, height=1, width=20)
+        usertype_info.grid(row=5, column=1, padx=30)
+        usertype_info["state"] = "disable"
 
 
 def secretary_main(id):  # main secretary window setup
