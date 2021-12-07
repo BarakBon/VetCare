@@ -13,7 +13,7 @@ def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAdd
 
 def printUser(userName):
     # A function that prints the user information you requested
-    c.execute('SELECT * FROM `Users` WHERE UserName ="' + userName + '" ' )
+    c.execute('SELECT * FROM `Users` WHERE UserName ="' + userName + "")
     for row in c:
         print(row)
 
@@ -88,7 +88,21 @@ def Search (Name):
         t=(item[0],item[3], item[4],item[5],item[6],item[7],item[8])
         return t
 
-    
+
+def AnimalName(UserID):
+    c.execute("SELECT * FROM 'Animals' WHERE UserID =? ", ( UserID,))
+    item = c.fetchone()
+    if item is None:
+      return -1
+    else:
+       r=(item[2])
+       return r
+
+v=AnimalName(5)
+print(v)
+
+
+
     
 conn.commit()
 # conn.close()
