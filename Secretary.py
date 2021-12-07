@@ -103,6 +103,10 @@ class UserInfo(ttk.Frame):  # second tab - user info
         username_choose = ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
         ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10, sticky="E")
 
+        separator = ttk.Separator(self, orient='horizontal').grid(columnspan=2, sticky="EW")
+
+
+
 
 def secretary_main(id):  # main secretary window setup
     # window setup
