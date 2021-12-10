@@ -137,6 +137,10 @@ class UserInfo(ttk.Frame):  # second tab - user info
         usertype_info.grid(row=5, column=1, padx=30)
         usertype_info["state"] = "disable"
 
+        ttk.Label(user_output_frame, text="Animals: ").grid(row=6, column=0, padx=20, pady=20)
+        test_list = ("Tiger", "Shoko", "Jako")
+        list_var = tk.StringVar(value=test_list)
+        list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(test_list)).grid(row=6, column=1, padx=20, pady=20)
 
 def secretary_main(id):  # main secretary window setup
     # window setup
