@@ -153,7 +153,7 @@ def secretary_main(id):  # main secretary window setup
 
     def s_logout():  # take care on the logout process
         if_logout_s_window = tk.Tk()
-        if_logout_s_window.title("Success")
+        if_logout_s_window.title("Warning")
         if_logout_s_window.resizable(False, False)
         set_window(if_logout_s_window)
         logout_button["state"] = "disable"
@@ -175,7 +175,7 @@ def secretary_main(id):  # main secretary window setup
         ttk.Button(logout_approve_frame, text="Cancel", command=cancel_to_logout).grid(row=0, column=1, ipadx=5,ipady=2, padx=5)
 
 
-    def no_exit():
+    def s_no_exit():
         pass
 
     # custom style for the logout button
@@ -187,7 +187,7 @@ def secretary_main(id):  # main secretary window setup
     ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
     logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=s_logout)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
-    secretary_window.protocol("WM_DELETE_WINDOW", no_exit)
+    secretary_window.protocol("WM_DELETE_WINDOW", s_no_exit)
 
     # tabs creations
     tabs = ttk.Notebook(secretary_window)
