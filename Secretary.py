@@ -103,7 +103,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
         username_choose = ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
         ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10, sticky="E")
 
-        separator = ttk.Separator(self, orient='horizontal').grid(columnspan=2, sticky="EW")
+        separator = ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
 
         user_output_frame = ttk.Frame(self)
         user_output_frame.grid(pady=20)
@@ -152,6 +152,7 @@ def secretary_main(id):  # main secretary window setup
         if_logout_s_window.title("Success")
         if_logout_s_window.resizable(False, False)
         set_window(if_logout_s_window)
+        logout_button["state"] = "disable"
         ttk.Label(if_logout_s_window, text="Are you sure you want to logout? ").grid(row=0, column=0, padx=30,pady=10)
         ttk.Label(if_logout_s_window, text="All unsaved actions will be deleted. ", foreground="red").grid(row=1, column=0, padx=30, pady=5)
         logout_approve_frame = ttk.Frame(if_logout_s_window)
@@ -161,11 +162,17 @@ def secretary_main(id):  # main secretary window setup
             if_logout_s_window.destroy()
             secretary_window.destroy()
 
+        def cancel_to_logout():  # if the user cancel the logout
+            if_logout_s_window.destroy()
+            logout_button["state"] = "normal"
+
         #  the buttons to agree or not to logout
         ttk.Button(logout_approve_frame, text="Yes", command=yes_to_logout).grid(row=0, column=0, ipadx=5, ipady=2, padx=5)
-        ttk.Button(logout_approve_frame, text="Cancel", command=if_logout_s_window.destroy).grid(row=0, column=1, ipadx=5,ipady=2, padx=5)
+        ttk.Button(logout_approve_frame, text="Cancel", command=cancel_to_logout).grid(row=0, column=1, ipadx=5,ipady=2, padx=5)
 
 
+    def no_exit():
+        pass
 
     # custom style for the logout button
     style = ttk.Style(secretary_window)
@@ -176,7 +183,7 @@ def secretary_main(id):  # main secretary window setup
     ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
     logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=s_logout)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
-    secretary_window.protocol("WM_DELETE_WINDOW", s_logout)
+    secretary_window.protocol("WM_DELETE_WINDOW", no_exit)
 
     # tabs creations
     tabs = ttk.Notebook(secretary_window)
