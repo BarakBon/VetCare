@@ -1,10 +1,11 @@
+import time
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from window import *
 from dbcontrol import *
-
-
+from tkcalendar import Calendar
+import datetime
 
 class FutureTab(ttk.Frame):  # to be used tab
     def __init__(self, container):
@@ -12,8 +13,8 @@ class FutureTab(ttk.Frame):  # to be used tab
 
         ttk.Label(self, text="this is the main screen of the customer. ").grid(row=0, column=0, padx=10, pady=20)
 
-
-
+        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), weekendbackground="white")
+        cal.grid(ipadx=10)
 
 
 

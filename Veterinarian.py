@@ -54,7 +54,7 @@ def veterinarian_main(id): # main veterinarian window setup
 
     def v_no_exit():
         pass
-    
+
     # logged in top bar title and logout button in frame
     logged_bar_frame = ttk.Frame(vet_window).grid(sticky="EW")
     ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
