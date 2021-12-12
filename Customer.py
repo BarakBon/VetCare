@@ -12,13 +12,17 @@ class MakeAppointment(ttk.Frame):  # to be used tab
         super().__init__(container)
 
         def day_chose(x=None):
-            print("day selected")
+            print(cal.get_date())
+
+        def create_appoint():
+            pass
 
         time_selected = tk.StringVar()
+        free_times = ()
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
-        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), weekendbackground="white")
+        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
 
@@ -27,7 +31,8 @@ class MakeAppointment(ttk.Frame):  # to be used tab
         free_time_list["state"] = "readonly"
         free_time_list.grid()
 
-
+        add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=20)
 
 def customer_main(id):  # main customer window setup
     # window setup
