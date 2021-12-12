@@ -40,7 +40,7 @@ class LoginScreenData(tk.Tk):
         password_entry.grid(row=1, column=1, pady=10)
 
 
-        def check_login(x=None):  # checks if the user exist (in the future)
+        def check_login():  # checks if the user exist (in the future)
             user_id = Login_check(username_inserted.get(), password_inserted.get())
             if not user_id:
                 login_button["state"] = "disabled"
@@ -62,11 +62,7 @@ class LoginScreenData(tk.Tk):
         def error_warning():  # display error massage for incorect user and disable the login unless the butten pressed
             def try_again():  # return the login to function and removes the error window
                 error.destroy()
-                self.bind('<Return>', check_login)
                 login_button["state"] = "normal"
-
-            def skipl(x=None):
-                pass
 
             # creates the error window and identifies exit from it.
             error = tk.Tk()
@@ -76,15 +72,10 @@ class LoginScreenData(tk.Tk):
             ttk.Label(error, text="Wrong password / username, please try again. ", foreground="red").grid(row=0, column=0, padx=30, pady=20)
             ttk.Button(error, text="OK", command=try_again).grid(ipadx=10, ipady=5, pady=10)
             error.protocol("WM_DELETE_WINDOW", try_again)
-            self.bind('<Return>', skipl)
-
 
         # login button to get the login details and check them
         login_button = ttk.Button(self, text="Login", command=check_login)
         login_button.grid(ipadx=10, ipady=5, pady=20)
-
-        self.bind('<Return>', check_login)
-
 
 
 def login_after_logout():
