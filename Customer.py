@@ -11,10 +11,14 @@ class MakeAppointment(ttk.Frame):  # to be used tab
     def __init__(self, container):
         super().__init__(container)
 
+        def day_chose(x=None):
+            print("day selected")
+
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
         cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
+        cal.bind('<<CalendarSelected>>', day_chose)
 
 
 
