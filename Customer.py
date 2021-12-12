@@ -11,10 +11,10 @@ class MakeAppointment(ttk.Frame):  # to be used tab
     def __init__(self, container):
         super().__init__(container)
 
-        def day_chose(x=None):
+        def day_chose(x=None):  # working after the user press a day
             print(cal.get_date())
 
-        def create_appoint():
+        def create_appoint():  # working after the button
             pass
 
         time_selected = tk.StringVar()
