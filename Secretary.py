@@ -94,7 +94,6 @@ class UserInfo(ttk.Frame):  # second tab - user info
 
         def check_to_fill():
             found_username = Search(enter_username.get("1.0","end-1c"))
-            print(found_username)
             if not found_username:
                 search_answer.set("No username found")
                 firstname_info.delete("1.0", "end-1c")
@@ -103,6 +102,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 email_info.delete("1.0", "end-1c")
                 city_info.delete("1.0", "end-1c")
                 usertype_info.delete("1.0", "end-1c")
+                list_select.delete(0, tk.END)
 
             else:
                 search_answer.set("")
@@ -119,7 +119,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
 
                 phone_info["state"] = "normal"
                 phone_info.delete("1.0", "end-1c")
-                phone_info.insert(tk.END, found_username[4])
+                phone_info.insert(tk.END, '0'+found_username[4])
                 phone_info["state"] = "disable"
 
                 email_info["state"] = "normal"
@@ -136,6 +136,12 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 usertype_info.delete("1.0", "end-1c")
                 usertype_info.insert(tk.END, found_username[6])
                 usertype_info["state"] = "disable"
+
+                nonlocal test_list
+                test_list = AnimalName(found_username[0])
+                list_select.delete(0, tk.END)
+                for item in test_list:
+                    list_select.insert(tk.END, item)
 
 
         user_select_frame = ttk.Frame(self)
@@ -176,9 +182,10 @@ class UserInfo(ttk.Frame):  # second tab - user info
         usertype_info.grid(row=5, column=1, padx=30)
 
         ttk.Label(user_output_frame, text="Animals: ").grid(row=6, column=0, padx=20, pady=20)
-        test_list = ("Tiger", "Shoko", "Jako")
+        test_list = ()
         list_var = tk.StringVar(value=test_list)
-        list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(test_list)).grid(row=6, column=1, padx=20, pady=20)
+        list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(test_list))
+        list_select.grid(row=6, column=1, padx=20, pady=20)
 
 
 class ShowAppointments(ttk.Frame):  # third tab - show appointments info
