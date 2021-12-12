@@ -142,6 +142,13 @@ class UserInfo(ttk.Frame):  # second tab - user info
         list_var = tk.StringVar(value=test_list)
         list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(test_list)).grid(row=6, column=1, padx=20, pady=20)
 
+
+class ShowAppointmants(ttk.Frame):  # second tab - user info
+    def __init__(self, container):
+        super().__init__(container)
+
+
+
 def secretary_main(id):  # main secretary window setup
     # window setup
     secretary_window = tk.Tk()
@@ -196,7 +203,7 @@ def secretary_main(id):  # main secretary window setup
     register_new_user_tab = SignupTab(tabs)
     tabs.add(register_new_user_tab, text="Signup")
     info_of_user = UserInfo(tabs)
-    tabs.add(info_of_user, text="Info")
+    tabs.add(info_of_user, text="User Info")
 
     secretary_window.mainloop()
 

@@ -7,7 +7,7 @@ from dbcontrol import *
 from tkcalendar import Calendar
 import datetime
 
-class MakeAppointment(ttk.Frame):  # to be used tab
+class MakeAppointment(ttk.Frame):  # make appointmant by the user
     def __init__(self, container):
         super().__init__(container)
 
@@ -25,7 +25,7 @@ class MakeAppointment(ttk.Frame):  # to be used tab
         cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
-
+        
         ttk.Label(self, text="Select time: ").grid(pady=20)
         free_time_list = ttk.Combobox(self, textvariable=time_selected)
         free_time_list["state"] = "readonly"
@@ -33,6 +33,7 @@ class MakeAppointment(ttk.Frame):  # to be used tab
 
         add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
         add_appoint_button.grid(ipadx=10, ipady=5, pady=20)
+
 
 def customer_main(id):  # main customer window setup
     # window setup
