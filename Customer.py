@@ -32,7 +32,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         free_time_list.grid()
 
         add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
-        add_appoint_button.grid(ipadx=10, ipady=5, pady=20)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
 
 def customer_main(id):  # main customer window setup
