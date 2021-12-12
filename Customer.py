@@ -25,7 +25,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
-        
+
         ttk.Label(self, text="Select time: ").grid(pady=20)
         free_time_list = ttk.Combobox(self, textvariable=time_selected)
         free_time_list["state"] = "readonly"

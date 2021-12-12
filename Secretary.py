@@ -143,9 +143,11 @@ class UserInfo(ttk.Frame):  # second tab - user info
         list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(test_list)).grid(row=6, column=1, padx=20, pady=20)
 
 
-class ShowAppointmants(ttk.Frame):  # second tab - user info
+class ShowAppointments(ttk.Frame):  # third tab - show appointments info
     def __init__(self, container):
         super().__init__(container)
+
+        
 
 
 
