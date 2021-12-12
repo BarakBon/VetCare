@@ -3,6 +3,8 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from window import *
 from dbcontrol import *
+from tkcalendar import Calendar
+import datetime
 
 
 class SignupTab(ttk.Frame):  # first tab - signup
@@ -147,7 +149,28 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
     def __init__(self, container):
         super().__init__(container)
 
+        def day_chose(x=None):  # working after the user press a day
+            print(cal.get_date())
 
+        def create_appoint():  # working after the button
+            pass
+
+        time_selected = tk.StringVar()
+        free_times = ()
+
+        ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
+
+        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
+        cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
+        cal.bind('<<CalendarSelected>>', day_chose)
+
+        ttk.Label(self, text="Select time: ").grid(pady=20)
+        free_time_list = ttk.Combobox(self, textvariable=time_selected)
+        free_time_list["state"] = "readonly"
+        free_time_list.grid()
+
+        add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
 
 
