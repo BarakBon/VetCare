@@ -89,14 +89,20 @@ def Search (Name):
         return t
 
 
-def AnimalName(UserID):
-    c.execute("SELECT * FROM 'Animals' WHERE UserID =? ", ( UserID,))
-    item = c.fetchone()
-    if item is None:
-      return -1
+def AnimalName(ID):
+    t=[]
+    c.execute("SELECT * FROM Animals WHERE UserID=(?)",(ID,))
+    item=c.fetchall()
+    if item:
+     for item in item:
+        t+=[item[2]]
+     return t
     else:
-       r=(item[2])
-       return r
+        return -1
+
+
+
+
 
 v=AnimalName(5)
 print(v)
