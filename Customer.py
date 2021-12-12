@@ -14,11 +14,18 @@ class MakeAppointment(ttk.Frame):  # to be used tab
         def day_chose(x=None):
             print("day selected")
 
+        time_selected = tk.StringVar()
+
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
         cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
+
+        ttk.Label(self, text="Select time: ").grid(pady=20)
+        free_time_list = ttk.Combobox(self, textvariable=time_selected)
+        free_time_list["state"] = "readonly"
+        free_time_list.grid()
 
 
 
