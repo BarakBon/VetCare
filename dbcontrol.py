@@ -98,10 +98,27 @@ def AnimalName(ID):
      return t
     else:
         return -1
+
+
+def Date_Check(Date):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str (Date),))
+    item = c.fetchall()
+    if item == []:
+        Time=8
+        while Time<=19:
+            c.execute("INSERT INTO `Appointments` ('AppointmentDate','AppointmentTime') VALUES (?,?);",(str(Date),Time))
+            print(Time)
+            Time+=1
+    else:
+        for item in item:
+            print(item[2])
+    conn.commit()
+
+
 conn.commit()
 # conn.close()
 
-
+Date_Check('06/10/21')
 
 t=AnimalName(5)
 print(t)
