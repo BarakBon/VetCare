@@ -88,11 +88,20 @@ def Search (Name):
         t=(item[0],item[3], item[4],item[5],item[6],item[7],item[8])
         return t
 
-    
-    
+def AnimalName(ID):
+    t=[]
+    c.execute("SELECT * FROM Animals WHERE UserID=? ", (ID,))
+    item = c.fetchall()
+    if item:
+     for item in item:
+      t+=[item[2]]
+     return t
+    else:
+        return -1
 conn.commit()
 # conn.close()
 
 
 
-
+t=AnimalName(5)
+print(t)
