@@ -95,13 +95,29 @@ class UserInfo(ttk.Frame):  # second tab - user info
         def check_to_fill():
             found_username = Search(enter_username.get("1.0","end-1c"))
             if not found_username:
-                search_answer.set("No username found")
+                firstname_info["state"] = "normal"
                 firstname_info.delete("1.0", "end-1c")
+                firstname_info["state"] = "disable"
+
+                lastname_info["state"] = "normal"
                 lastname_info.delete("1.0", "end-1c")
+                lastname_info["state"] = "disable"
+
+                phone_info["state"] = "normal"
                 phone_info.delete("1.0", "end-1c")
+                phone_info["state"] = "disable"
+
+                email_info["state"] = "normal"
                 email_info.delete("1.0", "end-1c")
+                email_info["state"] = "disable"
+
+                city_info["state"] = "normal"
                 city_info.delete("1.0", "end-1c")
+                city_info["state"] = "disable"
+
+                usertype_info["state"] = "normal"
                 usertype_info.delete("1.0", "end-1c")
+                usertype_info["state"] = "disable"
                 list_select.delete(0, tk.END)
 
             else:
