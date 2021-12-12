@@ -101,7 +101,5 @@ def AnimalName(ID):
 conn.commit()
 # conn.close()
 
-
-
 t=AnimalName(5)
 print(t)
