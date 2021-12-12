@@ -93,8 +93,50 @@ class UserInfo(ttk.Frame):  # second tab - user info
         super().__init__(container)
 
         def check_to_fill():
+            found_username = Search(enter_username.get("1.0","end-1c"))
+            print(found_username)
+            if not found_username:
+                search_answer.set("No username found")
+                firstname_info.delete("1.0", "end-1c")
+                lastname_info.delete("1.0", "end-1c")
+                phone_info.delete("1.0", "end-1c")
+                email_info.delete("1.0", "end-1c")
+                city_info.delete("1.0", "end-1c")
+                usertype_info.delete("1.0", "end-1c")
 
-            search_answer.set("No username found")
+            else:
+                search_answer.set("")
+
+                firstname_info["state"] = "normal"
+                firstname_info.delete("1.0", "end-1c")
+                firstname_info.insert(tk.END, found_username[1])
+                firstname_info["state"] = "disable"
+
+                lastname_info["state"] = "normal"
+                lastname_info.delete("1.0", "end-1c")
+                lastname_info.insert(tk.END, found_username[2])
+                lastname_info["state"] = "disable"
+
+                phone_info["state"] = "normal"
+                phone_info.delete("1.0", "end-1c")
+                phone_info.insert(tk.END, found_username[4])
+                phone_info["state"] = "disable"
+
+                email_info["state"] = "normal"
+                email_info.delete("1.0", "end-1c")
+                email_info.insert(tk.END, found_username[5])
+                email_info["state"] = "disable"
+
+                city_info["state"] = "normal"
+                city_info.delete("1.0", "end-1c")
+                city_info.insert(tk.END, found_username[3])
+                city_info["state"] = "disable"
+
+                usertype_info["state"] = "normal"
+                usertype_info.delete("1.0", "end-1c")
+                usertype_info.insert(tk.END, found_username[6])
+                usertype_info["state"] = "disable"
+
 
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
@@ -110,34 +152,28 @@ class UserInfo(ttk.Frame):  # second tab - user info
         user_output_frame = ttk.Frame(self)
         user_output_frame.grid(pady=20)
         ttk.Label(user_output_frame, text="First Name: ").grid(row=0, column=0, padx=20)
-        firstname_info = tk.Text(user_output_frame, height=1, width=20)
+        firstname_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
         firstname_info.grid(row=0, column=1, padx=30)
-        firstname_info["state"] = "disable"
 
         ttk.Label(user_output_frame, text="Last Name: ").grid(row=1, column=0, padx=20, pady=20)
-        lastname_info = tk.Text(user_output_frame, height=1, width=20)
+        lastname_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
         lastname_info.grid(row=1, column=1, padx=30)
-        lastname_info["state"] = "disable"
 
         ttk.Label(user_output_frame, text="Phone No.: ").grid(row=2, column=0, padx=20)
-        phone_info = tk.Text(user_output_frame, height=1, width=20)
+        phone_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
         phone_info.grid(row=2, column=1, padx=30)
-        phone_info["state"] = "disable"
 
         ttk.Label(user_output_frame, text="Email: ").grid(row=3, column=0, padx=20, pady=20)
-        email_info = tk.Text(user_output_frame, height=1, width=20)
+        email_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
         email_info.grid(row=3, column=1, padx=30)
-        email_info["state"] = "disable"
 
         ttk.Label(user_output_frame, text="City: ").grid(row=4, column=0, padx=20)
-        city_info = tk.Text(user_output_frame, height=1, width=20)
+        city_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
         city_info.grid(row=4, column=1, padx=30)
-        city_info["state"] = "disable"
 
         ttk.Label(user_output_frame, text="User Type: ").grid(row=5, column=0, padx=20, pady=20)
-        usertype_info = tk.Text(user_output_frame, height=1, width=20)
+        usertype_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
         usertype_info.grid(row=5, column=1, padx=30)
-        usertype_info["state"] = "disable"
 
         ttk.Label(user_output_frame, text="Animals: ").grid(row=6, column=0, padx=20, pady=20)
         test_list = ("Tiger", "Shoko", "Jako")

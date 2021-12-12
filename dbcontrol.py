@@ -118,7 +118,7 @@ def Date_Check(Date):
 conn.commit()
 # conn.close()
 
-Date_Check('06/10/21')
+# Date_Check('06/10/21')
 
 t=AnimalName(5)
 print(t)
