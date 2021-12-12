@@ -7,14 +7,14 @@ from dbcontrol import *
 from tkcalendar import Calendar
 import datetime
 
-class FutureTab(ttk.Frame):  # to be used tab
+class MakeAppointment(ttk.Frame):  # to be used tab
     def __init__(self, container):
         super().__init__(container)
 
-        ttk.Label(self, text="this is the main screen of the customer. ").grid(row=0, column=0, padx=10, pady=20)
+        ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
         cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), weekendbackground="white")
-        cal.grid(ipadx=10)
+        cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
 
 
 
@@ -68,7 +68,7 @@ def customer_main(id):  # main customer window setup
     tabs = ttk.Notebook(customer_window)
     # tabs.columnconfigure(0, weight=1)
     tabs.grid(sticky="EW")
-    register_new_user_tab = FutureTab(tabs)
-    tabs.add(register_new_user_tab, text="To be created")
+    register_new_user_tab = MakeAppointment(tabs)
+    tabs.add(register_new_user_tab, text="Make Appointment")
 
     customer_window.mainloop()
