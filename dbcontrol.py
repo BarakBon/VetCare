@@ -87,7 +87,7 @@ def Search (Name):
     else:
         t=(item[0],item[3], item[4],item[5],item[6],item[7],item[8])
         return t
-
+#The function gets a UserID and checks if it is found returns the names of the animals
 def AnimalName(ID):
     t=[]
     c.execute("SELECT * FROM Animals WHERE UserID=? ", (ID,))
@@ -98,8 +98,80 @@ def AnimalName(ID):
      return t
     else:
         return -1
+
+#Checks if a date exists or not,If so prints the existing hours, if not create hours in the system
+def Date_Check(Date):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str (Date),))
+    item = c.fetchall()
+    if item == []:
+        Time=8
+        while Time<=19:
+            c.execute("INSERT INTO `Appointments` ('AppointmentDate','AppointmentTime') VALUES (?,?);",(str(Date),Time))
+            print(Time)
+            Time+=1
+    else:
+        for item in item:
+            print(item[2])
+    conn.commit()
+
+
+#Prints all appointments by date
+def print_appoin(Date):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
+    item = c.fetchall()
+    if item == []:
+        print("All appointments are free")
+        Date_Check(Date)
+    else:
+        print("appointments of the date ", Date)
+        for item in item:
+            if item[1] != None:
+                print(item)
+    conn.commit()
+
+#Shows the free hours on the date
+def Show_appointment(Date):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
+    item = c.fetchall()
+    if item == []:
+        print("Appointments available for ", Date)
+        return Date_Check(Date)
+
+    else:
+        print("Appointments available for ", Date)
+        return Date_Check(Date)
+    conn.commit()
+
+
+#Returns all busy appointments on a date
+def Show_appointment_today (Date):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
+    item = c.fetchall()
+    if item == []:
+        return Date_Check(Date)
+    else:
+        return print_appoin(Date)
+    conn.commit()
+
 conn.commit()
 # conn.close()
 
-t=AnimalName(5)
-print(t)
+#print (Show_appointment('05/10/21'))
+#print_appoin('05/10/21')
+#print(Show_appointment_today('30/10/21'))
+#t=AnimalName(5)
+#print(t)
+
+#A function that gets a UserID and returns the username
+def UserName(ID):
+    c.execute("SELECT * FROM Users WHERE UserID=?",(ID,))
+    item=c.fetchone()
+    if item is None:
+            return -1
+    else:
+        t=[item[3],item[4]]
+        return t
+
+
+#z=UserName(5)
+#print(z)
