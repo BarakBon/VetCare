@@ -87,7 +87,7 @@ def Search (Name):
     else:
         t=(item[0],item[3], item[4],item[5],item[6],item[7],item[8])
         return t
-
+#The function gets a UserID and checks if it is found returns the names of the animals
 def AnimalName(ID):
     t=[]
     c.execute("SELECT * FROM Animals WHERE UserID=? ", (ID,))
@@ -161,3 +161,17 @@ conn.commit()
 #print(Show_appointment_today('30/10/21'))
 #t=AnimalName(5)
 #print(t)
+
+#A function that gets a UserID and returns the username
+def UserName(ID):
+    c.execute("SELECT * FROM Users WHERE UserID=?",(ID,))
+    item=c.fetchone()
+    if item is None:
+            return -1
+    else:
+        t=[item[3],item[4]]
+        return t
+
+
+#z=UserName(5)
+#print(z)
