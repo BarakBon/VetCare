@@ -99,7 +99,7 @@ def AnimalName(ID):
     else:
         return -1
 
-
+#Checks if a date exists or not,If so prints the existing hours, if not create hours in the system
 def Date_Check(Date):
     c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str (Date),))
     item = c.fetchall()
@@ -114,40 +114,50 @@ def Date_Check(Date):
             print(item[2])
     conn.commit()
 
-def Show_appointment(Date):
-    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
-    item = c.fetchall()
-    if item == []:
-        print("Appointments available for ", Date)
-        Date_Check(Date)
 
-    else:
-        print("Appointments available for ", Date)
-        for item in item:
-            if  item[1]==None:
-                print(item[2])
-    conn.commit()
-
-def Show_appointment_today (Date):
+#Prints all appointments by date
+def print_appoin(Date):
     c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
     item = c.fetchall()
     if item == []:
         print("All appointments are free")
         Date_Check(Date)
     else:
-        print("appointments of the date ",Date)
+        print("appointments of the date ", Date)
         for item in item:
-            if  item[1]!=None:
+            if item[1] != None:
                 print(item)
+    conn.commit()
 
+#Shows the free hours on the date
+def Show_appointment(Date):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
+    item = c.fetchall()
+    if item == []:
+        print("Appointments available for ", Date)
+        return Date_Check(Date)
+
+    else:
+        print("Appointments available for ", Date)
+        return Date_Check(Date)
+    conn.commit()
+
+
+#Returns all busy appointments on a date
+def Show_appointment_today (Date):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
+    item = c.fetchall()
+    if item == []:
+        return Date_Check(Date)
+    else:
+        return print_appoin(Date)
+    conn.commit()
 
 conn.commit()
 # conn.close()
-Show_appointment_today('12/10/21')
 
-#Show_appointment('05/10/21')
-
-
-
+#print (Show_appointment('05/10/21'))
+#print_appoin('05/10/21')
+#print(Show_appointment_today('30/10/21'))
 #t=AnimalName(5)
 #print(t)
