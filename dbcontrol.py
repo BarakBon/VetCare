@@ -128,10 +128,24 @@ def Show_appointment(Date):
                 print(item[2])
     conn.commit()
 
+def Show_appointment_today (Date):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
+    item = c.fetchall()
+    if item == []:
+        print("All appointments are free")
+        Date_Check(Date)
+    else:
+        print("appointments of the date ",Date)
+        for item in item:
+            if  item[1]!=None:
+                print(item)
+
+
 conn.commit()
 # conn.close()
+Show_appointment_today('12/10/21')
 
-Show_appointment('05/10/21')
+#Show_appointment('05/10/21')
 
 
 
