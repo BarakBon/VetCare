@@ -153,10 +153,10 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 usertype_info.insert(tk.END, found_username[6])
                 usertype_info["state"] = "disable"
 
-                nonlocal test_list
-                test_list = AnimalName(found_username[0])
+                nonlocal animal_list
+                animal_list = AnimalName(found_username[0])
                 list_select.delete(0, tk.END)
-                for item in test_list:
+                for item in animal_list:
                     list_select.insert(tk.END, item)
 
 
@@ -198,9 +198,9 @@ class UserInfo(ttk.Frame):  # second tab - user info
         usertype_info.grid(row=5, column=1, padx=30)
 
         ttk.Label(user_output_frame, text="Animals: ").grid(row=6, column=0, padx=20, pady=20)
-        test_list = ()
-        list_var = tk.StringVar(value=test_list)
-        list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(test_list))
+        animal_list = ()
+        list_var = tk.StringVar(value=animal_list)
+        list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(animal_list))
         list_select.grid(row=6, column=1, padx=20, pady=20)
 
 

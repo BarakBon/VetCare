@@ -8,8 +8,8 @@ from tkcalendar import Calendar
 import datetime
 
 class MakeAppointment(ttk.Frame):  # make appointmant by the user
-    def __init__(self, container):
-        super().__init__(container)
+    def __init__(self, container, *args):
+        super().__init__(container, *args)
 
         def day_chose(x=None):  # working after the user press a day
             print(cal.get_date())
@@ -18,6 +18,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
             pass
 
         time_selected = tk.StringVar()
+        animal_selected = tk.StringVar()
         free_times = ()
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
@@ -27,15 +28,23 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         cal.bind('<<CalendarSelected>>', day_chose)
 
         ttk.Label(self, text="Select time: ").grid(pady=20)
-        free_time_list = ttk.Combobox(self, textvariable=time_selected)
-        free_time_list["state"] = "readonly"
-        free_time_list.grid()
+        free_time_combo = ttk.Combobox(self, textvariable=time_selected)
+        free_time_combo["state"] = "readonly"
+        free_time_combo.grid()
+
+        ttk.Label(self, text="Select Animal: ").grid(pady=30)
+        animal_select_list = ttk.Combobox(self, textvariable=animal_selected)
+        animal_select_list["values"] = AnimalName(cust_id)
+        animal_select_list["state"] = "readonly"
+        animal_select_list.grid()
 
         add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
-        add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=50)
 
-
-def customer_main(id):  # main customer window setup
+cust_id = None
+def customer_main(c_id):  # main customer window setup
+    global cust_id
+    cust_id = c_id
     # window setup
     customer_window = tk.Tk()
     customer_window.title("VetCare  -  Customer")
@@ -76,7 +85,7 @@ def customer_main(id):  # main customer window setup
 
     # logged in top bar title and logout button in frame
     logged_bar_frame = ttk.Frame(customer_window).grid(sticky="EW")
-    ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
+    ttk.Label(logged_bar_frame, text=("Hello,   " + UserID_to_First_Name(c_id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
     logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=c_logout)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
     customer_window.protocol("WM_DELETE_WINDOW", c_no_exit)
@@ -89,3 +98,4 @@ def customer_main(id):  # main customer window setup
     tabs.add(register_new_user_tab, text="Make Appointment")
 
     customer_window.mainloop()
+
