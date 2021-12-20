@@ -1,7 +1,7 @@
 import sqlite3
 conn = sqlite3.connect("DataBase.db")
 c = conn.cursor()
-#
+import re
 
 def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType):
     # A function that checks if the username already existed, if not builds a new user
@@ -9,8 +9,21 @@ def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAdd
     item = c.fetchone()
     if item:
         return -1
-    c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
-    conn.commit()
+    #checking the phone number
+    if ((len(phoneNumber)!=10) or (phoneNumber.isdecimal()!=True)):
+        return -2
+    #checking username and password
+    if ((len(userName)<3) or (userName.isalnum() != True) or (len(Password)<3)):
+        return -2
+    #checking address , first and last name
+    if ((firstName.isalpha()!=True) or (lastName.isalpha()!=True) or (Address.isalpha()!=True)):
+        return -2
+    match = re.search(r'[\w.-]+@[\w.-]+.\w+', mailAddress)
+    if not match:
+        return -2
+    else:
+        c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
+        conn.commit()
 
 def printUser(userName):
     # A function that prints the user information you requested
