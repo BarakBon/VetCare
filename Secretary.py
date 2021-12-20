@@ -290,6 +290,8 @@ def secretary_main(id):  # main secretary window setup
     tabs.add(register_new_user_tab, text="Signup")
     info_of_user = UserInfo(tabs)
     tabs.add(info_of_user, text="User Info")
+    show_appoints = ShowAppointments(tabs)
+    tabs.add(show_appoints, text="Appointments")
 
     secretary_window.mainloop()
 
