@@ -15,10 +15,12 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
             print(cal.get_date())
 
         def create_appoint():  # working after the button
+            appoint_mistake.set("Select all options")
             pass
 
         time_selected = tk.StringVar()
         animal_selected = tk.StringVar()
+        appoint_mistake = tk.StringVar()
         free_times = ()
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
@@ -38,8 +40,10 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         animal_select_list["state"] = "readonly"
         animal_select_list.grid()
 
+        ttk.Label(self, textvariable=appoint_mistake, foreground="red").grid(pady=30)
+
         add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
-        add_appoint_button.grid(ipadx=10, ipady=5, pady=50)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=10)
 
 cust_id = None
 def customer_main(c_id):  # main customer window setup
