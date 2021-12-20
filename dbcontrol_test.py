@@ -6,10 +6,16 @@ from dbcontrol import *
 class dbcontrol(unittest.TestCase):
 
     def test_newcustomer(self):
+        #invalid symbol at the user name
         self.assertEqual(newcustomer('!MayaS','Maya676','Maya','Shalom','Dimona','0524168852','MayaS@ac.sce.as.il'
                                      ,'Customer'),-2,"Should be -2")
+        #invalid email address
+        self.assertEqual(newcustomer('MayaS', 'Maya676', 'Maya', 'Shalom', 'Dimona', '0524168852', '@ac.sce.as.il'
+                                     , 'Customer'), -2, "Should be -2")
+        #customer exist
         self.assertEqual(newcustomer('OrB','OB26','Or','Bonker','Dimona','527379951','Orbo@ac.sce.ac.il','Customer'),
                          -1, "Should be -1")
+
     def test_Login_check(self):
         self.assertFalse(Login_check('OrB', 'OE2'), "Should be False")
         self.assertTrue(Login_check('OrB', 'OB26'), "Should be True")
