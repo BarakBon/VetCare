@@ -1,6 +1,7 @@
 import sqlite3
 conn = sqlite3.connect("DataBase.db")
 c = conn.cursor()
+#
 
 def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType):
     # A function that checks if the username already existed, if not builds a new user
