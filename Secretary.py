@@ -31,6 +31,8 @@ class SignupTab(ttk.Frame):  # first tab - signup
                             city_inserted.get(),phone_inserted.get(),email_inserted.get(),type_selected.get())
                 if flag is -1:
                     register_mistake.set("Username already exist")
+                if flag is -2:
+                    register_mistake.set("Wrong input")
                 else:
                     register_mistake.set("")
                     user_created_window()
