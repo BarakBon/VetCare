@@ -12,9 +12,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         super().__init__(container, *args)
 
         def day_chose(x=None):  # working after the user press a day
-            print(cal.get_date())
             free_times = Show_appointment(cal.get_date())
-            print(free_times)
             free_time_combo["values"] = free_times
 
 
@@ -22,7 +20,15 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
             if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
                 appoint_mistake.set("Select all options")
             else:
-                pass
+                appoint_mistake.set("")
+                apoint_created_alert = tk.Tk()
+                apoint_created_alert.title("Success")
+                apoint_created_alert.resizable(False, False)
+                set_window(apoint_created_alert)
+                ttk.Label(apoint_created_alert, text="Appointment created successfully. ", foreground="green").grid(row=0, column=0,
+                                                                                                      padx=30, pady=20)
+                ttk.Button(apoint_created_alert, text="OK", command=apoint_created_alert.destroy).grid(ipadx=10, ipady=5, pady=10)
+                apoint_created_alert.protocol("WM_DELETE_WINDOW", apoint_created_alert.destroy)
 
 
         time_selected = tk.StringVar()
