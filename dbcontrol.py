@@ -99,64 +99,65 @@ def AnimalName(ID):
     else:
         return -1
 
-#Checks if a date exists or not,If so prints the existing hours, if not create hours in the system
+#Checks if a date exists or not,If so return the existing hours, if not create hours in the system and returns them
 def Date_Check(Date):
-    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str (Date),))
+    t = []
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=:dateToCheck", {"dateToCheck": str(Date)})
     item = c.fetchall()
-    if item == []:
-        Time=8
+    if not item:
+        Time = 8
         while Time<=19:
-            c.execute("INSERT INTO `Appointments` ('AppointmentDate','AppointmentTime') VALUES (?,?);",(str(Date),Time))
-            print(Time)
+            c.execute("INSERT INTO `Appointments` ('AppointmentDate','AppointmentTime') VALUES (:newDate, :newTime);", {"newDate": str(Date), "newTime": str(Time)})
+            conn.commit()
             Time+=1
+            for item in item:
+                t += [item[2]]
+        return t
     else:
         for item in item:
-            print(item[2])
-    conn.commit()
-
-
-#Prints all appointments by date
-def print_appoin(Date):
-    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
-    item = c.fetchall()
-    if item == []:
-        print("All appointments are free")
-        Date_Check(Date)
-    else:
-        print("appointments of the date ", Date)
-        for item in item:
-            if item[1] != None:
-                print(item)
-    conn.commit()
-
-#Shows the free hours on the date
-def Show_appointment(Date):
-    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
-    item = c.fetchall()
-    if item == []:
-        print("Appointments available for ", Date)
-        return Date_Check(Date)
-
-    else:
-        print("Appointments available for ", Date)
-        return Date_Check(Date)
+            t += [item[2]]
+        return t
     conn.commit()
 
 
 #Returns all busy appointments on a date
-def Show_appointment_today (Date):
+def retu_appoin(Date):
+    t=[]
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
+    item = c.fetchall()
+    if not item:
+        Date_Check(Date)
+        return 'all appointments are free'
+    else:
+        print("busy appointments of the date ", Date)
+        for item in item:
+            if item[1] != None:
+                t += [item[1],item[2]]
+        return t
+    conn.commit()
+
+#Shows the free hours on the date
+def Show_appointment(Date):
+    t=[]
     c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
     item = c.fetchall()
     if item == []:
+        print("Appointments available for ", Date)
         return Date_Check(Date)
+
     else:
-        return print_appoin(Date)
+        print("Appointments available for ", Date)
+        for item in item:
+            if not item[1] :
+                t += [item[2]]
+        return t
     conn.commit()
+
 
 conn.commit()
 # conn.close()
 
-#print (Show_appointment('05/10/21'))
+#print(Show_appointment('05/10/21'))
 #print_appoin('05/10/21')
 #print(Show_appointment_today('30/10/21'))
 #t=AnimalName(5)
