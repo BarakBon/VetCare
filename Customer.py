@@ -13,10 +13,17 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
 
         def day_chose(x=None):  # working after the user press a day
             print(cal.get_date())
+            free_times = Show_appointment(cal.get_date())
+            print(free_times)
+            free_time_combo["values"] = free_times
+
 
         def create_appoint():  # working after the button
-            appoint_mistake.set("Select all options")
-            pass
+            if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
+                appoint_mistake.set("Select all options")
+            else:
+                pass
+
 
         time_selected = tk.StringVar()
         animal_selected = tk.StringVar()
@@ -29,7 +36,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
 
-        ttk.Label(self, text="Select time: ").grid(pady=20)
+        ttk.Label(self, text="Select Hour: ").grid(pady=20)
         free_time_combo = ttk.Combobox(self, textvariable=time_selected)
         free_time_combo["state"] = "readonly"
         free_time_combo.grid()
