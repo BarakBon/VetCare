@@ -47,6 +47,20 @@ class dbcontrol(unittest.TestCase):
        self.assertTrue(UserName('6'),"Should be True")
        self.assertEqual(UserName('100'),-1,"Should be False")
 
+    def test_Date_Check(self):
+        self.assertIsNotNone(Date_Check('05/10/21'),'Should be True')
+        self.assertIsNotNone(Date_Check('06/10/21'), 'Should be True')
+        self.assertIsNotNone(Date_Check('07/10/21'), 'Should be True')
+
+    def test_retu_appoin(self):
+        self.assertIsNotNone(retu_appoin('20/12/21'), 'Should be True')
+        self.assertIsNotNone(retu_appoin('28/11/21'), 'Should be True')
+        self.assertIsNotNone(retu_appoin('02/01/22'), 'Should be True')
+
+    def test_Show_appointment(self):
+        self.assertIsNotNone(Show_appointment('23/12/21'), 'Should be True')
+        self.assertIsNotNone(Show_appointment('17/12/22'), 'Should be True')
+        self.assertIsNotNone(Show_appointment('30/02/22'), 'Should be True')
 
 
 if __name__ == '__main__':
