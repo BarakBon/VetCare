@@ -8,16 +8,32 @@ from tkcalendar import Calendar
 import datetime
 
 class MakeAppointment(ttk.Frame):  # make appointmant by the user
-    def __init__(self, container):
-        super().__init__(container)
+    def __init__(self, container, *args):
+        super().__init__(container, *args)
 
         def day_chose(x=None):  # working after the user press a day
-            print(cal.get_date())
+            free_times = Show_appointment(cal.get_date())
+            free_time_combo["values"] = free_times
+
 
         def create_appoint():  # working after the button
-            pass
+            if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
+                appoint_mistake.set("Select all options")
+            else:
+                appoint_mistake.set("")
+                appoint_created_alert = tk.Tk()
+                appoint_created_alert.title("Success")
+                appoint_created_alert.resizable(False, False)
+                set_window(appoint_created_alert)
+                ttk.Label(appoint_created_alert, text="Appointment created successfully. ", foreground="green").grid(row=0, column=0,
+                                                                                                      padx=30, pady=20)
+                ttk.Button(appoint_created_alert, text="OK", command=appoint_created_alert.destroy).grid(ipadx=10, ipady=5, pady=10)
+                appoint_created_alert.protocol("WM_DELETE_WINDOW", appoint_created_alert.destroy)
+
 
         time_selected = tk.StringVar()
+        animal_selected = tk.StringVar()
+        appoint_mistake = tk.StringVar()
         free_times = ()
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
@@ -26,16 +42,26 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
 
-        ttk.Label(self, text="Select time: ").grid(pady=20)
-        free_time_list = ttk.Combobox(self, textvariable=time_selected)
-        free_time_list["state"] = "readonly"
-        free_time_list.grid()
+        ttk.Label(self, text="Select Hour: ").grid(pady=20)
+        free_time_combo = ttk.Combobox(self, textvariable=time_selected)
+        free_time_combo["state"] = "readonly"
+        free_time_combo.grid()
+
+        ttk.Label(self, text="Select Animal: ").grid(pady=30)
+        animal_select_list = ttk.Combobox(self, textvariable=animal_selected)
+        animal_select_list["values"] = AnimalName(cust_id)
+        animal_select_list["state"] = "readonly"
+        animal_select_list.grid()
+
+        ttk.Label(self, textvariable=appoint_mistake, foreground="red").grid(pady=30)
 
         add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
-        add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=10)
 
-
-def customer_main(id):  # main customer window setup
+cust_id = None
+def customer_main(c_id):  # main customer window setup
+    global cust_id
+    cust_id = c_id
     # window setup
     customer_window = tk.Tk()
     customer_window.title("VetCare  -  Customer")
@@ -76,7 +102,7 @@ def customer_main(id):  # main customer window setup
 
     # logged in top bar title and logout button in frame
     logged_bar_frame = ttk.Frame(customer_window).grid(sticky="EW")
-    ttk.Label(logged_bar_frame, text=("Hello,   "+ UserID_to_First_Name(id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
+    ttk.Label(logged_bar_frame, text=("Hello,   " + UserID_to_First_Name(c_id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
     logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=c_logout)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
     customer_window.protocol("WM_DELETE_WINDOW", c_no_exit)
@@ -89,3 +115,4 @@ def customer_main(id):  # main customer window setup
     tabs.add(register_new_user_tab, text="Make Appointment")
 
     customer_window.mainloop()
+
