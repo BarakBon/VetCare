@@ -287,11 +287,11 @@ def secretary_main(id):  # main secretary window setup
     # tabs.columnconfigure(0, weight=1)
     tabs.grid(sticky="EW")
     register_new_user_tab = SignupTab(tabs)
-    tabs.add(register_new_user_tab, text="Signup")
+    tabs.add(register_new_user_tab, text=" Signup ")
     info_of_user = UserInfo(tabs)
-    tabs.add(info_of_user, text="User Info")
+    tabs.add(info_of_user, text=" User Info ")
     show_appoints = ShowAppointments(tabs)
-    tabs.add(show_appoints, text="Appointments")
+    tabs.add(show_appoints, text=" Appointments ")
 
     secretary_window.mainloop()
 
