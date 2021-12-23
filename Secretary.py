@@ -219,8 +219,8 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
             selected_appoint_to_del = taken_appoints_tree.focus()
             if selected_appoint_to_del:
                 print(taken_appoints_tree.item(selected_appoint_to_del, 'values'))
+                
 
-        
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
         cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
