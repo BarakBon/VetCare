@@ -215,11 +215,12 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
             taken_appoints_tree.delete(*taken_appoints_tree.get_children())
             taken_appoints_tree.insert(parent='', index=0, iid=0, values=("12:00", "Tiger"))
 
-        def create_appoint():  # working after the button
-            pass
+        def delete_appoint():  # working after the button
+            selected_appoint_to_del = taken_appoints_tree.focus()
+            if selected_appoint_to_del:
+                print(taken_appoints_tree.item(selected_appoint_to_del, 'values'))
 
-        free_times = ()
-
+        
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
         cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
@@ -242,7 +243,7 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
 
 
 
-        add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
+        add_appoint_button = ttk.Button(self, text="Delete", style="CustomButton.TButton", command=delete_appoint)
         add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
 
