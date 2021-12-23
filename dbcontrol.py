@@ -154,4 +154,3 @@ def get_important_note(userID,animalName):
         return -1
     else:
         return item[3]
-

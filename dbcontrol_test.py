@@ -65,6 +65,7 @@ class dbcontrol(unittest.TestCase):
     def test_get_important_note(self):
         self.assertEqual(get_important_note(2,'Gi'),-1,'Should be -1')
         self.assertEqual(get_important_note(3,'Simba'),'Alergic to bugs','Should be Alergic to bugs')
+        self.assertEqual(get_important_note(2, 2), -1, 'Should be -1')
 
 if __name__ == '__main__':
     unittest.main()
