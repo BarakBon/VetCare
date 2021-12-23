@@ -62,6 +62,10 @@ class dbcontrol(unittest.TestCase):
         self.assertIsNotNone(Show_appointment('17/12/22'), 'Should be True')
         self.assertIsNotNone(Show_appointment('30/02/22'), 'Should be True')
 
+    def test_get_important_note(self):
+        self.assertEqual(get_important_note(2,'Gi'),-1,'Should be -1')
+        self.assertEqual(get_important_note(3,'Simba'),'Alergic to bugs','Should be Alergic to bugs')
+        self.assertEqual(get_important_note(2, 2), -1, 'Should be -1')
 
 if __name__ == '__main__':
     unittest.main()
