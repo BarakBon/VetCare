@@ -212,11 +212,12 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
 
         def day_chose(x=None):  # working after the user press a day
             print(cal.get_date())
+            taken_appoints_tree.delete(*taken_appoints_tree.get_children())
+            taken_appoints_tree.insert(parent='', index=0, iid=0, values=("12:00", "Tiger"))
 
         def create_appoint():  # working after the button
             pass
 
-        time_selected = tk.StringVar()
         free_times = ()
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
@@ -225,10 +226,21 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
 
-        ttk.Label(self, text="Select time: ").grid(pady=20)
-        free_time_list = ttk.Combobox(self, textvariable=time_selected)
-        free_time_list["state"] = "readonly"
-        free_time_list.grid()
+        ttk.Label(self, text="Appointments: ").grid(pady=30)
+        taken_appoints_tree = ttk.Treeview(self, height=4)
+        taken_appoints_tree['columns'] = ('Hour', 'Animal Name')
+        taken_appoints_tree.column('#0', width=0, stretch="no")
+        taken_appoints_tree.column('Hour', anchor="center", width=150)
+        taken_appoints_tree.column('Animal Name', anchor="center", width=150)
+        taken_appoints_tree.heading('#0', text='', anchor="center")
+        taken_appoints_tree.heading('Hour', text='Hour', anchor="center")
+        taken_appoints_tree.heading('Animal Name', text='Animal Name', anchor="center")
+        taken_appoints_tree.grid()
+
+
+
+
+
 
         add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
         add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
