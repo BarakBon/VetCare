@@ -111,7 +111,6 @@ def retu_appoin(Date):
         Date_Check(Date)
         return 'all appointments are free'
     else:
-        print("busy appointments of the date ", Date)
         for item in item:
             if item[1] != None:
                 t += [item[1],item[2]]
@@ -124,11 +123,9 @@ def Show_appointment(Date):
     c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
     item = c.fetchall()
     if item == []:
-        print("Appointments available for ", Date)
         return Date_Check(Date)
 
     else:
-        print("Appointments available for ", Date)
         for item in item:
             if not item[1] :
                 t += [item[2]]
@@ -149,5 +146,12 @@ def UserName(ID):
         t=[item[3],item[4]]
         return t
 
-
+#the function get userID and Animal name and returns the important information
+def get_important_note(userID,animalName):
+    c.execute("SELECT * FROM Animals WHERE UserID=? AND AnimalName=?", (userID, animalName))
+    item = c.fetchone()
+    if item is None:
+        return -1
+    else:
+        return item[3]
 
