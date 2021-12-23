@@ -17,6 +17,11 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
 
 
         def create_appoint():  # working after the button
+            def appoint_created_ok():
+                appoint_created_alert.destroy()
+                add_appoint_button["state"] = "normal"
+                day_chose()
+
             if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
                 appoint_mistake.set("Select all options")
             else:
@@ -25,10 +30,11 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
                 appoint_created_alert.title("Success")
                 appoint_created_alert.resizable(False, False)
                 set_window(appoint_created_alert)
+                add_appoint_button["state"] = "disabled"
                 ttk.Label(appoint_created_alert, text="Appointment created successfully. ", foreground="green").grid(row=0, column=0,
                                                                                                       padx=30, pady=20)
-                ttk.Button(appoint_created_alert, text="OK", command=appoint_created_alert.destroy).grid(ipadx=10, ipady=5, pady=10)
-                appoint_created_alert.protocol("WM_DELETE_WINDOW", appoint_created_alert.destroy)
+                ttk.Button(appoint_created_alert, text="OK", command=appoint_created_ok).grid(ipadx=10, ipady=5, pady=10)
+                appoint_created_alert.protocol("WM_DELETE_WINDOW", appoint_created_ok)
 
 
         time_selected = tk.StringVar()
@@ -65,7 +71,7 @@ def customer_main(c_id):  # main customer window setup
     # window setup
     customer_window = tk.Tk()
     customer_window.title("VetCare  -  Customer")
-    customer_window.resizable(True, True)
+    customer_window.resizable(False, False)
     set_window(customer_window)
     customer_window.columnconfigure(0, weight=1)
 
@@ -112,7 +118,7 @@ def customer_main(c_id):  # main customer window setup
     # tabs.columnconfigure(0, weight=1)
     tabs.grid(sticky="EW")
     register_new_user_tab = MakeAppointment(tabs)
-    tabs.add(register_new_user_tab, text="Make Appointment")
+    tabs.add(register_new_user_tab, text=" Make Appointment ")
 
     customer_window.mainloop()
 
