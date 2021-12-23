@@ -25,12 +25,6 @@ def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAdd
         c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
         conn.commit()
 
-def printUser(userName):
-    # A function that prints the user information you requested
-    c.execute('SELECT * FROM `Users` WHERE UserName ="' + userName + '" ' )
-    for row in c:
-        print(row)
-
 def newAnimal(userID,Type,animalName,importantInfo):
     # A function that creates an animal for the user according to ID
     c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,importantInfo))
