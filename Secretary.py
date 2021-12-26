@@ -49,6 +49,8 @@ class SignupTab(ttk.Frame):  # first tab - signup
         type_selected = tk.StringVar()
         register_mistake = tk.StringVar()
 
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
         ttk.Label(self, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
         firstname_entry = ttk.Entry(self, width=20, textvariable=firstname_inserted)
         firstname_entry.grid(row=0, column=1, pady=10, padx=20)
