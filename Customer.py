@@ -40,7 +40,6 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         time_selected = tk.StringVar()
         animal_selected = tk.StringVar()
         appoint_mistake = tk.StringVar()
-        free_times = ()
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
@@ -67,7 +66,28 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
 class MyAnimals(ttk.Frame):  # see the animals info
     def __init__(self, container, *args):
         super().__init__(container, *args)
-        pass
+
+        def on_animal_select(X=None):
+            print("yep")
+            pass
+
+        self.columnconfigure(0, weight=1)
+        animal_selected = tk.StringVar()
+        ttk.Label(self, text="Select Animal: ").grid(pady=20)
+        animal_select_list = ttk.Combobox(self, textvariable=animal_selected)
+        animal_select_list["values"] = AnimalName(cust_id)
+        animal_select_list["state"] = "readonly"
+        animal_select_list.bind("<<ComboboxSelected>>", on_animal_select)
+        animal_select_list.grid()
+
+        ttk.Label(self, text="Type: ").grid(pady=30)
+        animal_type = tk.Text(self, state='disabled', height=1, width=20)
+        animal_type.grid()
+
+        ttk.Label(self, text="Important Info: ").grid(pady=30)
+        animal_important_info = tk.Text(self, state='disabled', height=1, width=40)
+        animal_important_info.grid()
+
 
 
 cust_id = None
