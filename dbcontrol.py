@@ -162,4 +162,6 @@ def Queue_registration(AnimalName,UserID,Date,Time):
     conn.commit()
 
 
-Queue_registration("AS",8,'06/10/21',10)
+def set_important_note(userID,animalName,importantNote):
+    c.execute("UPDATE Animals SET ImportantInfo=? WHERE UserID=? AND AnimalName=?",(importantNote, userID, animalName))
+    conn.commit()
