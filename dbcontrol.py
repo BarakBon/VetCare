@@ -104,7 +104,7 @@ def Date_Check(Date):
 
 #Returns all busy appointments on a date
 def retu_appoin(Date):
-    t=[]
+    t=()
     c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
     item = c.fetchall()
     if not item:
@@ -113,7 +113,8 @@ def retu_appoin(Date):
     else:
         for item in item:
             if item[1] != None:
-                t += [item[1],item[2]]
+                t += ((item[2],item[1]),)
+        print(t)
         return t
     conn.commit()
 

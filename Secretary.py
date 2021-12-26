@@ -228,7 +228,11 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         def day_chose(x=None):  # working after the user press a day
             print(cal.get_date())
             taken_appoints_tree.delete(*taken_appoints_tree.get_children())
-            taken_appoints_tree.insert(parent='', index=0, iid=0, values=("12:00", "Tiger"))
+            i = 0
+            appoints_list = retu_appoin(cal.get_date())
+            for item in appoints_list:
+                taken_appoints_tree.insert(parent='', index=i, iid=i, values=(item))
+                i += 1
 
         def delete_appoint():  # working after the button
             selected_appoint_to_del = taken_appoints_tree.focus()
