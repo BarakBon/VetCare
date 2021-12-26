@@ -154,3 +154,14 @@ def get_important_note(userID,animalName):
         return -1
     else:
         return item[3]
+
+
+#Gets date and time and adds queue
+def Queue_registration(AnimalName,UserID,Date,Time):
+    c.execute("UPDATE Appointments SET UserID=?,AnimalName=? WHERE AppointmentDate=? AND AppointmentTime=?",(UserID,AnimalName,Date,Time))
+    conn.commit()
+
+#Sets the important details about the animal
+def set_important_note(userID,animalName,importantNote):
+    c.execute("UPDATE Animals SET ImportantInfo=? WHERE UserID=? AND AnimalName=?",(importantNote, userID, animalName))
+    conn.commit()
