@@ -114,7 +114,6 @@ def retu_appoin(Date):
         for item in item:
             if item[1] != None:
                 t += ((item[2],item[1]),)
-        print(t)
         return t
     conn.commit()
 
