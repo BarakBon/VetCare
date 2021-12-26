@@ -121,6 +121,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 usertype_info.delete("1.0", "end-1c")
                 usertype_info["state"] = "disable"
                 list_select.delete(0, tk.END)
+                appoints_list_select.delete(0, tk.END)
 
             else:
                 search_answer.set("")
@@ -160,6 +161,14 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 list_select.delete(0, tk.END)
                 for item in animal_list:
                     list_select.insert(tk.END, item)
+
+                today = datetime.date.today()
+                date = today.strftime("%m/%d/%y")
+                # nonlocal user_appoints_list
+                # user_appoints_list = something(found_username[0], date) # the proper func
+                # list_select.delete(0, tk.END)
+                # for item in user_appoints_list:
+                #     appoints_list_select(tk.END, item)
 
 
         user_select_frame = ttk.Frame(self)
@@ -204,6 +213,12 @@ class UserInfo(ttk.Frame):  # second tab - user info
         list_var = tk.StringVar(value=animal_list)
         list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(animal_list))
         list_select.grid(row=6, column=1, padx=20, pady=20)
+
+        ttk.Label(user_output_frame, text="Future Appointments: ").grid(row=7, column=0, padx=20, pady=30)
+        user_appoints_list = ()
+        appoints_list_var = tk.StringVar(value=user_appoints_list)
+        appoints_list_select = tk.Listbox(user_output_frame, listvariable=appoints_list_var, height=len(user_appoints_list))
+        appoints_list_select.grid(row=7, column=1, padx=20, pady=30)
 
 
 class ShowAppointments(ttk.Frame):  # third tab - show appointments info
@@ -256,6 +271,7 @@ def secretary_main(id):  # main secretary window setup
     set_window(secretary_window)
     secretary_window.columnconfigure(0, weight=1)
     # secretary_window.rowconfigure(1, weight=1)
+
 
     def s_logout():  # take care on the logout process
         if_logout_s_window = tk.Tk()
