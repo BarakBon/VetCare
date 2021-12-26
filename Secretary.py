@@ -163,7 +163,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
                     list_select.insert(tk.END, item)
 
                 today = datetime.date.today()
-                date = today.strftime("%m/%d/%y")
+                date = today.strftime("%d/%m/%y")
                 # nonlocal user_appoints_list
                 # user_appoints_list = something(found_username[0], date) # the proper func
                 # list_select.delete(0, tk.END)

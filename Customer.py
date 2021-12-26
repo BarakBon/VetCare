@@ -25,12 +25,14 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
             if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
                 appoint_mistake.set("Select all options")
             else:
+                Queue_registration(animal_selected.get(), cust_id, cal.get_date(), time_selected.get())
                 appoint_mistake.set("")
                 appoint_created_alert = tk.Tk()
                 appoint_created_alert.title("Success")
                 appoint_created_alert.resizable(False, False)
                 set_window(appoint_created_alert)
                 add_appoint_button["state"] = "disabled"
+                day_chose()
                 ttk.Label(appoint_created_alert, text="Appointment created successfully. ", foreground="green").grid(row=0, column=0,
                                                                                                       padx=30, pady=20)
                 ttk.Button(appoint_created_alert, text="OK", command=appoint_created_ok).grid(ipadx=10, ipady=5, pady=10)
