@@ -64,6 +64,12 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
         add_appoint_button.grid(ipadx=10, ipady=5, pady=10)
 
+class MyAnimals(ttk.Frame):  # see the animals info
+    def __init__(self, container, *args):
+        super().__init__(container, *args)
+        pass
+
+
 cust_id = None
 def customer_main(c_id):  # main customer window setup
     global cust_id
@@ -119,6 +125,8 @@ def customer_main(c_id):  # main customer window setup
     tabs.grid(sticky="EW")
     register_new_user_tab = MakeAppointment(tabs)
     tabs.add(register_new_user_tab, text=" Make Appointment ")
+    see_the_animals_tab = MyAnimals(tabs)
+    tabs.add(see_the_animals_tab, text=" My Animals ")
 
     customer_window.mainloop()
 
