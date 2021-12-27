@@ -97,6 +97,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
         def check_to_fill():
             found_username = Search(enter_username.get("1.0","end-1c"))
             if not found_username:
+                search_answer.set("No username found")
                 firstname_info["state"] = "normal"
                 firstname_info.delete("1.0", "end-1c")
                 firstname_info["state"] = "disable"
@@ -267,6 +268,23 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
 
+class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
+    def __init__(self, container):
+        super().__init__(container)
+
+        def check_to_fill(x=None):
+            pass
+
+        user_select_frame = ttk.Frame(self)
+        user_select_frame.grid(pady=20)
+        search_answer = tk.StringVar()
+        enter_username = tk.Text(user_select_frame, height=1, width=20)
+        enter_username.grid(row=0, column=0, padx=30)
+        enter_username.insert("1.0", "Enter username here")
+        ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
+                                                                                        sticky="E")
+
 
 def secretary_main(id):  # main secretary window setup
     # window setup
@@ -275,7 +293,6 @@ def secretary_main(id):  # main secretary window setup
     secretary_window.resizable(False, False)
     set_window(secretary_window)
     secretary_window.columnconfigure(0, weight=1)
-    # secretary_window.rowconfigure(1, weight=1)
 
 
     def s_logout():  # take care on the logout process
@@ -300,6 +317,7 @@ def secretary_main(id):  # main secretary window setup
         #  the buttons to agree or not to logout
         ttk.Button(logout_approve_frame, text="Yes", command=yes_to_logout).grid(row=0, column=0, ipadx=5, ipady=2, padx=5)
         ttk.Button(logout_approve_frame, text="Cancel", command=cancel_to_logout).grid(row=0, column=1, ipadx=5,ipady=2, padx=5)
+        if_logout_s_window.protocol("WM_DELETE_WINDOW", cancel_to_logout)
 
 
     def s_no_exit():
@@ -326,6 +344,9 @@ def secretary_main(id):  # main secretary window setup
     tabs.add(info_of_user, text=" User Info ")
     show_appoints = ShowAppointments(tabs)
     tabs.add(show_appoints, text=" Appointments ")
+    add_animal = AddAnimal(tabs)
+    tabs.add(add_animal, text=" Add Animal ")
+
 
     secretary_window.mainloop()
 
