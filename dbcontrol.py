@@ -111,8 +111,6 @@ def Date_Check(Date):
         return t
     conn.commit()
 
-print(Date_Check("2021-10-16"))
-
 
 #Returns all busy appointments on a date
 def retu_appoin(Date):
