@@ -112,6 +112,8 @@ def Date_Check(Date):
     conn.commit()
 
 
+
+
 #Returns all busy appointments on a date
 def retu_appoin(Date):
     t=()
