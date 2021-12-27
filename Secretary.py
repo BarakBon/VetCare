@@ -185,14 +185,19 @@ class UserInfo(ttk.Frame):  # second tab - user info
 
 
         def add_animal():
+            def add_animal_data():
+                print("yep")
+                add_animal_answer.set("Wrong Input")
+
             add_animal_window = tk.Tk()
-            add_animal_window.title("Warning")
+            add_animal_window.title("Animal  Add")
             add_animal_window.resizable(False, False)
             set_window(add_animal_window)
             add_animal_button["state"] = "disabled"
 
             animal_name_inserted = tk.StringVar()
             animal_type_inserted = tk.StringVar()
+            add_animal_answer = tk.StringVar()
             ttk.Label(add_animal_window, text="Animal name: ").grid(row=0, column=0, padx=10, pady=30)
             animal_name_entry = ttk.Entry(add_animal_window, width=20, textvariable=animal_name_inserted)
             animal_name_entry.grid(row=0, column=1, pady=10, padx=30)
@@ -201,7 +206,13 @@ class UserInfo(ttk.Frame):  # second tab - user info
             animal_type_entry = ttk.Entry(add_animal_window, width=20, textvariable=animal_type_inserted)
             animal_type_entry.grid(row=1, column=1, padx=10)
 
-            
+            test = ttk.Label(add_animal_window, textvariable=add_animal_answer, foreground="red")
+            test.grid(row=3, column=1, pady=10, sticky="W")
+            add_animal_answer.set("Wrong Input")
+
+            add_animal_data_button = ttk.Button(add_animal_window, text="Add Animal", command=add_animal_data)
+            add_animal_data_button.grid(row=4, column=1, ipady=3, ipadx=10, sticky="W")
+
 
 
         user_select_frame = ttk.Frame(self)
