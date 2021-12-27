@@ -1,6 +1,7 @@
 import sqlite3
 conn = sqlite3.connect("DataBase.db")
 c = conn.cursor()
+import re
 
 def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType):
     # A function that checks if the username already existed, if not builds a new user
@@ -8,44 +9,25 @@ def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAdd
     item = c.fetchone()
     if item:
         return -1
-    c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
-    conn.commit()
-
-def printUser(userName):
-    # A function that prints the user information you requested
-    c.execute('SELECT * FROM `Users` WHERE UserName ="' + userName + '" ' )
-    for row in c:
-        print(row)
+    #checking the phone number
+    if ((len(phoneNumber)!=10) or (phoneNumber.isdecimal()!=True)):
+        return -2
+    #checking username and password
+    if ((len(userName)<3) or (userName.isalnum() != True) or (len(Password)<3)):
+        return -2
+    #checking address , first and last name
+    if ((firstName.isalpha()!=True) or (lastName.isalpha()!=True) or (Address.isalpha()!=True)):
+        return -2
+    match = re.search(r'[\w.-]+@[\w.-]+.\w+', mailAddress)
+    if not match:
+        return -2
+    else:
+        c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
+        conn.commit()
 
 def newAnimal(userID,Type,animalName,importantInfo):
     # A function that creates an animal for the user according to ID
     c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,importantInfo))
-
-def printanimals(UserID):
-    # A function that prints all the animals of the user according to ID
-    c.execute('SELECT * FROM `Animals` WHERE UserID ="' + UserID + '" ' )
-    for row in c:
-        print(row)
-
-# print("plz enter your customer details:")
-# UserName=input("User Name")
-# Password=input("Password,Letters and Numbers")
-# FirstName=input("First Name")
-# LastName=input("Last Name")
-# Address=input("Hometown")
-# PhoneNumber=input("Phone Number")
-# MailAddress=input("Mail Address")
-# UserType=input("User Type")
-#
-# newcustomer(UserName,Password,FirstName,LastName,Address,PhoneNumber,MailAddress, UserType)
-# printUser(UserName)
-# print("plz enter the animal details:")
-# UserID=input("customer User ID")
-# Type= input("User Type of animal")
-# AnimalName=input("Animal Name")
-# ImportantInfo=input("Important Info about the animal")
-# newAnimal(UserID,Type,AnimalName,ImportantInfo)
-# printanimals(UserID)
 
 # Gets a username and password , and checks if it exists in the system - If so returns UserID
 def Login_check (Name , Password):
@@ -99,68 +81,60 @@ def AnimalName(ID):
     else:
         return -1
 
-#Checks if a date exists or not,If so prints the existing hours, if not create hours in the system
+#Checks if a date exists or not,If so return the existing hours, if not create hours in the system and returns them
 def Date_Check(Date):
-    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str (Date),))
+    t = []
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=:dateToCheck", {"dateToCheck": str(Date)})
     item = c.fetchall()
-    if item == []:
-        Time=8
+    if not item:
+        Time = 8
         while Time<=19:
-            c.execute("INSERT INTO `Appointments` ('AppointmentDate','AppointmentTime') VALUES (?,?);",(str(Date),Time))
-            print(Time)
+            c.execute("INSERT INTO `Appointments` ('AppointmentDate','AppointmentTime') VALUES (:newDate, :newTime);", {"newDate": str(Date), "newTime": str(Time)})
+            conn.commit()
             Time+=1
+            for item in item:
+                t += [item[2]]
+        return t
     else:
         for item in item:
-            print(item[2])
-    conn.commit()
-
-
-#Prints all appointments by date
-def print_appoin(Date):
-    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
-    item = c.fetchall()
-    if item == []:
-        print("All appointments are free")
-        Date_Check(Date)
-    else:
-        print("appointments of the date ", Date)
-        for item in item:
-            if item[1] != None:
-                print(item)
-    conn.commit()
-
-#Shows the free hours on the date
-def Show_appointment(Date):
-    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
-    item = c.fetchall()
-    if item == []:
-        print("Appointments available for ", Date)
-        return Date_Check(Date)
-
-    else:
-        print("Appointments available for ", Date)
-        return Date_Check(Date)
+            t += [item[2]]
+        return t
     conn.commit()
 
 
 #Returns all busy appointments on a date
-def Show_appointment_today (Date):
+def retu_appoin(Date):
+    t=()
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
+    item = c.fetchall()
+    if not item:
+        Date_Check(Date)
+        return 'all appointments are free'
+    else:
+        for item in item:
+            if item[1] != None:
+                t += ((item[2],item[1]),)
+        return t
+    conn.commit()
+
+#Shows the free hours on the date
+def Show_appointment(Date):
+    t=[]
     c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
     item = c.fetchall()
     if item == []:
         return Date_Check(Date)
+
     else:
-        return print_appoin(Date)
+        for item in item:
+            if not item[1] :
+                t += [item[2]]
+        return t
     conn.commit()
+
 
 conn.commit()
 # conn.close()
-
-#print (Show_appointment('05/10/21'))
-#print_appoin('05/10/21')
-#print(Show_appointment_today('30/10/21'))
-#t=AnimalName(5)
-#print(t)
 
 #A function that gets a UserID and returns the username
 def UserName(ID):
@@ -172,6 +146,33 @@ def UserName(ID):
         t=[item[3],item[4]]
         return t
 
+#the function get userID and Animal name and returns the important information
+def get_important_note(userID,animalName):
+    c.execute("SELECT * FROM Animals WHERE UserID=? AND AnimalName=?", (userID, animalName))
+    item = c.fetchone()
+    if item is None:
+        return -1
+    else:
+        return item[3]
 
-#z=UserName(5)
-#print(z)
+
+#Gets date and time and adds queue
+def Queue_registration(AnimalName,UserID,Date,Time):
+    c.execute("UPDATE Appointments SET UserID=?,AnimalName=? WHERE AppointmentDate=? AND AppointmentTime=?",(UserID,AnimalName,Date,Time))
+    conn.commit()
+
+#Sets the important details about the animal
+def set_important_note(userID,animalName,importantNote):
+    c.execute("UPDATE Animals SET ImportantInfo=? WHERE UserID=? AND AnimalName=?",(importantNote, userID, animalName))
+    conn.commit()
+
+#Receives documentation and updates an existing queue if no new queue is created with the data
+def set_treatments(ID,Name,Time,Date,Document):
+    c.execute("UPDATE Treatments SET TreatmentDocument=? WHERE UserID=? AND AnimalName=? AND AppointmentTime=? AND AppointmentDate=?",(Document,ID,Name,Time,Date))
+    c.execute("SELECT * FROM Treatments  WHERE UserID=? AND AnimalName=?AND AppointmentTime=? AND AppointmentDate=?", (ID, Name,Time,Date))
+    item=c.fetchone()
+    if item is None:
+       c.execute("INSERT INTO Treatments ('userID','AnimalName','AppointmentTime','AppointmentDate','TreatmentDocument') VALUES (?,?,?,?,?);",(ID,Name,Time,Date,Document))
+    conn.commit()
+
+
