@@ -228,7 +228,6 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         super().__init__(container)
 
         def day_chose(x=None):  # working after the user press a day
-            print(cal.get_date())
             taken_appoints_tree.delete(*taken_appoints_tree.get_children())
             i = 0
             appoints_list = retu_appoin(cal.get_date())
@@ -239,7 +238,9 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         def delete_appoint():  # working after the button
             selected_appoint_to_del = taken_appoints_tree.focus()
             if selected_appoint_to_del:
-                print(taken_appoints_tree.item(selected_appoint_to_del, 'values'))
+                selected_to_del = taken_appoints_tree.item(selected_appoint_to_del, 'values')
+                Queue_registration(None, None, cal.get_date(), selected_to_del[0])
+                day_chose()
 
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
