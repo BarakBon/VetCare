@@ -27,6 +27,12 @@ def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAdd
 
 # A function that creates an animal for the user according to ID
 def newAnimal(userID,Type,animalName):
+    if (userID.isdecimal()!=True):
+        return -2
+    if ((len(Type)<3) or (Type.isalpha()!=True)):
+        return -2
+    if ((len(animalName) < 3) or (animalName.isalpha() != True)):
+        return -2
     c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,None))
 
 # Gets a username and password , and checks if it exists in the system - If so returns UserID
