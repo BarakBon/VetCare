@@ -320,7 +320,7 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         add_appoint_button = ttk.Button(self, text="Delete", style="CustomButton.TButton", command=delete_appoint)
         add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
-
+'''
 class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
     def __init__(self, container):
         super().__init__(container)
@@ -360,7 +360,7 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
 
         # register_button = ttk.Button(self, text="Register", command=get_register_data)
         # register_button.grid(row=9, column=1, ipady=3, ipadx=10, pady=20, sticky="W")
-
+'''
 def secretary_main(id):  # main secretary window setup
     # window setup
     secretary_window = tk.Tk()
