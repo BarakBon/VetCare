@@ -53,19 +53,19 @@ class dbcontrol(unittest.TestCase):
        self.assertEqual(UserName('100'),-1,"Should be False")
 
     def test_Date_Check(self):
-        self.assertIsNotNone(Date_Check('05/10/21'),'Should be True')
-        self.assertIsNotNone(Date_Check('06/10/21'), 'Should be True')
-        self.assertIsNotNone(Date_Check('07/10/21'), 'Should be True')
+        self.assertIsNotNone(Date_Check('2021-10-05'),'Should be True')
+        self.assertIsNotNone(Date_Check('2021-10-06'), 'Should be True')
+        self.assertIsNotNone(Date_Check('2021-10-07'), 'Should be True')
 
     def test_retu_appoin(self):
-        self.assertIsNotNone(retu_appoin('20/12/21'), 'Should be True')
-        self.assertIsNotNone(retu_appoin('28/11/21'), 'Should be True')
-        self.assertIsNotNone(retu_appoin('02/01/22'), 'Should be True')
+        self.assertIsNotNone(retu_appoin('2021-12-20'), 'Should be True')
+        self.assertIsNotNone(retu_appoin('2021-11-28'), 'Should be True')
+        self.assertIsNotNone(retu_appoin('2022-01-02'), 'Should be True')
 
     def test_Show_appointment(self):
-        self.assertIsNotNone(Show_appointment('23/12/21'), 'Should be True')
-        self.assertIsNotNone(Show_appointment('17/12/22'), 'Should be True')
-        self.assertIsNotNone(Show_appointment('30/02/22'), 'Should be True')
+        self.assertIsNotNone(Show_appointment('2021-12-23'), 'Should be True')
+        self.assertIsNotNone(Show_appointment('2022-12-17'), 'Should be True')
+        self.assertIsNotNone(Show_appointment('2022-02-30'), 'Should be True')
 
     def test_get_important_note(self):
         self.assertEqual(get_important_note(2,'Gi'),-1,'Should be -1')
