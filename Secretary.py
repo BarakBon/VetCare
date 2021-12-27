@@ -267,6 +267,12 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
 
+class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
+    def __init__(self, container):
+        super().__init__(container)
+
+        pass
+
 
 def secretary_main(id):  # main secretary window setup
     # window setup
@@ -275,7 +281,6 @@ def secretary_main(id):  # main secretary window setup
     secretary_window.resizable(False, False)
     set_window(secretary_window)
     secretary_window.columnconfigure(0, weight=1)
-    # secretary_window.rowconfigure(1, weight=1)
 
 
     def s_logout():  # take care on the logout process
@@ -326,6 +331,9 @@ def secretary_main(id):  # main secretary window setup
     tabs.add(info_of_user, text=" User Info ")
     show_appoints = ShowAppointments(tabs)
     tabs.add(show_appoints, text=" Appointments ")
+    add_animal = AddAnimal(tabs)
+    tabs.add(add_animal, text=" Add Animal ")
+
 
     secretary_window.mainloop()
 
