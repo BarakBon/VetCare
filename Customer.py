@@ -12,10 +12,8 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         super().__init__(container, *args)
 
         def day_chose(x=None):  # working after the user press a day
-            print(cal.get_date())
             free_times = Show_appointment(cal.get_date())
             free_time_combo["values"] = free_times
-
 
         def create_appoint():  # working after the button
             def appoint_created_ok():
