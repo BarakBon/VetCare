@@ -102,14 +102,16 @@ def Date_Check(Date):
             c.execute("INSERT INTO `Appointments` ('AppointmentDate','AppointmentTime') VALUES (:newDate, :newTime);", {"newDate": str(Date), "newTime": str(Time)})
             conn.commit()
             Time+=1
-            for item in item:
-                t += [item[2]]
+        for item in item:
+            t += [item[2]]
         return t
     else:
         for item in item:
             t += [item[2]]
         return t
     conn.commit()
+
+print(Date_Check("2021-10-16"))
 
 
 #Returns all busy appointments on a date
