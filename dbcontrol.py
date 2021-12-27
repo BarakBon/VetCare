@@ -104,7 +104,7 @@ def Date_Check(Date):
 
 #Returns all busy appointments on a date
 def retu_appoin(Date):
-    t=[]
+    t=()
     c.execute("SELECT * FROM Appointments WHERE AppointmentDate=? ", (str(Date),))
     item = c.fetchall()
     if not item:
@@ -113,7 +113,7 @@ def retu_appoin(Date):
     else:
         for item in item:
             if item[1] != None:
-                t += [item[1],item[2]]
+                t += ((item[2],item[1]),)
         return t
     conn.commit()
 
@@ -161,5 +161,18 @@ def Queue_registration(AnimalName,UserID,Date,Time):
     c.execute("UPDATE Appointments SET UserID=?,AnimalName=? WHERE AppointmentDate=? AND AppointmentTime=?",(UserID,AnimalName,Date,Time))
     conn.commit()
 
+#Sets the important details about the animal
+def set_important_note(userID,animalName,importantNote):
+    c.execute("UPDATE Animals SET ImportantInfo=? WHERE UserID=? AND AnimalName=?",(importantNote, userID, animalName))
+    conn.commit()
 
-Queue_registration("AS",8,'06/10/21',10)
+#Receives documentation and updates an existing queue if no new queue is created with the data
+def set_treatments(ID,Name,Time,Date,Document):
+    c.execute("UPDATE Treatments SET TreatmentDocument=? WHERE UserID=? AND AnimalName=? AND AppointmentTime=? AND AppointmentDate=?",(Document,ID,Name,Time,Date))
+    c.execute("SELECT * FROM Treatments  WHERE UserID=? AND AnimalName=?AND AppointmentTime=? AND AppointmentDate=?", (ID, Name,Time,Date))
+    item=c.fetchone()
+    if item is None:
+       c.execute("INSERT INTO Treatments ('userID','AnimalName','AppointmentTime','AppointmentDate','TreatmentDocument') VALUES (?,?,?,?,?);",(ID,Name,Time,Date,Document))
+    conn.commit()
+
+
