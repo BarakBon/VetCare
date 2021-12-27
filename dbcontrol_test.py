@@ -16,6 +16,11 @@ class dbcontrol(unittest.TestCase):
         self.assertEqual(newcustomer('OrB','OB26','Or','Bonker','Dimona','527379951','Orbo@ac.sce.ac.il','Customer'),
                          -1, "Should be -1")
 
+    def test_newAnimal(self):
+        self.assertEqual(newAnimal('4','Do','Bob'), -2, "should be -2")
+        self.assertEqual(newAnimal('a','Dog','Bob'), -2, "should be -2")
+        self.assertEqual(newAnimal('4', 'Dog', 'B'), -2, "should be -2")
+
     def test_Login_check(self):
         self.assertFalse(Login_check('OrB', 'OE2'), "Should be False")
         self.assertTrue(Login_check('OrB', 'OB26'), "Should be True")
