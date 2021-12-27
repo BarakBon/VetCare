@@ -126,6 +126,8 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 list_select.delete(0, tk.END)
                 appoints_list_select.delete(0, tk.END)
 
+                add_animal_button["state"] = "disabled"
+
             else:
                 search_answer.set("")
 
@@ -159,20 +161,30 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 usertype_info.insert(tk.END, found_username[6])
                 usertype_info["state"] = "disable"
 
-                nonlocal animal_list
-                animal_list = AnimalName(found_username[0])
-                list_select.delete(0, tk.END)
-                for item in animal_list:
-                    list_select.insert(tk.END, item)
+                if found_username[6] == "Customer":
+                    add_animal_button["state"] = "normal"
 
-                today = datetime.date.today()
-                date = today.strftime("%m/%d/%y")
-                # nonlocal user_appoints_list
-                # user_appoints_list = something(found_username[0], date) # the proper func
-                # list_select.delete(0, tk.END)
-                # for item in user_appoints_list:
-                #     appoints_list_select(tk.END, item)
+                    nonlocal animal_list
+                    animal_list = AnimalName(found_username[0])
+                    list_select.delete(0, tk.END)
+                    for item in animal_list:
+                        list_select.insert(tk.END, item)
 
+                    today = datetime.date.today()
+                    date = today.strftime("%m/%d/%y")
+                    # nonlocal user_appoints_list
+                    # user_appoints_list = something(found_username[0], date) # the proper func
+                    # list_select.delete(0, tk.END)
+                    # for item in user_appoints_list:
+                    #     appoints_list_select(tk.END, item)
+
+                else:
+                    add_animal_button["state"] = "disabled"
+                    list_select.delete(0, tk.END)
+
+
+        def add_animal():
+            pass
 
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
@@ -222,6 +234,10 @@ class UserInfo(ttk.Frame):  # second tab - user info
         appoints_list_var = tk.StringVar(value=user_appoints_list)
         appoints_list_select = tk.Listbox(user_output_frame, listvariable=appoints_list_var, height=len(user_appoints_list))
         appoints_list_select.grid(row=7, column=1, padx=20, pady=30)
+
+        add_animal_button = ttk.Button(self, text="Add Animal", command=add_animal)
+        add_animal_button["state"] = "disabled"
+        add_animal_button.grid(ipady=3, ipadx=10, pady=20)
 
 
 class ShowAppointments(ttk.Frame):  # third tab - show appointments info
@@ -290,18 +306,25 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
         enter_username = tk.Text(user_select_frame, height=1, width=20)
         enter_username.grid(row=0, column=0, padx=30)
         enter_username.insert("1.0", "Enter username here")
-        ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
-        ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
-                                                                                        pady=5, sticky="E")
+        # ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        # ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
+        #                                                                                 pady=5, sticky="E")
         ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
 
         animal_name_inserted = tk.StringVar()
+        animal_type_inserted = tk.StringVar()
         animal_output_frame = ttk.Frame(self)
         animal_output_frame.grid(pady=10)
-        ttk.Label(animal_output_frame, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
+        ttk.Label(animal_output_frame, text="Animal name: ").grid(row=0, column=0, padx=10, pady=20)
         animal_name_entry = ttk.Entry(animal_output_frame, width=20, textvariable=animal_name_inserted)
         animal_name_entry.grid(row=0, column=1, pady=10, padx=20)
 
+        ttk.Label(animal_output_frame, text="Animal Type: ").grid(row=0, column=0, padx=10, pady=20)
+        animal_type_entry = ttk.Entry(animal_output_frame, width=20, textvariable=animal_type_inserted)
+        animal_type_entry.grid(row=0, column=1, pady=10, padx=20)
+
+        # register_button = ttk.Button(self, text="Register", command=get_register_data)
+        # register_button.grid(row=9, column=1, ipady=3, ipadx=10, pady=20, sticky="W")
 
 def secretary_main(id):  # main secretary window setup
     # window setup
