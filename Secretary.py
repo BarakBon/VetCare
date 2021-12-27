@@ -186,6 +186,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
         def add_animal():
             def add_animal_data():
                 found_username = Search(enter_username.get("1.0", "end-1c"))
+                add_animal_window.focus()
                 print(animal_type_inserted.get())
                 print(animal_name_inserted.get())
                 if animal_type_inserted.get() is not "" and animal_name_inserted.get() is not "":
@@ -313,14 +314,10 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         taken_appoints_tree.grid()
 
 
-
-
-
-
         add_appoint_button = ttk.Button(self, text="Delete", style="CustomButton.TButton", command=delete_appoint)
         add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
-'''
+
 class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
     def __init__(self, container):
         super().__init__(container)
@@ -360,7 +357,8 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
 
         # register_button = ttk.Button(self, text="Register", command=get_register_data)
         # register_button.grid(row=9, column=1, ipady=3, ipadx=10, pady=20, sticky="W")
-'''
+
+
 def secretary_main(id):  # main secretary window setup
     # window setup
     secretary_window = tk.Tk()
@@ -419,8 +417,8 @@ def secretary_main(id):  # main secretary window setup
     tabs.add(info_of_user, text=" User Info ")
     show_appoints = ShowAppointments(tabs)
     tabs.add(show_appoints, text=" Appointments ")
-    # add_animal = AddAnimal(tabs)
-    # tabs.add(add_animal, text=" Add Animal ")
+    add_animal = AddAnimal(tabs)
+    tabs.add(add_animal, text=" Add Animal ")
 
 
     secretary_window.mainloop()
