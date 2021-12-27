@@ -64,7 +64,6 @@ def UserID_to_UserType (id):
     else:
         # The index of the UserType
         return item[8]
-      
 
 #The function gets a username and checks if it exists and if it exists it returns its details
 def Search (Name):
