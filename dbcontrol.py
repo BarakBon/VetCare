@@ -175,6 +175,7 @@ def set_treatments(ID,Name,Time,Date,Document):
        c.execute("INSERT INTO Treatments ('userID','AnimalName','AppointmentTime','AppointmentDate','TreatmentDocument') VALUES (?,?,?,?,?);",(ID,Name,Time,Date,Document))
     conn.commit()
 
+#Receives user ID and animal name , and returns the Animal details
 def animal_details(ID, animalName):
     c.execute("SELECT * FROM Animals WHERE UserID=? AND AnimalName=?", (ID, animalName))
     item = c.fetchone()
@@ -182,6 +183,3 @@ def animal_details(ID, animalName):
         return -1
     else:
         return (item[1], item[2],item[3])
-
-x=animal_details(4,'Felix')
-print(x)
