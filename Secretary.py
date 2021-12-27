@@ -49,6 +49,8 @@ class SignupTab(ttk.Frame):  # first tab - signup
         type_selected = tk.StringVar()
         register_mistake = tk.StringVar()
 
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
         ttk.Label(self, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
         firstname_entry = ttk.Entry(self, width=20, textvariable=firstname_inserted)
         firstname_entry.grid(row=0, column=1, pady=10, padx=20)
@@ -273,8 +275,15 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
         super().__init__(container)
 
         def check_to_fill(x=None):
-            pass
+            found_username = Search(enter_username.get("1.0","end-1c"))
+            if not found_username:
+                search_answer.set("No username found")
 
+            else:
+                search_answer.set("")
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
         search_answer = tk.StringVar()
@@ -284,6 +293,11 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
         ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
         ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
                                                                                         sticky="E")
+
+        animal_name_inserted = tk.StringVar()
+        ttk.Label(self, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
+        animal_name_entry = ttk.Entry(self, width=20, textvariable=firstname_inserted)
+        animal_name_entry.grid(row=0, column=1, pady=10, padx=20)
 
 
 def secretary_main(id):  # main secretary window setup
