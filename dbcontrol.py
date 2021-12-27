@@ -25,9 +25,9 @@ def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAdd
         c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
         conn.commit()
 
-def newAnimal(userID,Type,animalName,importantInfo):
-    # A function that creates an animal for the user according to ID
-    c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,importantInfo))
+# A function that creates an animal for the user according to ID
+def newAnimal(userID,Type,animalName):
+    c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,None))
 
 # Gets a username and password , and checks if it exists in the system - If so returns UserID
 def Login_check (Name , Password):
@@ -183,4 +183,3 @@ def animal_details(ID, animalName):
         return -1
     else:
         return (item[1], item[2],item[3])
-#
