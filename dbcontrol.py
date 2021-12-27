@@ -165,3 +165,14 @@ def Queue_registration(AnimalName,UserID,Date,Time):
 def set_important_note(userID,animalName,importantNote):
     c.execute("UPDATE Animals SET ImportantInfo=? WHERE UserID=? AND AnimalName=?",(importantNote, userID, animalName))
     conn.commit()
+
+#Receives documentation and updates an existing queue if no new queue is created with the data
+def set_treatments(ID,Name,Time,Date,Document):
+    c.execute("UPDATE Treatments SET TreatmentDocument=? WHERE UserID=? AND AnimalName=? AND AppointmentTime=? AND AppointmentDate=?",(Document,ID,Name,Time,Date))
+    c.execute("SELECT * FROM Treatments  WHERE UserID=? AND AnimalName=?AND AppointmentTime=? AND AppointmentDate=?", (ID, Name,Time,Date))
+    item=c.fetchone()
+    if item is None:
+       c.execute("INSERT INTO Treatments ('userID','AnimalName','AppointmentTime','AppointmentDate','TreatmentDocument') VALUES (?,?,?,?,?);",(ID,Name,Time,Date,Document))
+    conn.commit()
+
+

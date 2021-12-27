@@ -25,14 +25,12 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
             if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
                 appoint_mistake.set("Select all options")
             else:
-                Queue_registration(animal_selected.get(), cust_id, cal.get_date(), time_selected.get())
                 appoint_mistake.set("")
                 appoint_created_alert = tk.Tk()
                 appoint_created_alert.title("Success")
                 appoint_created_alert.resizable(False, False)
                 set_window(appoint_created_alert)
                 add_appoint_button["state"] = "disabled"
-                day_chose()
                 ttk.Label(appoint_created_alert, text="Appointment created successfully. ", foreground="green").grid(row=0, column=0,
                                                                                                       padx=30, pady=20)
                 ttk.Button(appoint_created_alert, text="OK", command=appoint_created_ok).grid(ipadx=10, ipady=5, pady=10)
@@ -42,6 +40,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         time_selected = tk.StringVar()
         animal_selected = tk.StringVar()
         appoint_mistake = tk.StringVar()
+        free_times = ()
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
@@ -64,33 +63,6 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
 
         add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
         add_appoint_button.grid(ipadx=10, ipady=5, pady=10)
-
-class MyAnimals(ttk.Frame):  # see the animals info
-    def __init__(self, container, *args):
-        super().__init__(container, *args)
-
-        def on_animal_select(X=None):
-            print("yep")
-            pass
-
-        self.columnconfigure(0, weight=1)
-        animal_selected = tk.StringVar()
-        ttk.Label(self, text="Select Animal: ").grid(pady=20)
-        animal_select_list = ttk.Combobox(self, textvariable=animal_selected)
-        animal_select_list["values"] = AnimalName(cust_id)
-        animal_select_list["state"] = "readonly"
-        animal_select_list.bind("<<ComboboxSelected>>", on_animal_select)
-        animal_select_list.grid()
-
-        ttk.Label(self, text="Type: ").grid(pady=30)
-        animal_type = tk.Text(self, state='disabled', height=1, width=20)
-        animal_type.grid()
-
-        ttk.Label(self, text="Important Info: ").grid(pady=30)
-        animal_important_info = tk.Text(self, state='disabled', height=1, width=40)
-        animal_important_info.grid()
-
-
 
 cust_id = None
 def customer_main(c_id):  # main customer window setup
@@ -147,8 +119,6 @@ def customer_main(c_id):  # main customer window setup
     tabs.grid(sticky="EW")
     register_new_user_tab = MakeAppointment(tabs)
     tabs.add(register_new_user_tab, text=" Make Appointment ")
-    see_the_animals_tab = MyAnimals(tabs)
-    tabs.add(see_the_animals_tab, text=" My Animals ")
 
     customer_window.mainloop()
 

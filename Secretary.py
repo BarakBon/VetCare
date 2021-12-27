@@ -49,8 +49,6 @@ class SignupTab(ttk.Frame):  # first tab - signup
         type_selected = tk.StringVar()
         register_mistake = tk.StringVar()
 
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
         ttk.Label(self, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
         firstname_entry = ttk.Entry(self, width=20, textvariable=firstname_inserted)
         firstname_entry.grid(row=0, column=1, pady=10, padx=20)
@@ -165,7 +163,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
                     list_select.insert(tk.END, item)
 
                 today = datetime.date.today()
-                date = today.strftime("%d/%m/%y")
+                date = today.strftime("%m/%d/%y")
                 # nonlocal user_appoints_list
                 # user_appoints_list = something(found_username[0], date) # the proper func
                 # list_select.delete(0, tk.END)
@@ -229,11 +227,7 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
 
         def day_chose(x=None):  # working after the user press a day
             taken_appoints_tree.delete(*taken_appoints_tree.get_children())
-            i = 0
-            appoints_list = retu_appoin(cal.get_date())
-            for item in appoints_list:
-                taken_appoints_tree.insert(parent='', index=i, iid=i, values=(item))
-                i += 1
+            taken_appoints_tree.insert(parent='', index=0, iid=0, values=("12:00", "Tiger"))
 
         def delete_appoint():  # working after the button
             selected_appoint_to_del = taken_appoints_tree.focus()
