@@ -171,7 +171,6 @@ class UserInfo(ttk.Frame):  # second tab - user info
                         list_select.insert(tk.END, item)
 
                     today = datetime.date.today()
-                    date = today.strftime("%m/%d/%y")
                     # nonlocal user_appoints_list
                     # user_appoints_list = something(found_username[0], date) # the proper func
                     # appoints_list_select.delete(0, tk.END)
@@ -186,11 +185,19 @@ class UserInfo(ttk.Frame):  # second tab - user info
 
         def add_animal():
             def add_animal_data():
-                print("yep")
+                found_username = Search(enter_username.get("1.0", "end-1c"))
+                print(animal_type_inserted.get())
+                print(animal_name_inserted.get())
+                if animal_type_inserted.get() is not "" and animal_name_inserted.get() is not "":
+                    flag = newAnimal(found_username[0], animal_type_inserted.get(), animal_name_inserted.get())
+                    print(flag)
+                    if flag is not -2:
+                        add_animal_window.destroy()
+                        add_animal_button["state"] = "normal"
                 add_animal_answer.set("Wrong Input")
 
             add_animal_window = tk.Tk()
-            add_animal_window.title("Animal  Add")
+            add_animal_window.title("Add  Animal")
             add_animal_window.resizable(False, False)
             set_window(add_animal_window)
             add_animal_button["state"] = "disabled"
@@ -206,13 +213,12 @@ class UserInfo(ttk.Frame):  # second tab - user info
             animal_type_entry = ttk.Entry(add_animal_window, width=20, textvariable=animal_type_inserted)
             animal_type_entry.grid(row=1, column=1, padx=10)
 
-            test = ttk.Label(add_animal_window, textvariable=add_animal_answer, foreground="red")
-            test.grid(row=3, column=1, pady=10, sticky="W")
-            add_animal_answer.set("Wrong Input")
+            ttk.Label(add_animal_window, textvariable=add_animal_answer, foreground="red").grid(row=3, column=1, pady=10, sticky="W")
+
 
             add_animal_data_button = ttk.Button(add_animal_window, text="Add Animal", command=add_animal_data)
             add_animal_data_button.grid(row=4, column=1, ipady=3, ipadx=10, sticky="W")
-
+            add_animal_window.mainloop()
 
 
         user_select_frame = ttk.Frame(self)
@@ -291,7 +297,7 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
-        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
+        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='yyyy-mm-dd', weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
 

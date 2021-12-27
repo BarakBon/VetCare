@@ -12,6 +12,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         super().__init__(container, *args)
 
         def day_chose(x=None):  # working after the user press a day
+            print(cal.get_date())
             free_times = Show_appointment(cal.get_date())
             free_time_combo["values"] = free_times
 
@@ -44,7 +45,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
-        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
+        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='yyyy-mm-dd', weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
 
