@@ -187,3 +187,24 @@ def animal_details(ID, animalName):
         return -1
     else:
         return (item[1], item[2],item[3])
+
+#Receives ID number and name of animal and returns the animal's appointments 
+def Animal_appointment(UserID,AnimalName):
+    c.execute("SELECT * FROM Appointments WHERE  UserID=? AND AnimalName=?" , ( str(UserID) , str(AnimalName)))
+    item = c.fetchall()
+    if item is None:
+        return -1
+    else:
+        return item
+    conn.commit()
+
+
+#Receives ID and returns all the appointments of all the customer's animals
+def Customer_appointment(UserID):
+    c.execute("SELECT * FROM Appointments WHERE  UserID=?", (str(UserID)))
+    item = c.fetchall()
+    if item is None:
+        return -1
+    else:
+        return item
+    conn.commit()
