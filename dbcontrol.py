@@ -3,6 +3,11 @@ conn = sqlite3.connect("DataBase.db")
 c = conn.cursor()
 import re
 
+
+
+
+
+
 def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType):
     # A function that checks if the username already existed, if not builds a new user
     search = c.execute("SELECT * FROM Users WHERE UserName=?", (userName,))
@@ -189,8 +194,8 @@ def animal_details(ID, animalName):
         return (item[1], item[2],item[3])
 
 #Receives ID number and name of animal and returns the animal's appointments 
-def Animal_appointment(UserID,AnimalName):
-    c.execute("SELECT * FROM Appointments WHERE  UserID=? AND AnimalName=?" , ( str(UserID) , str(AnimalName)))
+def Animal_appointment(Date,UserID,AnimalName):
+    c.execute("SELECT * FROM Appointments WHERE  AppointmentDate>=? AND UserID=? AND AnimalName=?" , ( str(Date),str(UserID) , str(AnimalName)))
     item = c.fetchall()
     if item is None:
         return -1
@@ -200,11 +205,14 @@ def Animal_appointment(UserID,AnimalName):
 
 
 #Receives ID and returns all the appointments of all the customer's animals
-def Customer_appointment(UserID):
-    c.execute("SELECT * FROM Appointments WHERE  UserID=?", (str(UserID)))
+def Customer_appointment(Date,UserID):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate>=? AND  UserID=?", (str(Date),str(UserID)))
     item = c.fetchall()
     if item is None:
         return -1
     else:
         return item
     conn.commit()
+
+
+
