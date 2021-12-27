@@ -292,11 +292,14 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
         enter_username.insert("1.0", "Enter username here")
         ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
         ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
-                                                                                        sticky="E")
+                                                                                        pady=5, sticky="E")
+        ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
 
         animal_name_inserted = tk.StringVar()
-        ttk.Label(self, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
-        animal_name_entry = ttk.Entry(self, width=20, textvariable=firstname_inserted)
+        animal_output_frame = ttk.Frame(self)
+        animal_output_frame.grid(pady=10)
+        ttk.Label(animal_output_frame, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
+        animal_name_entry = ttk.Entry(animal_output_frame, width=20, textvariable=animal_name_inserted)
         animal_name_entry.grid(row=0, column=1, pady=10, padx=20)
 
 
