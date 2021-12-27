@@ -174,17 +174,35 @@ class UserInfo(ttk.Frame):  # second tab - user info
                     date = today.strftime("%m/%d/%y")
                     # nonlocal user_appoints_list
                     # user_appoints_list = something(found_username[0], date) # the proper func
-                    # list_select.delete(0, tk.END)
+                    # appoints_list_select.delete(0, tk.END)
                     # for item in user_appoints_list:
                     #     appoints_list_select(tk.END, item)
 
                 else:
                     add_animal_button["state"] = "disabled"
                     list_select.delete(0, tk.END)
+                    appoints_list_select.delete(0, tk.END)
 
 
         def add_animal():
-            pass
+            add_animal_window = tk.Tk()
+            add_animal_window.title("Warning")
+            add_animal_window.resizable(False, False)
+            set_window(add_animal_window)
+            add_animal_button["state"] = "disabled"
+
+            animal_name_inserted = tk.StringVar()
+            animal_type_inserted = tk.StringVar()
+            ttk.Label(add_animal_window, text="Animal name: ").grid(row=0, column=0, padx=10, pady=30)
+            animal_name_entry = ttk.Entry(add_animal_window, width=20, textvariable=animal_name_inserted)
+            animal_name_entry.grid(row=0, column=1, pady=10, padx=30)
+
+            ttk.Label(add_animal_window, text="Animal Type: ").grid(row=1, column=0, padx=10)
+            animal_type_entry = ttk.Entry(add_animal_window, width=20, textvariable=animal_type_inserted)
+            animal_type_entry.grid(row=1, column=1, padx=10)
+
+            
+
 
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
@@ -384,8 +402,8 @@ def secretary_main(id):  # main secretary window setup
     tabs.add(info_of_user, text=" User Info ")
     show_appoints = ShowAppointments(tabs)
     tabs.add(show_appoints, text=" Appointments ")
-    add_animal = AddAnimal(tabs)
-    tabs.add(add_animal, text=" Add Animal ")
+    # add_animal = AddAnimal(tabs)
+    # tabs.add(add_animal, text=" Add Animal ")
 
 
     secretary_window.mainloop()
