@@ -77,6 +77,16 @@ class dbcontrol(unittest.TestCase):
         self.assertEqual(animal_details(2,'Bob'), -1, "Should be -1")
         self.assertEqual(animal_details(2,2), -1, "Should be -1")
 
+    def test_Animal_appointment(self):
+        self.assertTrue(Animal_appointment('2021-10-05','5','Max'), "Should be True")
+        self.assertFalse(Animal_appointment('2021-10-05', '5', 'Simba'), "Should be False")
+        self.assertFalse(Animal_appointment('2021-12-27', '3', 'Simba'), "Should be False")
+
+    def test_Customer_appointment(self):
+        self.assertTrue(Customer_appointment('2021-10-05', '5'), "Should be True")
+        self.assertFalse(Customer_appointment('2021-12-27', '3' ), "Should be False")
+        self.assertFalse(Customer_appointment('2021-12-29', '6'), "Should be False")
+
 
 if __name__ == '__main__':
     unittest.main()
