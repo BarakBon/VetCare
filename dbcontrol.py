@@ -222,3 +222,4 @@ def get_treatments(UserID,AnimalName):
            t+=[(item[2],item[3],item[4])]
          return t
 
+print(get_treatments('5','Max'))
