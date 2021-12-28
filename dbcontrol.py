@@ -213,12 +213,12 @@ def Customer_appointment(Date,UserID):
 
 #Returns all documentation of previous treatments
 def get_treatments(UserID,AnimalName):
-    t =[]
+    t =()
 
     c.execute("SELECT * FROM Treatments WHERE UserID=? AND AnimalName=?",(UserID,AnimalName))
     item = c.fetchall()
     if item:
          for item in item:
-           t+=[(item[2],item[3],item[4])]
+           t += ((item[3],item[2],item[4]),)
          return t
 

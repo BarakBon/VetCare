@@ -243,8 +243,9 @@ class TreatmentRecord(ttk.Frame):  # third tab - see medical record of animal
         def check_to_fill():
             def no_custo():
                 search_answer.set("No customer found")
-                treat_given.delete("1.0", "end")
                 animal_list["values"] = None
+                animal_selected.set("")
+                treatments_tree.delete(*treatments_tree.get_children())
 
 
             found_username = Search(enter_username.get("1.0", "end-1c"))
@@ -256,11 +257,17 @@ class TreatmentRecord(ttk.Frame):  # third tab - see medical record of animal
             else:
                 search_answer.set("")
                 animal_selected.set("")
-                treat_given.delete("1.0", "end")
+                treatments_tree.delete(*treatments_tree.get_children())
                 animal_list["values"] = AnimalName(found_username[0])
 
-        def fill_treats_by_animal():
-
+        def fill_treats_by_animal(x=None):
+            treatments_tree.delete(*treatments_tree.get_children())
+            found_username = Search(enter_username.get("1.0", "end-1c"))
+            found_treats = get_treatments(found_username[0], animal_selected.get())
+            i = 0
+            for item in found_treats:
+                treatments_tree.insert(parent='', index=i, iid=i, values=(item))
+                i += 1
 
         self.columnconfigure(0, weight=1)
         user_select_frame = ttk.Frame(self)
@@ -282,6 +289,18 @@ class TreatmentRecord(ttk.Frame):  # third tab - see medical record of animal
         animal_list.bind("<<ComboboxSelected>>", fill_treats_by_animal)
 
         ttk.Label(self, text="Treatments: ").grid(padx=10, pady=20)
+        treatments_tree = ttk.Treeview(self, height=10)
+        treatments_tree['columns'] = ('Date', 'Time', 'Details')
+        treatments_tree.column('#0', width=0, stretch="no")
+        treatments_tree.column('Date', anchor="center", width=150)
+        treatments_tree.column('Time', anchor="center", width=150)
+        treatments_tree.column('Details', anchor="center", width=150)
+        treatments_tree.heading('#0', text='', anchor="center")
+        treatments_tree.heading('Date', text='Date', anchor="center")
+        treatments_tree.heading('Time', text='Time', anchor="center")
+        treatments_tree.heading('Details', text='Details', anchor="center")
+        treatments_tree.grid(sticky="EW")
+
 
 
 def veterinarian_main(id): # main veterinarian window setup
