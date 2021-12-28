@@ -113,6 +113,7 @@ class AnimalInfo(ttk.Frame):  # first tab - see animal info
 
 
         selected_animal = ""
+        self.columnconfigure(0, weight=1)
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
         search_answer = tk.StringVar()
@@ -292,15 +293,42 @@ class TreatmentRecord(ttk.Frame):  # third tab - see medical record of animal
         treatments_tree = ttk.Treeview(self, height=10)
         treatments_tree['columns'] = ('Date', 'Time', 'Details')
         treatments_tree.column('#0', width=0, stretch="no")
-        treatments_tree.column('Date', anchor="center", width=150)
-        treatments_tree.column('Time', anchor="center", width=150)
-        treatments_tree.column('Details', anchor="center", width=150)
+        treatments_tree.column('Date', anchor="center", width=150, stretch="no")
+        treatments_tree.column('Time', anchor="center", width=50, stretch="no")
+        treatments_tree.column('Details', anchor="center", stretch="yes")
         treatments_tree.heading('#0', text='', anchor="center")
         treatments_tree.heading('Date', text='Date', anchor="center")
         treatments_tree.heading('Time', text='Time', anchor="center")
         treatments_tree.heading('Details', text='Details', anchor="center")
         treatments_tree.grid(sticky="EW")
 
+
+class TodayAppointments(ttk.Frame):  # 4th tab - see today's appointments
+    def __init__(self, container):
+        super().__init__(container)
+
+        def refresh_appoints():
+            today_appoints_tree.delete(*today_appoints_tree.get_children())
+            i = 0
+            today_appoints_list = retu_appoin(datetime.date.today())
+            for item in today_appoints_list:
+                today_appoints_tree.insert(parent='', index=i, iid=i, values=(item))
+                i += 1
+
+        self.columnconfigure(0, weight=1)
+        ttk.Label(self, text="Appointments: ").grid(pady=30)
+        today_appoints_tree = ttk.Treeview(self, height=4)
+        today_appoints_tree['columns'] = ('Hour', 'Animal Name')
+        today_appoints_tree.column('#0', width=0, stretch="no")
+        today_appoints_tree.column('Hour', anchor="center", width=150)
+        today_appoints_tree.column('Animal Name', anchor="center", width=150)
+        today_appoints_tree.heading('#0', text='', anchor="center")
+        today_appoints_tree.heading('Hour', text='Hour', anchor="center")
+        today_appoints_tree.heading('Animal Name', text='Animal Name', anchor="center")
+        today_appoints_tree.grid()
+
+        add_appoint_button = ttk.Button(self, text="Refresh", command=refresh_appoints)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
 
 def veterinarian_main(id): # main veterinarian window setup
@@ -360,5 +388,7 @@ def veterinarian_main(id): # main veterinarian window setup
     tabs.add(new_treat_tab, text=" New Treatment ")
     treat_record = TreatmentRecord(tabs)
     tabs.add(treat_record, text=" Treatment Record ")
+    today_appoint = TodayAppointments(tabs)
+    tabs.add(today_appoint, text=" Appointments Today  ")
 
     vet_window.mainloop()
