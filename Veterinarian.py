@@ -11,7 +11,7 @@ class AnimalInfo(ttk.Frame):  # to be used tab
 
         def check_to_fill():
             found_username = Search(enter_username.get("1.0","end-1c"))
-            if not found_username or found_username[6] is not "Customer":
+            if found_username[6] != "Customer":
                 search_answer.set("No customer found")
                 firstname_info["state"] = "normal"
                 firstname_info.delete("1.0", "end-1c")
@@ -26,8 +26,6 @@ class AnimalInfo(ttk.Frame):  # to be used tab
                 phone_info["state"] = "disable"
 
                 list_select.delete(0, tk.END)
-
-
 
             else:
                 search_answer.set("")
@@ -53,8 +51,24 @@ class AnimalInfo(ttk.Frame):  # to be used tab
                 for item in animal_list:
                     list_select.insert(tk.END, item)
 
+        def animal_select(x=None):
+            found_username = Search(enter_username.get("1.0", "end-1c"))
+            index = list_select.curselection()
+            found_animal_info = animal_details(found_username[0], list_select.get(index))
+            animal_name_info["state"] = "normal"
+            animal_name_info.delete("1.0", "end-1c")
+            animal_name_info.insert(tk.END, found_animal_info[1])
+            animal_name_info["state"] = "disable"
 
+            animal_type_info["state"] = "normal"
+            animal_type_info.delete("1.0", "end-1c")
+            animal_type_info.insert(tk.END, found_animal_info[0])
+            animal_type_info["state"] = "disable"
 
+            animal_important_info["state"] = "normal"
+            animal_important_info.delete("1.0", "end-1c")
+            animal_important_info.insert(tk.END, found_animal_info[2])
+            animal_important_info["state"] = "disable"
 
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
@@ -65,7 +79,6 @@ class AnimalInfo(ttk.Frame):  # to be used tab
         username_choose = ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
         ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
                                                                                         sticky="E")
-
         separator = ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
 
         user_output_frame = ttk.Frame(self)
@@ -83,13 +96,28 @@ class AnimalInfo(ttk.Frame):  # to be used tab
         phone_info.grid(row=2, column=1, padx=30)
 
 
-        ttk.Label(user_output_frame, text="Animals: ").grid(row=6, column=0, padx=20, pady=20)
+        ttk.Label(user_output_frame, text="Animals: ").grid(row=3, column=0, padx=20, pady=20)
         animal_list = ()
         list_var = tk.StringVar(value=animal_list)
         list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(animal_list))
-        list_select.grid(row=6, column=1, padx=20, pady=20)
+        list_select.grid(row=3, column=1, padx=20, pady=20)
+        list_select.bind('<<ListboxSelect>>', animal_select)
 
+        animal_output_frame = ttk.Frame(self)
+        animal_output_frame.grid(pady=20)
+        ttk.Label(animal_output_frame, text="Animal Name: ").grid(row=0, column=0, padx=20, pady=20)
+        animal_name_info = tk.Text(animal_output_frame, state='disabled', height=1, width=20)
+        animal_name_info.grid(row=0, column=1, padx=30)
 
+        ttk.Label(animal_output_frame, text="Animal Type: ").grid(row=1, column=0, padx=20)
+        animal_type_info = tk.Text(animal_output_frame, state='disabled', height=1, width=20)
+        animal_type_info.grid(row=1, column=1, padx=30)
+
+        ttk.Label(self, text="Important Info: ").grid(padx=20, pady=10)
+        animal_important_info = tk.Text(self, state='disabled', height=1, width=40)
+        animal_important_info.grid(padx=30, pady=10)
+
+        ttk.Label(self, text="").grid(padx=20, pady=10)
 
 
 
