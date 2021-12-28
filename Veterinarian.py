@@ -110,7 +110,8 @@ class AnimalInfo(ttk.Frame):  # to be used tab
             if selected_animal:
                 found_animal_info = animal_details(found_username[0], selected_animal)
                 set_important_note(found_username[0], found_animal_info[1], animal_important_info.get("1.0", "end-1c"))
-                
+
+
         selected_animal = ""
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
