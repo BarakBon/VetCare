@@ -36,6 +36,7 @@ class AnimalInfo(ttk.Frame):  # to be used tab
                 animal_important_info.delete("1.0", "end-1c")
                 animal_important_info["state"] = "disable"
                 list_select.delete(0, tk.END)
+                change_info_button["state"] = "disabled"
 
             found_username = Search(enter_username.get("1.0","end-1c"))
             if not found_username:
@@ -72,6 +73,7 @@ class AnimalInfo(ttk.Frame):  # to be used tab
                 animal_important_info["state"] = "normal"
                 animal_important_info.delete("1.0", "end-1c")
                 animal_important_info["state"] = "disable"
+                change_info_button["state"] = "disabled"
 
                 nonlocal animal_list
                 animal_list = AnimalName(found_username[0])
@@ -83,22 +85,33 @@ class AnimalInfo(ttk.Frame):  # to be used tab
         def animal_select(x=None):
             found_username = Search(enter_username.get("1.0", "end-1c"))
             index = list_select.curselection()
-            found_animal_info = animal_details(found_username[0], list_select.get(index))
-            animal_name_info["state"] = "normal"
-            animal_name_info.delete("1.0", "end-1c")
-            animal_name_info.insert(tk.END, found_animal_info[1])
-            animal_name_info["state"] = "disable"
+            nonlocal selected_animal
+            if index:
+                selected_animal = list_select.get(index)
+                found_animal_info = animal_details(found_username[0], list_select.get(index))
+                animal_name_info["state"] = "normal"
+                animal_name_info.delete("1.0", "end-1c")
+                animal_name_info.insert(tk.END, found_animal_info[1])
+                animal_name_info["state"] = "disable"
 
-            animal_type_info["state"] = "normal"
-            animal_type_info.delete("1.0", "end-1c")
-            animal_type_info.insert(tk.END, found_animal_info[0])
-            animal_type_info["state"] = "disable"
+                animal_type_info["state"] = "normal"
+                animal_type_info.delete("1.0", "end-1c")
+                animal_type_info.insert(tk.END, found_animal_info[0])
+                animal_type_info["state"] = "disable"
 
-            animal_important_info["state"] = "normal"
-            animal_important_info.delete("1.0", "end-1c")
-            animal_important_info.insert(tk.END, found_animal_info[2])
-            animal_important_info["state"] = "disable"
+                animal_important_info["state"] = "normal"
+                animal_important_info.delete("1.0", "end-1c")
+                animal_important_info.insert(tk.END, found_animal_info[2])
+                change_info_button["state"] = "normal"
 
+        def change_important_info():
+            found_username = Search(enter_username.get("1.0", "end-1c"))
+            nonlocal selected_animal
+            if selected_animal:
+                found_animal_info = animal_details(found_username[0], selected_animal)
+                set_important_note(found_username[0], found_animal_info[1], animal_important_info.get("1.0", "end-1c"))
+                
+        selected_animal = ""
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
         search_answer = tk.StringVar()
@@ -146,8 +159,9 @@ class AnimalInfo(ttk.Frame):  # to be used tab
         animal_important_info = tk.Text(self, state='disabled', height=1, width=40)
         animal_important_info.grid(padx=30, pady=10)
 
-        ttk.Label(self, text="").grid(padx=20, pady=10)
-
+        change_info_button = ttk.Button(self, text="Change Important Info", command=change_important_info)
+        change_info_button.grid(ipadx=5,ipady=2, padx=5, pady=30)
+        change_info_button["state"] = "disabled"
 
 
 def veterinarian_main(id): # main veterinarian window setup
