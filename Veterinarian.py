@@ -5,7 +5,7 @@ from window import *
 from dbcontrol import *
 import datetime
 
-class AnimalInfo(ttk.Frame):  # to be used tab
+class AnimalInfo(ttk.Frame):  # first tab - see animal info
     def __init__(self, container):
         super().__init__(container)
 
@@ -165,7 +165,7 @@ class AnimalInfo(ttk.Frame):  # to be used tab
         change_info_button["state"] = "disabled"
 
 
-class NewTreatment(ttk.Frame):  # to be used tab
+class NewTreatment(ttk.Frame):  # second tab - create new treatment
     def __init__(self, container):
         super().__init__(container)
 
@@ -209,6 +209,7 @@ class NewTreatment(ttk.Frame):  # to be used tab
                                                                                               pady=10)
                 treat_created_alert.protocol("WM_DELETE_WINDOW", treat_created_ok)
 
+
         self.columnconfigure(0, weight=1)
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
@@ -234,6 +235,53 @@ class NewTreatment(ttk.Frame):  # to be used tab
         create_treat_button = ttk.Button(self, text="Save Treatment", command=create_treat)
         create_treat_button.grid(ipadx=5, ipady=2, pady=30)
 
+
+class TreatmentRecord(ttk.Frame):  # third tab - see medical record of animal
+    def __init__(self, container):
+        super().__init__(container)
+
+        def check_to_fill():
+            def no_custo():
+                search_answer.set("No customer found")
+                treat_given.delete("1.0", "end")
+                animal_list["values"] = None
+
+
+            found_username = Search(enter_username.get("1.0", "end-1c"))
+            if not found_username:
+                no_custo()
+            elif found_username[6] != "Customer":
+                no_custo()
+
+            else:
+                search_answer.set("")
+                animal_selected.set("")
+                treat_given.delete("1.0", "end")
+                animal_list["values"] = AnimalName(found_username[0])
+
+        def fill_treats_by_animal():
+
+
+        self.columnconfigure(0, weight=1)
+        user_select_frame = ttk.Frame(self)
+        user_select_frame.grid(pady=20)
+        search_answer = tk.StringVar()
+        enter_username = tk.Text(user_select_frame, height=1, width=20)
+        enter_username.grid(row=0, column=0, padx=30)
+        enter_username.insert("1.0", "Enter username here")
+        username_choose = ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
+                                                                                        sticky="E")
+        separator = ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
+
+        animal_selected = tk.StringVar()
+        ttk.Label(self, text="Select Animal: ").grid(padx=10, pady=20)
+        animal_list = ttk.Combobox(self, textvariable=animal_selected)
+        animal_list["state"] = "readonly"
+        animal_list.grid(padx=10)
+        animal_list.bind("<<ComboboxSelected>>", fill_treats_by_animal)
+
+        ttk.Label(self, text="Treatments: ").grid(padx=10, pady=20)
 
 
 def veterinarian_main(id): # main veterinarian window setup
@@ -291,5 +339,7 @@ def veterinarian_main(id): # main veterinarian window setup
     tabs.add(info_of_animal_tab, text=" Animal Info ")
     new_treat_tab = NewTreatment(tabs)
     tabs.add(new_treat_tab, text=" New Treatment ")
+    treat_record = TreatmentRecord(tabs)
+    tabs.add(treat_record, text=" Treatment Record ")
 
     vet_window.mainloop()
