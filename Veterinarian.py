@@ -10,8 +10,7 @@ class AnimalInfo(ttk.Frame):  # to be used tab
         super().__init__(container)
 
         def check_to_fill():
-            found_username = Search(enter_username.get("1.0","end-1c"))
-            if found_username[6] != "Customer":
+            def no_custo():
                 search_answer.set("No customer found")
                 firstname_info["state"] = "normal"
                 firstname_info.delete("1.0", "end-1c")
@@ -25,7 +24,24 @@ class AnimalInfo(ttk.Frame):  # to be used tab
                 phone_info.delete("1.0", "end-1c")
                 phone_info["state"] = "disable"
 
+                animal_name_info["state"] = "normal"
+                animal_name_info.delete("1.0", "end-1c")
+                animal_name_info["state"] = "disable"
+
+                animal_type_info["state"] = "normal"
+                animal_type_info.delete("1.0", "end-1c")
+                animal_type_info["state"] = "disable"
+
+                animal_important_info["state"] = "normal"
+                animal_important_info.delete("1.0", "end-1c")
+                animal_important_info["state"] = "disable"
                 list_select.delete(0, tk.END)
+
+            found_username = Search(enter_username.get("1.0","end-1c"))
+            if not found_username:
+                no_custo()
+            elif found_username[6] != "Customer":
+                no_custo()
 
             else:
                 search_answer.set("")
@@ -45,11 +61,24 @@ class AnimalInfo(ttk.Frame):  # to be used tab
                 phone_info.insert(tk.END, '0'+found_username[4])
                 phone_info["state"] = "disable"
 
+                animal_name_info["state"] = "normal"
+                animal_name_info.delete("1.0", "end-1c")
+                animal_name_info["state"] = "disable"
+
+                animal_type_info["state"] = "normal"
+                animal_type_info.delete("1.0", "end-1c")
+                animal_type_info["state"] = "disable"
+
+                animal_important_info["state"] = "normal"
+                animal_important_info.delete("1.0", "end-1c")
+                animal_important_info["state"] = "disable"
+
                 nonlocal animal_list
                 animal_list = AnimalName(found_username[0])
                 list_select.delete(0, tk.END)
                 for item in animal_list:
                     list_select.insert(tk.END, item)
+
 
         def animal_select(x=None):
             found_username = Search(enter_username.get("1.0", "end-1c"))
