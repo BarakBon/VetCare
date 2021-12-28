@@ -165,6 +165,69 @@ class AnimalInfo(ttk.Frame):  # to be used tab
         change_info_button["state"] = "disabled"
 
 
+class NewTreatment(ttk.Frame):  # to be used tab
+    def __init__(self, container):
+        super().__init__(container)
+
+        def check_to_fill():
+            def no_custo():
+                search_answer.set("No customer found")
+                # firstname_info["state"] = "normal"
+                # firstname_info.delete("1.0", "end-1c")
+                # firstname_info["state"] = "disable"
+                #
+                # lastname_info["state"] = "normal"
+                # lastname_info.delete("1.0", "end-1c")
+                # lastname_info["state"] = "disable"
+                #
+                # phone_info["state"] = "normal"
+                # phone_info.delete("1.0", "end-1c")
+                # phone_info["state"] = "disable"
+                #
+                # animal_name_info["state"] = "normal"
+                # animal_name_info.delete("1.0", "end-1c")
+                # animal_name_info["state"] = "disable"
+                #
+                # animal_type_info["state"] = "normal"
+                # animal_type_info.delete("1.0", "end-1c")
+                # animal_type_info["state"] = "disable"
+                #
+                # animal_important_info["state"] = "normal"
+                # animal_important_info.delete("1.0", "end-1c")
+                # animal_important_info["state"] = "disable"
+                # list_select.delete(0, tk.END)
+                # change_info_button["state"] = "disabled"
+
+            found_username = Search(enter_username.get("1.0", "end-1c"))
+            if not found_username:
+                no_custo()
+            elif found_username[6] != "Customer":
+                no_custo()
+
+            else:
+                search_answer.set("")
+                animal_selected.set("")
+                animal_list["values"] = AnimalName(found_username[0])
+
+
+        user_select_frame = ttk.Frame(self)
+        user_select_frame.grid(pady=20)
+        search_answer = tk.StringVar()
+        enter_username = tk.Text(user_select_frame, height=1, width=20)
+        enter_username.grid(row=0, column=0, padx=30)
+        enter_username.insert("1.0", "Enter username here")
+        username_choose = ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
+                                                                                        sticky="E")
+        separator = ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
+
+        animal_selected = tk.StringVar()
+        ttk.Label(self, text="Select Animal: ").grid(padx=10, pady=20)
+        animal_list = ttk.Combobox(self, textvariable=animal_selected)
+        animal_list["state"] = "readonly"
+        animal_list.grid(padx=10)
+
+
 def veterinarian_main(id): # main veterinarian window setup
     # window setup
     vet_window = tk.Tk()
@@ -218,5 +281,7 @@ def veterinarian_main(id): # main veterinarian window setup
     tabs.grid(sticky="EW")
     info_of_animal_tab = AnimalInfo(tabs)
     tabs.add(info_of_animal_tab, text=" Animal Info ")
+    new_treat_tab = NewTreatment(tabs)
+    tabs.add(new_treat_tab, text=" New Treatment ")
 
     vet_window.mainloop()
