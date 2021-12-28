@@ -3,7 +3,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from window import *
 from dbcontrol import *
-
+import datetime
 
 class AnimalInfo(ttk.Frame):  # to be used tab
     def __init__(self, container):
@@ -172,31 +172,9 @@ class NewTreatment(ttk.Frame):  # to be used tab
         def check_to_fill():
             def no_custo():
                 search_answer.set("No customer found")
-                # firstname_info["state"] = "normal"
-                # firstname_info.delete("1.0", "end-1c")
-                # firstname_info["state"] = "disable"
-                #
-                # lastname_info["state"] = "normal"
-                # lastname_info.delete("1.0", "end-1c")
-                # lastname_info["state"] = "disable"
-                #
-                # phone_info["state"] = "normal"
-                # phone_info.delete("1.0", "end-1c")
-                # phone_info["state"] = "disable"
-                #
-                # animal_name_info["state"] = "normal"
-                # animal_name_info.delete("1.0", "end-1c")
-                # animal_name_info["state"] = "disable"
-                #
-                # animal_type_info["state"] = "normal"
-                # animal_type_info.delete("1.0", "end-1c")
-                # animal_type_info["state"] = "disable"
-                #
-                # animal_important_info["state"] = "normal"
-                # animal_important_info.delete("1.0", "end-1c")
-                # animal_important_info["state"] = "disable"
-                # list_select.delete(0, tk.END)
-                # change_info_button["state"] = "disabled"
+                treat_given.delete("1.0", "end")
+                animal_list["values"] = None
+
 
             found_username = Search(enter_username.get("1.0", "end-1c"))
             if not found_username:
@@ -207,9 +185,31 @@ class NewTreatment(ttk.Frame):  # to be used tab
             else:
                 search_answer.set("")
                 animal_selected.set("")
+                treat_given.delete("1.0", "end")
                 animal_list["values"] = AnimalName(found_username[0])
 
+        def create_treat():
+            def treat_created_ok():
+                create_treat_button["state"] = "normal"
+                treat_created_alert.destroy()
 
+            if animal_selected and treat_given.get("1.0", "end-1c"):
+                found_username = Search(enter_username.get("1.0", "end-1c"))
+                set_treatments(found_username[0], animal_selected.get(), datetime.datetime.now().hour,
+                                                        datetime.date.today(), treat_given.get("1.0", "end-1c"))
+                create_treat_button["state"] = "disabled"
+                treat_created_alert = tk.Tk()
+                treat_created_alert.title("Success")
+                treat_created_alert.resizable(False, False)
+                set_window(treat_created_alert)
+                ttk.Label(treat_created_alert, text="Treatment saved successfully. ", foreground="green").grid(
+                    row=0, column=0,
+                    padx=30, pady=20)
+                ttk.Button(treat_created_alert, text="OK", command=treat_created_ok).grid(ipadx=10, ipady=5,
+                                                                                              pady=10)
+                treat_created_alert.protocol("WM_DELETE_WINDOW", treat_created_ok)
+
+        self.columnconfigure(0, weight=1)
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
         search_answer = tk.StringVar()
@@ -227,12 +227,20 @@ class NewTreatment(ttk.Frame):  # to be used tab
         animal_list["state"] = "readonly"
         animal_list.grid(padx=10)
 
+        ttk.Label(self, text="Treatment Given: ").grid(padx=10, pady=30)
+        treat_given = tk.Text(self, height=2, width=40)
+        treat_given.grid()
+
+        create_treat_button = ttk.Button(self, text="Save Treatment", command=create_treat)
+        create_treat_button.grid(ipadx=5, ipady=2, pady=30)
+
+
 
 def veterinarian_main(id): # main veterinarian window setup
     # window setup
     vet_window = tk.Tk()
     vet_window.title("VetCare  -  Veterinarian")
-    vet_window.resizable(True, True)
+    vet_window.resizable(False, False)
     set_window(vet_window)
     vet_window.columnconfigure(0, weight=1)
 
