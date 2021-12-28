@@ -25,9 +25,15 @@ def newcustomer(userName,Password,firstName,lastName,Address,phoneNumber,mailAdd
         c.execute("INSERT INTO `Users` ('UserName','Password', 'FirstName', 'LastName', 'Address', 'PhoneNumber', 'MailAddress', 'UserType') VALUES (?,?,?,?,?,?,?,?);",(userName,Password,firstName,lastName,Address,phoneNumber,mailAddress,userType))
         conn.commit()
 
-def newAnimal(userID,Type,animalName,importantInfo):
-    # A function that creates an animal for the user according to ID
-    c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,importantInfo))
+# A function that creates an animal for the user according to ID
+def newAnimal(userID,Type,animalName):
+    if (userID.isdecimal()!=True):
+        return -2
+    if ((len(Type)<3) or (Type.isalpha()!=True)):
+        return -2
+    if ((len(animalName) < 3) or (animalName.isalpha() != True)):
+        return -2
+    c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,None))
 
 # Gets a username and password , and checks if it exists in the system - If so returns UserID
 def Login_check (Name , Password):
@@ -58,7 +64,6 @@ def UserID_to_UserType (id):
     else:
         # The index of the UserType
         return item[8]
-      
 
 #The function gets a username and checks if it exists and if it exists it returns its details
 def Search (Name):
@@ -92,14 +97,16 @@ def Date_Check(Date):
             c.execute("INSERT INTO `Appointments` ('AppointmentDate','AppointmentTime') VALUES (:newDate, :newTime);", {"newDate": str(Date), "newTime": str(Time)})
             conn.commit()
             Time+=1
-            for item in item:
-                t += [item[2]]
+        for item in item:
+            t += [item[2]]
         return t
     else:
         for item in item:
             t += [item[2]]
         return t
     conn.commit()
+
+
 
 
 #Returns all busy appointments on a date
@@ -155,7 +162,6 @@ def get_important_note(userID,animalName):
     else:
         return item[3]
 
-
 #Gets date and time and adds queue
 def Queue_registration(AnimalName,UserID,Date,Time):
     c.execute("UPDATE Appointments SET UserID=?,AnimalName=? WHERE AppointmentDate=? AND AppointmentTime=?",(UserID,AnimalName,Date,Time))
@@ -175,4 +181,44 @@ def set_treatments(ID,Name,Time,Date,Document):
        c.execute("INSERT INTO Treatments ('userID','AnimalName','AppointmentTime','AppointmentDate','TreatmentDocument') VALUES (?,?,?,?,?);",(ID,Name,Time,Date,Document))
     conn.commit()
 
+#Receives user ID and animal name , and returns the Animal details
+def animal_details(ID, animalName):
+    c.execute("SELECT * FROM Animals WHERE UserID=? AND AnimalName=?", (ID, animalName))
+    item = c.fetchone()
+    if item is None:
+        return -1
+    else:
+        return (item[1], item[2],item[3])
+
+#Receives ID number and name of animal and returns the animal's appointments 
+def Animal_appointment(Date,UserID,AnimalName):
+    c.execute("SELECT * FROM Appointments WHERE  AppointmentDate>=? AND UserID=? AND AnimalName=?" , ( str(Date),str(UserID) , str(AnimalName)))
+    item = c.fetchall()
+    if item is None:
+        return -1
+    else:
+        return item
+    conn.commit()
+
+
+#Receives ID and returns all the appointments of all the customer's animals
+def Customer_appointment(Date,UserID):
+    c.execute("SELECT * FROM Appointments WHERE AppointmentDate>=? AND  UserID=?", (str(Date),str(UserID)))
+    item = c.fetchall()
+    if item is None:
+        return -1
+    else:
+        return item
+    conn.commit()
+
+#Returns all documentation of previous treatments
+def get_treatments(UserID,AnimalName):
+    t =[]
+
+    c.execute("SELECT * FROM Treatments WHERE UserID=? AND AnimalName=?",(UserID,AnimalName))
+    item = c.fetchall()
+    if item:
+         for item in item:
+           t+=[(item[2],item[3],item[4])]
+         return t
 
