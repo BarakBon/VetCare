@@ -87,6 +87,11 @@ class dbcontrol(unittest.TestCase):
         self.assertFalse(Customer_appointment('2021-12-27', '3' ), "Should be False")
         self.assertFalse(Customer_appointment('2021-12-29', '6'), "Should be False")
 
+    def test_get_treatment(self):
+        self.assertIsNotNone(get_treatments('5','Max'),"Should be True")
+        self.assertIsNot(get_treatments('1000','DC'),"Should be False")
+        self.assertIsNot(get_treatments('8555','XXX'),"Should be False")
+
 
 if __name__ == '__main__':
     unittest.main()
