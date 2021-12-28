@@ -5,12 +5,89 @@ from window import *
 from dbcontrol import *
 
 
-class FutureTab(ttk.Frame):  # to be used tab
+class AnimalInfo(ttk.Frame):  # to be used tab
     def __init__(self, container):
         super().__init__(container)
 
-        ttk.Label(self, text="this is the main screen of the veterinarian. ").grid(row=0, column=0, padx=10, pady=20)
+        def check_to_fill():
+            found_username = Search(enter_username.get("1.0","end-1c"))
+            if not found_username or found_username[6] is not "Customer":
+                search_answer.set("No customer found")
+                firstname_info["state"] = "normal"
+                firstname_info.delete("1.0", "end-1c")
+                firstname_info["state"] = "disable"
 
+                lastname_info["state"] = "normal"
+                lastname_info.delete("1.0", "end-1c")
+                lastname_info["state"] = "disable"
+
+                phone_info["state"] = "normal"
+                phone_info.delete("1.0", "end-1c")
+                phone_info["state"] = "disable"
+
+                list_select.delete(0, tk.END)
+
+
+
+            else:
+                search_answer.set("")
+
+                firstname_info["state"] = "normal"
+                firstname_info.delete("1.0", "end-1c")
+                firstname_info.insert(tk.END, found_username[1])
+                firstname_info["state"] = "disable"
+
+                lastname_info["state"] = "normal"
+                lastname_info.delete("1.0", "end-1c")
+                lastname_info.insert(tk.END, found_username[2])
+                lastname_info["state"] = "disable"
+
+                phone_info["state"] = "normal"
+                phone_info.delete("1.0", "end-1c")
+                phone_info.insert(tk.END, '0'+found_username[4])
+                phone_info["state"] = "disable"
+
+                nonlocal animal_list
+                animal_list = AnimalName(found_username[0])
+                list_select.delete(0, tk.END)
+                for item in animal_list:
+                    list_select.insert(tk.END, item)
+
+
+
+
+        user_select_frame = ttk.Frame(self)
+        user_select_frame.grid(pady=20)
+        search_answer = tk.StringVar()
+        enter_username = tk.Text(user_select_frame, height=1, width=20)
+        enter_username.grid(row=0, column=0, padx=30)
+        enter_username.insert("1.0", "Enter username here")
+        username_choose = ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
+                                                                                        sticky="E")
+
+        separator = ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
+
+        user_output_frame = ttk.Frame(self)
+        user_output_frame.grid(pady=20)
+        ttk.Label(user_output_frame, text="First Name: ").grid(row=0, column=0, padx=20)
+        firstname_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
+        firstname_info.grid(row=0, column=1, padx=30)
+
+        ttk.Label(user_output_frame, text="Last Name: ").grid(row=1, column=0, padx=20, pady=20)
+        lastname_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
+        lastname_info.grid(row=1, column=1, padx=30)
+
+        ttk.Label(user_output_frame, text="Phone No.: ").grid(row=2, column=0, padx=20)
+        phone_info = tk.Text(user_output_frame, state='disabled', height=1, width=20)
+        phone_info.grid(row=2, column=1, padx=30)
+
+
+        ttk.Label(user_output_frame, text="Animals: ").grid(row=6, column=0, padx=20, pady=20)
+        animal_list = ()
+        list_var = tk.StringVar(value=animal_list)
+        list_select = tk.Listbox(user_output_frame, listvariable=list_var, height=len(animal_list))
+        list_select.grid(row=6, column=1, padx=20, pady=20)
 
 
 
@@ -51,6 +128,7 @@ def veterinarian_main(id): # main veterinarian window setup
         #  the buttons to agree or not to logout
         ttk.Button(logout_approve_frame, text="Yes", command=yes_to_logout).grid(row=0, column=0, ipadx=5, ipady=2, padx=5)
         ttk.Button(logout_approve_frame, text="Cancel", command=cancel_to_logout).grid(row=0, column=1, ipadx=5,ipady=2, padx=5)
+        if_logout_v_window.protocol("WM_DELETE_WINDOW", cancel_to_logout)
 
     def v_no_exit():
         pass
@@ -66,7 +144,7 @@ def veterinarian_main(id): # main veterinarian window setup
     tabs = ttk.Notebook(vet_window)
     # tabs.columnconfigure(0, weight=1)
     tabs.grid(sticky="EW")
-    register_new_user_tab = FutureTab(tabs)
-    tabs.add(register_new_user_tab, text="To be created")
+    info_of_animal_tab = AnimalInfo(tabs)
+    tabs.add(info_of_animal_tab, text=" Animal Info ")
 
     vet_window.mainloop()

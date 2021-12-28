@@ -105,6 +105,8 @@ def customer_main(c_id):  # main customer window setup
         # logged in top bar title and logout button in frame
         ttk.Button(logout_approve_frame, text="Yes", command=yes_to_logout).grid(row=0, column=0, ipadx=5, ipady=2, padx=5)
         ttk.Button(logout_approve_frame, text="Cancel", command=cancel_to_logout).grid(row=0, column=1, ipadx=5,ipady=2, padx=5)
+        if_logout_c_window.protocol("WM_DELETE_WINDOW", cancel_to_logout)
+
 
     def c_no_exit():
         pass
