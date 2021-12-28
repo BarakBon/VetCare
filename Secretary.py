@@ -49,6 +49,8 @@ class SignupTab(ttk.Frame):  # first tab - signup
         type_selected = tk.StringVar()
         register_mistake = tk.StringVar()
 
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
         ttk.Label(self, text="First name: ").grid(row=0, column=0, padx=10, pady=20)
         firstname_entry = ttk.Entry(self, width=20, textvariable=firstname_inserted)
         firstname_entry.grid(row=0, column=1, pady=10, padx=20)
@@ -97,6 +99,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
         def check_to_fill():
             found_username = Search(enter_username.get("1.0","end-1c"))
             if not found_username:
+                search_answer.set("No username found")
                 firstname_info["state"] = "normal"
                 firstname_info.delete("1.0", "end-1c")
                 firstname_info["state"] = "disable"
@@ -122,6 +125,8 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 usertype_info["state"] = "disable"
                 list_select.delete(0, tk.END)
                 appoints_list_select.delete(0, tk.END)
+
+                add_animal_button["state"] = "disabled"
 
             else:
                 search_answer.set("")
@@ -156,19 +161,65 @@ class UserInfo(ttk.Frame):  # second tab - user info
                 usertype_info.insert(tk.END, found_username[6])
                 usertype_info["state"] = "disable"
 
-                nonlocal animal_list
-                animal_list = AnimalName(found_username[0])
-                list_select.delete(0, tk.END)
-                for item in animal_list:
-                    list_select.insert(tk.END, item)
+                if found_username[6] == "Customer":
+                    add_animal_button["state"] = "normal"
 
-                today = datetime.date.today()
-                date = today.strftime("%m/%d/%y")
-                # nonlocal user_appoints_list
-                # user_appoints_list = something(found_username[0], date) # the proper func
-                # list_select.delete(0, tk.END)
-                # for item in user_appoints_list:
-                #     appoints_list_select(tk.END, item)
+                    nonlocal animal_list
+                    animal_list = AnimalName(found_username[0])
+                    list_select.delete(0, tk.END)
+                    for item in animal_list:
+                        list_select.insert(tk.END, item)
+
+                    today = datetime.date.today()
+                    # nonlocal user_appoints_list
+                    # user_appoints_list = something(found_username[0], date) # the proper func
+                    # appoints_list_select.delete(0, tk.END)
+                    # for item in user_appoints_list:
+                    #     appoints_list_select(tk.END, item)
+
+                else:
+                    add_animal_button["state"] = "disabled"
+                    list_select.delete(0, tk.END)
+                    appoints_list_select.delete(0, tk.END)
+
+
+        def add_animal():
+            def add_animal_data():
+                found_username = Search(enter_username.get("1.0", "end-1c"))
+                add_animal_window.focus()
+                print(animal_type_inserted.get())
+                print(animal_name_inserted.get())
+                if animal_type_inserted.get() is not "" and animal_name_inserted.get() is not "":
+                    flag = newAnimal(found_username[0], animal_type_inserted.get(), animal_name_inserted.get())
+                    print(flag)
+                    if flag is not -2:
+                        add_animal_window.destroy()
+                        add_animal_button["state"] = "normal"
+                add_animal_answer.set("Wrong Input")
+
+            add_animal_window = tk.Tk()
+            add_animal_window.title("Add  Animal")
+            add_animal_window.resizable(False, False)
+            set_window(add_animal_window)
+            add_animal_button["state"] = "disabled"
+
+            animal_name_inserted = tk.StringVar()
+            animal_type_inserted = tk.StringVar()
+            add_animal_answer = tk.StringVar()
+            ttk.Label(add_animal_window, text="Animal name: ").grid(row=0, column=0, padx=10, pady=30)
+            animal_name_entry = ttk.Entry(add_animal_window, width=20, textvariable=animal_name_inserted)
+            animal_name_entry.grid(row=0, column=1, pady=10, padx=30)
+
+            ttk.Label(add_animal_window, text="Animal Type: ").grid(row=1, column=0, padx=10)
+            animal_type_entry = ttk.Entry(add_animal_window, width=20, textvariable=animal_type_inserted)
+            animal_type_entry.grid(row=1, column=1, padx=10)
+
+            ttk.Label(add_animal_window, textvariable=add_animal_answer, foreground="red").grid(row=3, column=1, pady=10, sticky="W")
+
+
+            add_animal_data_button = ttk.Button(add_animal_window, text="Add Animal", command=add_animal_data)
+            add_animal_data_button.grid(row=4, column=1, ipady=3, ipadx=10, sticky="W")
+            add_animal_window.mainloop()
 
 
         user_select_frame = ttk.Frame(self)
@@ -220,25 +271,34 @@ class UserInfo(ttk.Frame):  # second tab - user info
         appoints_list_select = tk.Listbox(user_output_frame, listvariable=appoints_list_var, height=len(user_appoints_list))
         appoints_list_select.grid(row=7, column=1, padx=20, pady=30)
 
+        add_animal_button = ttk.Button(self, text="Add Animal", command=add_animal)
+        add_animal_button["state"] = "disabled"
+        add_animal_button.grid(ipady=3, ipadx=10, pady=20)
+
 
 class ShowAppointments(ttk.Frame):  # third tab - show appointments info
     def __init__(self, container):
         super().__init__(container)
 
         def day_chose(x=None):  # working after the user press a day
-            print(cal.get_date())
             taken_appoints_tree.delete(*taken_appoints_tree.get_children())
-            taken_appoints_tree.insert(parent='', index=0, iid=0, values=("12:00", "Tiger"))
+            i = 0
+            appoints_list = retu_appoin(cal.get_date())
+            for item in appoints_list:
+                taken_appoints_tree.insert(parent='', index=i, iid=i, values=(item))
+                i += 1
 
         def delete_appoint():  # working after the button
             selected_appoint_to_del = taken_appoints_tree.focus()
             if selected_appoint_to_del:
-                print(taken_appoints_tree.item(selected_appoint_to_del, 'values'))
+                selected_to_del = taken_appoints_tree.item(selected_appoint_to_del, 'values')
+                Queue_registration(None, None, cal.get_date(), selected_to_del[0])
+                day_chose()
 
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
-        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
+        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='yyyy-mm-dd', weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
 
@@ -254,13 +314,49 @@ class ShowAppointments(ttk.Frame):  # third tab - show appointments info
         taken_appoints_tree.grid()
 
 
-
-
-
-
         add_appoint_button = ttk.Button(self, text="Delete", style="CustomButton.TButton", command=delete_appoint)
         add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
+
+class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
+    def __init__(self, container):
+        super().__init__(container)
+
+        def check_to_fill(x=None):
+            found_username = Search(enter_username.get("1.0","end-1c"))
+            if not found_username:
+                search_answer.set("No username found")
+
+            else:
+                search_answer.set("")
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        user_select_frame = ttk.Frame(self)
+        user_select_frame.grid(pady=20)
+        search_answer = tk.StringVar()
+        enter_username = tk.Text(user_select_frame, height=1, width=20)
+        enter_username.grid(row=0, column=0, padx=30)
+        enter_username.insert("1.0", "Enter username here")
+        # ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        # ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
+        #                                                                                 pady=5, sticky="E")
+        ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
+
+        animal_name_inserted = tk.StringVar()
+        animal_type_inserted = tk.StringVar()
+        animal_output_frame = ttk.Frame(self)
+        animal_output_frame.grid(pady=10)
+        ttk.Label(animal_output_frame, text="Animal name: ").grid(row=0, column=0, padx=10, pady=20)
+        animal_name_entry = ttk.Entry(animal_output_frame, width=20, textvariable=animal_name_inserted)
+        animal_name_entry.grid(row=0, column=1, pady=10, padx=20)
+
+        ttk.Label(animal_output_frame, text="Animal Type: ").grid(row=0, column=0, padx=10, pady=20)
+        animal_type_entry = ttk.Entry(animal_output_frame, width=20, textvariable=animal_type_inserted)
+        animal_type_entry.grid(row=0, column=1, pady=10, padx=20)
+
+        # register_button = ttk.Button(self, text="Register", command=get_register_data)
+        # register_button.grid(row=9, column=1, ipady=3, ipadx=10, pady=20, sticky="W")
 
 
 def secretary_main(id):  # main secretary window setup
@@ -270,7 +366,6 @@ def secretary_main(id):  # main secretary window setup
     secretary_window.resizable(False, False)
     set_window(secretary_window)
     secretary_window.columnconfigure(0, weight=1)
-    # secretary_window.rowconfigure(1, weight=1)
 
 
     def s_logout():  # take care on the logout process
@@ -295,6 +390,7 @@ def secretary_main(id):  # main secretary window setup
         #  the buttons to agree or not to logout
         ttk.Button(logout_approve_frame, text="Yes", command=yes_to_logout).grid(row=0, column=0, ipadx=5, ipady=2, padx=5)
         ttk.Button(logout_approve_frame, text="Cancel", command=cancel_to_logout).grid(row=0, column=1, ipadx=5,ipady=2, padx=5)
+        if_logout_s_window.protocol("WM_DELETE_WINDOW", cancel_to_logout)
 
 
     def s_no_exit():
@@ -321,6 +417,9 @@ def secretary_main(id):  # main secretary window setup
     tabs.add(info_of_user, text=" User Info ")
     show_appoints = ShowAppointments(tabs)
     tabs.add(show_appoints, text=" Appointments ")
+    add_animal = AddAnimal(tabs)
+    tabs.add(add_animal, text=" Add Animal ")
+
 
     secretary_window.mainloop()
 

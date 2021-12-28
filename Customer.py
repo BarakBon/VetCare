@@ -15,7 +15,6 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
             free_times = Show_appointment(cal.get_date())
             free_time_combo["values"] = free_times
 
-
         def create_appoint():  # working after the button
             def appoint_created_ok():
                 appoint_created_alert.destroy()
@@ -25,15 +24,19 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
             if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
                 appoint_mistake.set("Select all options")
             else:
+                Queue_registration(animal_selected.get(), cust_id, cal.get_date(), time_selected.get())
                 appoint_mistake.set("")
                 appoint_created_alert = tk.Tk()
                 appoint_created_alert.title("Success")
                 appoint_created_alert.resizable(False, False)
                 set_window(appoint_created_alert)
                 add_appoint_button["state"] = "disabled"
-                ttk.Label(appoint_created_alert, text="Appointment created successfully. ", foreground="green").grid(row=0, column=0,
-                                                                                                      padx=30, pady=20)
-                ttk.Button(appoint_created_alert, text="OK", command=appoint_created_ok).grid(ipadx=10, ipady=5, pady=10)
+                day_chose()
+                ttk.Label(appoint_created_alert, text="Appointment created successfully. ", foreground="green").grid(
+                    row=0, column=0,
+                    padx=30, pady=20)
+                ttk.Button(appoint_created_alert, text="OK", command=appoint_created_ok).grid(ipadx=10, ipady=5,
+                                                                                              pady=10)
                 appoint_created_alert.protocol("WM_DELETE_WINDOW", appoint_created_ok)
 
 
@@ -44,7 +47,7 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
 
         ttk.Label(self, text="Select Date: ").grid(row=0, column=0, padx=10, pady=20)
 
-        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='dd/mm/yy', weekendbackground="white")
+        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='yyyy-mm-dd', weekendbackground="white")
         cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
         cal.bind('<<CalendarSelected>>', day_chose)
 
