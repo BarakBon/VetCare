@@ -84,11 +84,19 @@ class AnimalInfo(ttk.Frame):  # see the animals info and appointment
             animal_type_info["state"] = "disable"
 
             today = datetime.date.today()
-            nonlocal user_appoints_list
             user_appoints_list = Animal_appointment(today, cust_id, animal_selected.get())
-            appoints_list_select.delete(0, tk.END)
+            animal_appoints_tree.delete(*animal_appoints_tree.get_children())
+            i = 0
             for item in user_appoints_list:
-                appoints_list_select.insert(tk.END, str(item[2]) + "  -  " + item[3])
+                animal_appoints_tree.insert(parent='', index=i, iid=i, values=(item[2], item[3]))
+                i += 1
+
+        def delete_appoint():  # working after the button
+            selected_appoint_to_del = animal_appoints_tree.focus()
+            if selected_appoint_to_del:
+                selected_to_del = animal_appoints_tree.item(selected_appoint_to_del, 'values')
+                Queue_registration(None, None, selected_to_del[1], selected_to_del[0])
+                fill_appoints_by_animal()
 
         self.columnconfigure(0, weight=1)
         animal_selected = tk.StringVar()
@@ -109,16 +117,54 @@ class AnimalInfo(ttk.Frame):  # see the animals info and appointment
         animal_type_info = tk.Text(animal_output_frame, state='disabled', height=1, width=20)
         animal_type_info.grid(row=1, column=1, padx=30)
 
-        ttk.Label(self, text="Future Appointments: ").grid(padx=20, pady=40)
-        user_appoints_list = ()
-        appoints_list_var = tk.StringVar(value=user_appoints_list)
-        appoints_list_select = tk.Listbox(self, listvariable=appoints_list_var,
-                                          height=len(user_appoints_list))
-        appoints_list_select.grid(padx=20)
+        ttk.Label(self, text="Appointments: ").grid(pady=30)
+        animal_appoints_tree = ttk.Treeview(self, height=4)
+        animal_appoints_tree['columns'] = ('Hour', 'Animal Name')
+        animal_appoints_tree.column('#0', width=0, stretch="no")
+        animal_appoints_tree.column('Hour', anchor="center", width=150)
+        animal_appoints_tree.column('Animal Name', anchor="center", width=150)
+        animal_appoints_tree.heading('#0', text='', anchor="center")
+        animal_appoints_tree.heading('Hour', text='Hour', anchor="center")
+        animal_appoints_tree.heading('Animal Name', text='Animal Name', anchor="center")
+        animal_appoints_tree.grid()
+
+        add_appoint_button = ttk.Button(self, text="Delete", style="CustomButton.TButton", command=delete_appoint)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
 
+class AnimalMedicalRec(ttk.Frame):  # see the animals medical record
+    def __init__(self, container, *args):
+        super().__init__(container, *args)
 
+        def fill_treats_by_animal(x=None):
+            treatments_tree.delete(*treatments_tree.get_children())
+            found_treats = get_treatments(cust_id, animal_selected.get())
+            i = 0
+            for item in found_treats:
+                treatments_tree.insert(parent='', index=i, iid=i, values=(item))
+                i += 1
 
+        self.columnconfigure(0, weight=1)
+        animal_selected = tk.StringVar()
+        ttk.Label(self, text="Select Animal: ").grid(padx=10, pady=20)
+        animal_list = ttk.Combobox(self, textvariable=animal_selected)
+        animal_list["state"] = "readonly"
+        animal_list.grid(padx=10)
+        animal_list.bind("<<ComboboxSelected>>", fill_treats_by_animal)
+        animal_list["values"] = AnimalName(cust_id)
+
+        ttk.Label(self, text="Treatments: ").grid(padx=10, pady=20)
+        treatments_tree = ttk.Treeview(self, height=10)
+        treatments_tree['columns'] = ('Date', 'Time', 'Details')
+        treatments_tree.column('#0', width=0, stretch="no")
+        treatments_tree.column('Date', anchor="center", width=150, stretch="no")
+        treatments_tree.column('Time', anchor="center", width=50, stretch="no")
+        treatments_tree.column('Details', anchor="center", stretch="yes")
+        treatments_tree.heading('#0', text='', anchor="center")
+        treatments_tree.heading('Date', text='Date', anchor="center")
+        treatments_tree.heading('Time', text='Time', anchor="center")
+        treatments_tree.heading('Details', text='Details', anchor="center")
+        treatments_tree.grid(sticky="EW")
 
 
 cust_id = None
@@ -168,7 +214,7 @@ def customer_main(c_id):  # main customer window setup
     # logged in top bar title and logout button in frame
     logged_bar_frame = ttk.Frame(customer_window).grid(sticky="EW")
     ttk.Label(logged_bar_frame, text=("Hello,   " + UserID_to_First_Name(c_id))).grid(row=0, column=0, padx=20, pady=10, sticky="W")
-    logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton",command=c_logout)
+    logout_button = ttk.Button(logged_bar_frame, text="Log Out", style="CustomButton.TButton", command=c_logout)
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
     customer_window.protocol("WM_DELETE_WINDOW", c_no_exit)
 
@@ -180,6 +226,8 @@ def customer_main(c_id):  # main customer window setup
     tabs.add(register_new_user_tab, text=" Make Appointment ")
     animal_info_tab = AnimalInfo(tabs)
     tabs.add(animal_info_tab, text=" Animal Details ")
+    animal_med_rec = AnimalMedicalRec(tabs)
+    tabs.add(animal_med_rec, text=" Medical Record ")
 
     customer_window.mainloop()
 
