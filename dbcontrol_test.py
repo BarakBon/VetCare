@@ -19,7 +19,7 @@ class dbcontrol(unittest.TestCase):
     def test_newAnimal(self):
         self.assertEqual(newAnimal('4','Do','Bob'), -2, "should be -2")
         self.assertEqual(newAnimal('a','Dog','Bob'), -2, "should be -2")
-        self.assertEqual(newAnimal('4', 'Dog', 'B'), -2, "should be -2")
+        self.assertEqual(newAnimal('4','Rabit','Felix'), -1, "should be -1")
 
     def test_Login_check(self):
         self.assertFalse(Login_check('OrB', 'OE2'), "Should be False")
