@@ -1,13 +1,12 @@
 import time
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image, ImageTk
 from window import *
 from dbcontrol import *
 from tkcalendar import Calendar
 import datetime
 
-class MakeAppointment(ttk.Frame):  # make appointmant by the user
+class MakeAppointment(ttk.Frame):  # make appointment by the user
     def __init__(self, container, *args):
         super().__init__(container, *args)
 
@@ -68,6 +67,35 @@ class MakeAppointment(ttk.Frame):  # make appointmant by the user
         add_appoint_button.grid(ipadx=10, ipady=5, pady=10)
 
 
+class AnimalAppointments(ttk.Frame):  # see the animals appointment
+    def __init__(self, container, *args):
+        super().__init__(container, *args)
+
+        def fill_appoints_by_animal(x=None):
+            today = datetime.date.today()
+            nonlocal user_appoints_list
+            user_appoints_list = Animal_appointment(today, cust_id, animal_selected.get())
+            appoints_list_select.delete(0, tk.END)
+            for item in user_appoints_list:
+                appoints_list_select.insert(tk.END, str(item[2]) + "  -  " + item[3])
+
+        self.columnconfigure(0, weight=1)
+        animal_selected = tk.StringVar()
+        ttk.Label(self, text="Select Animal: ").grid(pady=30)
+        animal_select_list = ttk.Combobox(self, textvariable=animal_selected)
+        animal_select_list["values"] = AnimalName(cust_id)
+        animal_select_list["state"] = "readonly"
+        animal_select_list.grid()
+        animal_select_list.bind("<<ComboboxSelected>>", fill_appoints_by_animal)
+
+        ttk.Label(self, text="Future Appointments: ").grid(padx=20, pady=40)
+        user_appoints_list = ()
+        appoints_list_var = tk.StringVar(value=user_appoints_list)
+        appoints_list_select = tk.Listbox(self, listvariable=appoints_list_var,
+                                          height=len(user_appoints_list))
+        appoints_list_select.grid(padx=20)
+
+
 cust_id = None
 def customer_main(c_id):  # main customer window setup
     global cust_id
@@ -125,6 +153,8 @@ def customer_main(c_id):  # main customer window setup
     tabs.grid(sticky="EW")
     register_new_user_tab = MakeAppointment(tabs)
     tabs.add(register_new_user_tab, text=" Make Appointment ")
+    animal_appoints_tab = AnimalAppointments(tabs)
+    tabs.add(animal_appoints_tab, text=" Animal Appointment ")
 
     customer_window.mainloop()
 

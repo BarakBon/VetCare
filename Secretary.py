@@ -187,8 +187,6 @@ class UserInfo(ttk.Frame):  # second tab - user info
             def add_animal_data():
                 found_username = Search(enter_username.get("1.0", "end-1c"))
                 add_animal_window.focus()
-                print(animal_type_inserted.get())
-                print(animal_name_inserted.get())
                 if animal_type_inserted.get() is not "" and animal_name_inserted.get() is not "":
                     flag = newAnimal(found_username[0], animal_type_inserted.get(), animal_name_inserted.get())
                     print(flag)
