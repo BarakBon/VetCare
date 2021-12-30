@@ -33,6 +33,10 @@ def newAnimal(userID,Type,animalName):
         return -2
     if ((len(animalName) < 3) or (animalName.isalpha() != True)):
         return -2
+    c.execute("SELECT * FROM Treatments WHERE UserID=? AND AnimalName=?", (userID, animalName))
+    item = c.fetchall()
+    if item:
+        return -1
     c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,None))
     conn.commit()
 
@@ -215,7 +219,6 @@ def Customer_appointment(Date,UserID):
 #Returns all documentation of previous treatments
 def get_treatments(UserID,AnimalName):
     t =()
-
     c.execute("SELECT * FROM Treatments WHERE UserID=? AND AnimalName=?",(UserID,AnimalName))
     item = c.fetchall()
     if item:
