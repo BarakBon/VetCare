@@ -67,11 +67,22 @@ class MakeAppointment(ttk.Frame):  # make appointment by the user
         add_appoint_button.grid(ipadx=10, ipady=5, pady=10)
 
 
-class AnimalAppointments(ttk.Frame):  # see the animals appointment
+class AnimalInfo(ttk.Frame):  # see the animals info and appointment
     def __init__(self, container, *args):
         super().__init__(container, *args)
 
         def fill_appoints_by_animal(x=None):
+            found_animal_info = animal_details(cust_id, animal_selected.get())
+            animal_name_info["state"] = "normal"
+            animal_name_info.delete("1.0", "end-1c")
+            animal_name_info.insert(tk.END, found_animal_info[1])
+            animal_name_info["state"] = "disable"
+
+            animal_type_info["state"] = "normal"
+            animal_type_info.delete("1.0", "end-1c")
+            animal_type_info.insert(tk.END, found_animal_info[0])
+            animal_type_info["state"] = "disable"
+
             today = datetime.date.today()
             nonlocal user_appoints_list
             user_appoints_list = Animal_appointment(today, cust_id, animal_selected.get())
@@ -88,12 +99,26 @@ class AnimalAppointments(ttk.Frame):  # see the animals appointment
         animal_select_list.grid()
         animal_select_list.bind("<<ComboboxSelected>>", fill_appoints_by_animal)
 
+        animal_output_frame = ttk.Frame(self)
+        animal_output_frame.grid(pady=20)
+        ttk.Label(animal_output_frame, text="Animal Name: ").grid(row=0, column=0, padx=20, pady=20)
+        animal_name_info = tk.Text(animal_output_frame, state='disabled', height=1, width=20)
+        animal_name_info.grid(row=0, column=1, padx=30)
+
+        ttk.Label(animal_output_frame, text="Animal Type: ").grid(row=1, column=0, padx=20)
+        animal_type_info = tk.Text(animal_output_frame, state='disabled', height=1, width=20)
+        animal_type_info.grid(row=1, column=1, padx=30)
+
         ttk.Label(self, text="Future Appointments: ").grid(padx=20, pady=40)
         user_appoints_list = ()
         appoints_list_var = tk.StringVar(value=user_appoints_list)
         appoints_list_select = tk.Listbox(self, listvariable=appoints_list_var,
                                           height=len(user_appoints_list))
         appoints_list_select.grid(padx=20)
+
+
+
+
 
 
 cust_id = None
@@ -153,8 +178,8 @@ def customer_main(c_id):  # main customer window setup
     tabs.grid(sticky="EW")
     register_new_user_tab = MakeAppointment(tabs)
     tabs.add(register_new_user_tab, text=" Make Appointment ")
-    animal_appoints_tab = AnimalAppointments(tabs)
-    tabs.add(animal_appoints_tab, text=" Animal Appointment ")
+    animal_info_tab = AnimalInfo(tabs)
+    tabs.add(animal_info_tab, text=" Animal Details ")
 
     customer_window.mainloop()
 
