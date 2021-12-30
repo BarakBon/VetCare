@@ -274,7 +274,7 @@ class UserInfo(ttk.Frame):  # second tab - user info
         add_animal_button.grid(ipady=3, ipadx=10, pady=20)
 
 
-class ShowAppointments(ttk.Frame):  # third tab - show appointments info
+class ShowAppointments(ttk.Frame):  # third tab - show appointments by dates
     def __init__(self, container):
         super().__init__(container)
 
@@ -354,7 +354,8 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
                 flag = newAnimal(str(found_username[0]), animal_type_inserted.get(), animal_name_inserted.get())
                 if flag is -2:
                     animal_input_answer.set("Wrong Input")
-                if flag is:
+                if flag is -1:
+                    animal_input_answer.set("Animal already existed")
                 else:
                     animal_input_answer.set("")
                     animal_register_button["state"] = "disabled"
@@ -404,6 +405,94 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
         animal_register_button = ttk.Button(self, text="Add Animal", command=get_animal_register_data)
         animal_register_button.grid(ipady=3, ipadx=10, pady=20)
         animal_register_button["state"] = "disabled"
+
+
+class NewAppointment(ttk.Frame):  # 4th tab - add animal to customer
+    def __init__(self, container):
+        super().__init__(container)
+
+        def check_to_fill():
+            nonlocal found_username
+            found_username = Search(enter_username.get("1.0", "end-1c"))
+            if not found_username:
+                animal_input_answer.set("")
+                search_answer.set("No username found")
+                add_appoint_button["state"] = "disabled"
+
+            else:
+                search_answer.set("")
+                add_appoint_button["state"] = "normal"
+                animal_select_list["values"] = AnimalName(found_username[0])
+
+        def day_chose(x=None):  # working after the user press a day
+            free_times = Show_appointment(cal.get_date())
+            free_time_combo["values"] = free_times
+
+        def create_appoint():  # working after the button
+            def appoint_created_ok():
+                appoint_created_alert.destroy()
+                add_appoint_button["state"] = "normal"
+                day_chose()
+
+            if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
+                appoint_mistake.set("Select all options")
+            else:
+                Queue_registration(animal_selected.get(), found_username[0], cal.get_date(), time_selected.get())
+                appoint_mistake.set("")
+                appoint_created_alert = tk.Tk()
+                appoint_created_alert.title("Success")
+                appoint_created_alert.resizable(False, False)
+                set_window(appoint_created_alert)
+                add_appoint_button["state"] = "disabled"
+                day_chose()
+                ttk.Label(appoint_created_alert, text="Appointment created successfully. ", foreground="green").grid(
+                    row=0, column=0,
+                    padx=30, pady=20)
+                ttk.Button(appoint_created_alert, text="OK", command=appoint_created_ok).grid(ipadx=10, ipady=5,
+                                                                                              pady=10)
+                appoint_created_alert.protocol("WM_DELETE_WINDOW", appoint_created_ok)
+
+
+        time_selected = tk.StringVar()
+        animal_selected = tk.StringVar()
+        appoint_mistake = tk.StringVar()
+        found_username = ""
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        user_select_frame = ttk.Frame(self)
+        user_select_frame.grid(pady=20)
+        search_answer = tk.StringVar()
+        animal_input_answer = tk.StringVar()
+        enter_username = tk.Text(user_select_frame, height=1, width=20)
+        enter_username.grid(row=0, column=0, padx=30)
+        enter_username.insert("1.0", "Enter username here")
+        ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
+                                                                                        pady=5, sticky="E")
+        ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
+
+        ttk.Label(self, text="Select Date: ").grid(padx=10, pady=20)
+
+        cal = Calendar(self, selectmode="day", firstweekday="sunday", mindate=datetime.date.today(), date_pattern='yyyy-mm-dd', weekendbackground="white")
+        cal.grid(ipadx=80, ipady=30, padx=20, sticky="EW")
+        cal.bind('<<CalendarSelected>>', day_chose)
+
+        ttk.Label(self, text="Select Hour: ").grid(pady=20)
+        free_time_combo = ttk.Combobox(self, textvariable=time_selected)
+        free_time_combo["state"] = "readonly"
+        free_time_combo.grid()
+
+        ttk.Label(self, text="Select Animal: ").grid(pady=30)
+        animal_select_list = ttk.Combobox(self, textvariable=animal_selected)
+        animal_select_list["values"] = ""
+        animal_select_list["state"] = "readonly"
+        animal_select_list.grid()
+
+        ttk.Label(self, textvariable=appoint_mistake, foreground="red").grid(pady=30)
+
+        add_appoint_button = ttk.Button(self, text="Choose", command=create_appoint)
+        add_appoint_button.grid(ipadx=10, ipady=5, pady=10)
+        add_appoint_button["state"] = "disabled"
 
 
 def secretary_main(id):  # main secretary window setup
@@ -466,7 +555,8 @@ def secretary_main(id):  # main secretary window setup
     tabs.add(show_appoints, text=" Appointments ")
     add_animal = AddAnimal(tabs)
     tabs.add(add_animal, text=" Add Animal ")
-
+    new_appoint = NewAppointment(tabs)
+    tabs.add(new_appoint, text=" New Appointment ")
 
     secretary_window.mainloop()
 
