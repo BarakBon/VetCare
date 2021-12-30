@@ -323,22 +323,68 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
         def check_to_fill(x=None):
             found_username = Search(enter_username.get("1.0","end-1c"))
             if not found_username:
+                animal_input_answer.set("")
                 search_answer.set("No username found")
+                animal_name_entry["state"] = "normal"
+                animal_type_entry["state"] = "normal"
+                animal_name_entry.delete(0, 'end')
+                animal_type_entry.delete(0, 'end')
+                animal_name_entry["state"] = "disabled"
+                animal_type_entry["state"] = "disabled"
+                animal_register_button["state"] = "disabled"
 
             else:
                 search_answer.set("")
+                animal_name_entry["state"] = "normal"
+                animal_type_entry["state"] = "normal"
+                animal_name_entry.delete(0, 'end')
+                animal_type_entry.delete(0, 'end')
+                animal_register_button["state"] = "normal"
+
+
+        def get_animal_register_data():
+            def animal_created():
+                created_alert.destroy()
+                animal_name_entry.delete(0, 'end')
+                animal_type_entry.delete(0, 'end')
+                animal_register_button["state"] = "normal"
+
+            found_username = Search(enter_username.get("1.0", "end-1c"))
+            if animal_type_inserted.get() is not "" and animal_name_inserted.get() is not "":
+                flag = newAnimal(str(found_username[0]), animal_type_inserted.get(), animal_name_inserted.get())
+                if flag is -2:
+                    animal_input_answer.set("Wrong Input")
+                if flag is:
+                else:
+                    animal_input_answer.set("")
+                    animal_register_button["state"] = "disabled"
+                    created_alert = tk.Tk()
+                    created_alert.title("Success")
+                    created_alert.resizable(False, False)
+                    set_window(created_alert)
+                    ttk.Label(created_alert, text="Animal added successfully. ", foreground="green").grid(row=0,
+                                                                                                          column=0,
+                                                                                                          padx=30,
+                                                                                                          pady=20)
+
+                    ttk.Button(created_alert, text="OK", command=animal_created).grid(ipadx=10, ipady=5, pady=10)
+                    created_alert.protocol("WM_DELETE_WINDOW", animal_created)
+            else:
+                animal_input_answer.set("Fill all the slots")
+
 
         self.columnconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
         user_select_frame = ttk.Frame(self)
         user_select_frame.grid(pady=20)
         search_answer = tk.StringVar()
+        animal_input_answer = tk.StringVar()
         enter_username = tk.Text(user_select_frame, height=1, width=20)
         enter_username.grid(row=0, column=0, padx=30)
         enter_username.insert("1.0", "Enter username here")
-        # ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
-        # ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
-        #                                                                                 pady=5, sticky="E")
+        ttk.Button(user_select_frame, text="Search", command=check_to_fill).grid(row=0, column=1)
+        ttk.Label(user_select_frame, textvariable=search_answer, foreground="red").grid(row=1, column=0, padx=10,
+                                                                                        pady=5, sticky="E")
         ttk.Separator(self, orient='horizontal').grid(rowspan=2, sticky="EW")
 
         animal_name_inserted = tk.StringVar()
@@ -349,12 +395,15 @@ class AddAnimal(ttk.Frame):  # 4th tab - add animal to customer
         animal_name_entry = ttk.Entry(animal_output_frame, width=20, textvariable=animal_name_inserted)
         animal_name_entry.grid(row=0, column=1, pady=10, padx=20)
 
-        ttk.Label(animal_output_frame, text="Animal Type: ").grid(row=0, column=0, padx=10, pady=20)
+        ttk.Label(animal_output_frame, text="Animal Type: ").grid(row=1, column=0, padx=10, pady=20)
         animal_type_entry = ttk.Entry(animal_output_frame, width=20, textvariable=animal_type_inserted)
-        animal_type_entry.grid(row=0, column=1, pady=10, padx=20)
+        animal_type_entry.grid(row=1, column=1, pady=10, padx=20)
 
-        # register_button = ttk.Button(self, text="Register", command=get_register_data)
-        # register_button.grid(row=9, column=1, ipady=3, ipadx=10, pady=20, sticky="W")
+        ttk.Label(self, textvariable=animal_input_answer, foreground="red").grid(padx=10, pady=5)
+
+        animal_register_button = ttk.Button(self, text="Add Animal", command=get_animal_register_data)
+        animal_register_button.grid(ipady=3, ipadx=10, pady=20)
+        animal_register_button["state"] = "disabled"
 
 
 def secretary_main(id):  # main secretary window setup

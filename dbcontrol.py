@@ -34,6 +34,7 @@ def newAnimal(userID,Type,animalName):
     if ((len(animalName) < 3) or (animalName.isalpha() != True)):
         return -2
     c.execute("INSERT INTO `Animals` ('userID','Type','animalName','importantInfo') VALUES (?,?,?,?);",(userID,Type,animalName,None))
+    conn.commit()
 
 # Gets a username and password , and checks if it exists in the system - If so returns UserID
 def Login_check (Name , Password):
