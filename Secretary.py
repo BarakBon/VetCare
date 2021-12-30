@@ -171,11 +171,11 @@ class UserInfo(ttk.Frame):  # second tab - user info
                         list_select.insert(tk.END, item)
 
                     today = datetime.date.today()
-                    # nonlocal user_appoints_list
-                    # user_appoints_list = something(found_username[0], date) # the proper func
-                    # appoints_list_select.delete(0, tk.END)
-                    # for item in user_appoints_list:
-                    #     appoints_list_select(tk.END, item)
+                    nonlocal user_appoints_list
+                    user_appoints_list = Customer_appointment(today, found_username[0])
+                    appoints_list_select.delete(0, tk.END)
+                    for item in user_appoints_list:
+                        appoints_list_select.insert(tk.END, item[1] + " - " + str(item[2]) + " - " + item[3])
 
                 else:
                     add_animal_button["state"] = "disabled"
