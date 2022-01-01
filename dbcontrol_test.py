@@ -85,7 +85,7 @@ class dbcontrol(unittest.TestCase):
     def test_Customer_appointment(self):
         self.assertTrue(Customer_appointment('2021-10-05', '5'), "Should be True")
         self.assertFalse(Customer_appointment('2021-12-27', '3' ), "Should be False")
-        self.assertFalse(Customer_appointment('2021-12-29', '6'), "Should be False")
+        self.assertTrue(Customer_appointment('2021-12-29', '6'), "Should be True")
 
     def test_get_treatment(self):
         self.assertIsNotNone(get_treatments('5','Max'),"Should be True")
