@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image, ImageTk
 from window import *
 from dbcontrol import *
 import datetime
@@ -10,7 +9,9 @@ class AnimalInfo(ttk.Frame):  # first tab - see animal info
         super().__init__(container)
 
         def check_to_fill():
+            # checks if the user is found and fills or cleans the user and animal info in text boxes
             def no_custo():
+                # cleans the spots because no customer has been found
                 search_answer.set("No customer found")
                 firstname_info["state"] = "normal"
                 firstname_info.delete("1.0", "end-1c")
@@ -45,6 +46,7 @@ class AnimalInfo(ttk.Frame):  # first tab - see animal info
                 no_custo()
 
             else:
+                # fills the slots only if customer user entered
                 search_answer.set("")
 
                 firstname_info["state"] = "normal"
@@ -76,6 +78,7 @@ class AnimalInfo(ttk.Frame):  # first tab - see animal info
                 change_info_button["state"] = "disabled"
 
                 nonlocal animal_list
+                # fills the animal list of the user
                 animal_list = AnimalName(found_username[0])
                 list_select.delete(0, tk.END)
                 for item in animal_list:
@@ -83,6 +86,7 @@ class AnimalInfo(ttk.Frame):  # first tab - see animal info
 
 
         def animal_select(x=None):
+            # when an animal is selected fills the info of him
             found_username = Search(enter_username.get("1.0", "end-1c"))
             index = list_select.curselection()
             nonlocal selected_animal
@@ -105,6 +109,7 @@ class AnimalInfo(ttk.Frame):  # first tab - see animal info
                 change_info_button["state"] = "normal"
 
         def change_important_info():
+            # can change the important info of the animal
             found_username = Search(enter_username.get("1.0", "end-1c"))
             nonlocal selected_animal
             if selected_animal:
@@ -171,6 +176,7 @@ class NewTreatment(ttk.Frame):  # second tab - create new treatment
         super().__init__(container)
 
         def check_to_fill():
+            #  checks if the user is found and fills his animal list or cleans the text boxes if not
             def no_custo():
                 search_answer.set("No customer found")
                 treat_given.delete("1.0", "end")
@@ -184,21 +190,26 @@ class NewTreatment(ttk.Frame):  # second tab - create new treatment
                 no_custo()
 
             else:
+                #  only if the user is a customer fills the animal list
                 search_answer.set("")
                 animal_selected.set("")
                 treat_given.delete("1.0", "end")
                 animal_list["values"] = AnimalName(found_username[0])
 
         def create_treat():
+            # creating a treatment after the user fills everything and clicks the button
             def treat_created_ok():
+                # if the user clicked the ok button on the approve window
                 create_treat_button["state"] = "normal"
                 treat_created_alert.destroy()
 
             if animal_selected and treat_given.get("1.0", "end-1c"):
+                # if all the slots are filled
                 found_username = Search(enter_username.get("1.0", "end-1c"))
                 set_treatments(found_username[0], animal_selected.get(), datetime.datetime.now().hour,
                                                         datetime.date.today(), treat_given.get("1.0", "end-1c"))
                 create_treat_button["state"] = "disabled"
+                # creates a popup window that says that the treatment has been created
                 treat_created_alert = tk.Tk()
                 treat_created_alert.title("Success")
                 treat_created_alert.resizable(False, False)
@@ -242,7 +253,9 @@ class TreatmentRecord(ttk.Frame):  # third tab - see medical record of animal
         super().__init__(container)
 
         def check_to_fill():
+            #  fills the tree only if customer is entered and if not cleans everything
             def no_custo():
+                #  no customer is found so cleans everything
                 search_answer.set("No customer found")
                 animal_list["values"] = None
                 animal_selected.set("")
@@ -256,12 +269,14 @@ class TreatmentRecord(ttk.Frame):  # third tab - see medical record of animal
                 no_custo()
 
             else:
+                # only if a customer cleans the errors and fill animal list of the user
                 search_answer.set("")
                 animal_selected.set("")
                 treatments_tree.delete(*treatments_tree.get_children())
                 animal_list["values"] = AnimalName(found_username[0])
 
         def fill_treats_by_animal(x=None):
+            #  after the vet chooses an animal fills the treatments tree
             treatments_tree.delete(*treatments_tree.get_children())
             found_username = Search(enter_username.get("1.0", "end-1c"))
             found_treats = get_treatments(found_username[0], animal_selected.get())
@@ -287,10 +302,11 @@ class TreatmentRecord(ttk.Frame):  # third tab - see medical record of animal
         animal_list = ttk.Combobox(self, textvariable=animal_selected)
         animal_list["state"] = "readonly"
         animal_list.grid(padx=10)
-        animal_list.bind("<<ComboboxSelected>>", fill_treats_by_animal)
+        animal_list.bind("<<ComboboxSelected>>", fill_treats_by_animal)  # event when animal is chosen
 
         ttk.Label(self, text="Treatments: ").grid(padx=10, pady=20)
-        treatments_tree = ttk.Treeview(self, height=10)
+        #  creating and setting the tree of the treatments
+        treatments_tree = ttk.Treeview(self, height=15)
         treatments_tree['columns'] = ('Date', 'Time', 'Details')
         treatments_tree.column('#0', width=0, stretch="no")
         treatments_tree.column('Date', anchor="center", width=150, stretch="no")
@@ -308,6 +324,7 @@ class TodayAppointments(ttk.Frame):  # 4th tab - see today's appointments
         super().__init__(container)
 
         def refresh_appoints():
+            # after the refresh button is clicked, shows the appoints today
             today_appoints_tree.delete(*today_appoints_tree.get_children())
             i = 0
             today_appoints_list = retu_appoin(datetime.date.today())
@@ -317,7 +334,8 @@ class TodayAppointments(ttk.Frame):  # 4th tab - see today's appointments
 
         self.columnconfigure(0, weight=1)
         ttk.Label(self, text="Appointments: ").grid(pady=30)
-        today_appoints_tree = ttk.Treeview(self, height=4)
+        #  creating and setting the tree of the appointments
+        today_appoints_tree = ttk.Treeview(self, height=12)
         today_appoints_tree['columns'] = ('Hour', 'Animal Name')
         today_appoints_tree.column('#0', width=0, stretch="no")
         today_appoints_tree.column('Hour', anchor="center", width=150)
@@ -378,10 +396,11 @@ def veterinarian_main(id): # main veterinarian window setup
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
     vet_window.protocol("WM_DELETE_WINDOW", v_no_exit)
 
-    # tabs creations
+    # notebook creations
     tabs = ttk.Notebook(vet_window)
     # tabs.columnconfigure(0, weight=1)
     tabs.grid(sticky="EW")
+    # tabs creations and adding to notebook
     info_of_animal_tab = AnimalInfo(tabs)
     tabs.add(info_of_animal_tab, text=" Animal Info ")
     new_treat_tab = NewTreatment(tabs)
@@ -390,5 +409,5 @@ def veterinarian_main(id): # main veterinarian window setup
     tabs.add(treat_record, text=" Treatment Record ")
     today_appoint = TodayAppointments(tabs)
     tabs.add(today_appoint, text=" Appointments Today  ")
-
+    
     vet_window.mainloop()
