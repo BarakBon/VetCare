@@ -6,15 +6,17 @@ from dbcontrol import *
 from tkcalendar import Calendar
 import datetime
 
-class MakeAppointment(ttk.Frame):  # make appointment by the user
+class MakeAppointment(ttk.Frame):  # first tab - make appointment by the user
     def __init__(self, container, *args):
         super().__init__(container, *args)
 
-        def day_chose(x=None):  # working after the user press a day
+        def day_chose(x=None):
+            # working after the user chooses a day and fills the free times
             free_times = Show_appointment(cal.get_date())
             free_time_combo["values"] = free_times
 
-        def create_appoint():  # working after the button
+        def create_appoint():
+            # working after the button and creates the new appoint
             def appoint_created_ok():
                 appoint_created_alert.destroy()
                 add_appoint_button["state"] = "normal"
@@ -23,8 +25,10 @@ class MakeAppointment(ttk.Frame):  # make appointment by the user
             if cal.get_date() is "" or time_selected.get() is "" or animal_selected.get() is "":
                 appoint_mistake.set("Select all options")
             else:
+                #  only if he chooses all the options he creates an appointment
                 Queue_registration(animal_selected.get(), cust_id, cal.get_date(), time_selected.get())
                 appoint_mistake.set("")
+                #  creates and pops a window that says the appoint has been created
                 appoint_created_alert = tk.Tk()
                 appoint_created_alert.title("Success")
                 appoint_created_alert.resizable(False, False)
@@ -67,11 +71,12 @@ class MakeAppointment(ttk.Frame):  # make appointment by the user
         add_appoint_button.grid(ipadx=10, ipady=5, pady=10)
 
 
-class AnimalInfo(ttk.Frame):  # see the animals info and appointment
+class AnimalInfo(ttk.Frame):  # second tab - see the animals info and appointments
     def __init__(self, container, *args):
         super().__init__(container, *args)
 
         def fill_appoints_by_animal(x=None):
+            #  fills the info and appoints of the animal chosen
             found_animal_info = animal_details(cust_id, animal_selected.get())
             animal_name_info["state"] = "normal"
             animal_name_info.delete("1.0", "end-1c")
@@ -91,7 +96,8 @@ class AnimalInfo(ttk.Frame):  # see the animals info and appointment
                 animal_appoints_tree.insert(parent='', index=i, iid=i, values=(item[2], item[3]))
                 i += 1
 
-        def delete_appoint():  # working after the button
+        def delete_appoint():
+            # working after the button and deleting the chosen appoint
             selected_appoint_to_del = animal_appoints_tree.focus()
             if selected_appoint_to_del:
                 selected_to_del = animal_appoints_tree.item(selected_appoint_to_del, 'values')
@@ -105,7 +111,7 @@ class AnimalInfo(ttk.Frame):  # see the animals info and appointment
         animal_select_list["values"] = AnimalName(cust_id)
         animal_select_list["state"] = "readonly"
         animal_select_list.grid()
-        animal_select_list.bind("<<ComboboxSelected>>", fill_appoints_by_animal)
+        animal_select_list.bind("<<ComboboxSelected>>", fill_appoints_by_animal)  # event of the chosen animal
 
         animal_output_frame = ttk.Frame(self)
         animal_output_frame.grid(pady=20)
@@ -118,7 +124,8 @@ class AnimalInfo(ttk.Frame):  # see the animals info and appointment
         animal_type_info.grid(row=1, column=1, padx=30)
 
         ttk.Label(self, text="Appointments: ").grid(pady=30)
-        animal_appoints_tree = ttk.Treeview(self, height=4)
+        #  creating and setting up the appointments tree
+        animal_appoints_tree = ttk.Treeview(self, height=12)
         animal_appoints_tree['columns'] = ('Hour', 'Animal Name')
         animal_appoints_tree.column('#0', width=0, stretch="no")
         animal_appoints_tree.column('Hour', anchor="center", width=150)
@@ -132,11 +139,12 @@ class AnimalInfo(ttk.Frame):  # see the animals info and appointment
         add_appoint_button.grid(ipadx=10, ipady=5, pady=30)
 
 
-class AnimalMedicalRec(ttk.Frame):  # see the animals medical record
+class AnimalMedicalRec(ttk.Frame):  # third tab - see the animals medical record
     def __init__(self, container, *args):
         super().__init__(container, *args)
 
         def fill_treats_by_animal(x=None):
+            #  fills the treatments of the chosen animal
             treatments_tree.delete(*treatments_tree.get_children())
             found_treats = get_treatments(cust_id, animal_selected.get())
             i = 0
@@ -154,7 +162,8 @@ class AnimalMedicalRec(ttk.Frame):  # see the animals medical record
         animal_list["values"] = AnimalName(cust_id)
 
         ttk.Label(self, text="Treatments: ").grid(padx=10, pady=20)
-        treatments_tree = ttk.Treeview(self, height=10)
+        #  creating and setting up the treatments tree
+        treatments_tree = ttk.Treeview(self, height=20)
         treatments_tree['columns'] = ('Date', 'Time', 'Details')
         treatments_tree.column('#0', width=0, stretch="no")
         treatments_tree.column('Date', anchor="center", width=150, stretch="no")
@@ -218,10 +227,11 @@ def customer_main(c_id):  # main customer window setup
     logout_button.grid(row=0, column=0, padx=10, pady=10, sticky="E")
     customer_window.protocol("WM_DELETE_WINDOW", c_no_exit)
 
-    # tabs creations
+    # notebook creations
     tabs = ttk.Notebook(customer_window)
     # tabs.columnconfigure(0, weight=1)
     tabs.grid(sticky="EW")
+    # tabs creations and adding to notebook
     register_new_user_tab = MakeAppointment(tabs)
     tabs.add(register_new_user_tab, text=" Make Appointment ")
     animal_info_tab = AnimalInfo(tabs)
