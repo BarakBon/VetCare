@@ -18,7 +18,7 @@ def set_window(window):
 
     # Gets both half the screen width/height and window width/height
     positionRight = int(window.winfo_screenwidth() / 2 - windowWidth / 2)
-    positionDown = int(window.winfo_screenheight() / 2.5 - windowHeight / 2)
+    positionDown = int(window.winfo_screenheight() / 4 - windowHeight / 2)
 
     # Positions the window in the center of the page.
     window.geometry("+{}+{}".format(positionRight, positionDown))
