@@ -409,5 +409,5 @@ def veterinarian_main(id): # main veterinarian window setup
     tabs.add(treat_record, text=" Treatment Record ")
     today_appoint = TodayAppointments(tabs)
     tabs.add(today_appoint, text=" Appointments Today  ")
-    
+
     vet_window.mainloop()
