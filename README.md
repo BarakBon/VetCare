@@ -16,31 +16,35 @@ The system have 3 types of users of the veterinary clinic:
 * Secretarys
 
 * Customers
-## Project State
 
-Currently the system is "work in progress".
-published at a state to meet the Hackathon demands.
-you can fint the following options at this moment:
+## Features
+
 - Login system
 
-- Database
+- Users and animals managment
 
-- Basic pages for each of the users
+- Local database
 
-- Register new user functionality for the secretary
+- Different pages and features for each of the users
 
-- Additional checks and warnings when needed input from user
+- Appointmen system
 
-- Log out option
+- Animal medical record
+
+- Treatment system
 
 
 ## Deployment
 
-To deploy this project, run the following file
+Download as zip, extract and run the following file:
 
 ```bash
-  login.py
+  VetCare.exe
 ```
+
+## Note
+
+The folder "origin files" includes all the original files before the packaging (libraries needed to run)
 
 
 ## Authors
