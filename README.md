@@ -36,7 +36,7 @@ The system have 3 types of users of the veterinary clinic:
 
 ## Deployment
 
-Download as zip, extract and run the following file:
+Download as zip, extract and inside the folder "execute files" run the following file:
 
 ```bash
   VetCare.exe
